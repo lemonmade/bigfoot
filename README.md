@@ -1,11 +1,4 @@
-  _______    ________  _______    ______   ______   ______   _________
-/_______/\  /_______/\/______/\  /_____/\ /_____/\ /_____/\ /________/\
-\::: _  \ \ \__.::._\/\::::__\/__\::::_\/_\:::_ \ \\:::_ \ \\__.::.__\/
- \::(_)  \/_   \::\ \  \:\ /____/\\:\/___/\\:\ \ \ \\:\ \ \ \  \::\ \
-  \::  _  \ \  _\::\ \__\:\\_  _\/ \:::._\/ \:\ \ \ \\:\ \ \ \  \::\ \
-   \::(_)  \ \/__\::\__/\\:\_\ \ \  \:\ \    \:\_\ \ \\:\_\ \ \  \::\ \
-    \_______\/\________\/ \_____\/   \_\/     \_____\/ \_____\/   \__\/
-
+BIGFOOT
 by [Chris Sauve](http://cmsauve.com/projects)
 
 Bigfoot is a jQuery plugin that creates exceptional footnotes. Simply include the code on your pages and footnotes will be detected automatically and improved in the following ways:
