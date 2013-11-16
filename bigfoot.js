@@ -121,13 +121,17 @@
 			// AND that aren't a descendant of a footnote (prevents backlinks)
 			var $footnoteAnchors = $(footnoteButtonSearchQuery).filter(function() {
 				var $this = $(this);
-				var relAttr = $this.attr("rel") || "";
-				return ($this.attr("href") + relAttr).match(/(fn|footnote|note)/gi) && $this.closest("[class*=footnote]:not(a):not(sup)").length < 1;
+				var relAttr = $this.attr("rel");
+				if(!relAttr || relAttr == "null") {
+					relAttr = "";
+				}
+				return ($this.attr("href") + relAttr).match(/(fn|footnote|note)[:\-_\d]/gi) && $this.closest("[class*=footnote]:not(a):not(sup)").length < 1;
 			}); // End of footnote link .filter()
 
 			var footnotes 		= [],
 				footnoteLinks 	= [],
-				relatedFN;
+				relatedFN,
+				$closestFootnoteLi;
 
 			// Resolve issues with superscript/ anchor combination
 			cleanFootnoteLinks($footnoteAnchors, footnoteLinks);
@@ -135,7 +139,10 @@
 			// Get the footnote that the link was pointing to
 			$(footnoteLinks).each(function() {
 				relatedFN = $(this).attr("data-footnote-ref").replace(":", "\\:");
-				footnotes.push($(relatedFN).closest("li"));
+				$closestFootnoteLi = $(relatedFN).closest("li");
+				if($closestFootnoteLi.length > 0) {
+					footnotes.push($closestFootnoteLi);
+				}
 			});
 
 			// Initiates the button with the footnote content
