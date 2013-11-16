@@ -14,7 +14,7 @@
 
 .footnote-main-wrapper { position: relative; z-index: 14; box-sizing: border-box; overflow: hidden; margin: 0 auto; max-width: 30em; background-color: #fafafa; border-radius: 0; }
 
-.footnote-content-wrapper { position: relative; z-index: 8; max-height: 15em; padding: 1.1em 5% 1.2em; box-sizing: border-box; overflow: scroll; -webkit-overflow-scrolling: touch; background: #fafafa; border-radius: 0; }
+.footnote-content-wrapper { position: relative; z-index: 8; max-height: 15em; padding: 1.1em 5% 1.2em; box-sizing: border-box; overflow: auto; -webkit-overflow-scrolling: touch; background: #fafafa; border-radius: 0; }
 .footnote-content-wrapper img { max-width: 100%; }
 .footnote-content-wrapper *:last-child { margin-bottom: 0; }
 .footnote-content-wrapper *:first-child { margin-top: 0; }

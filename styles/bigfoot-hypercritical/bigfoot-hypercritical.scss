@@ -712,7 +712,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     max-height: $popover-max-height;
     padding: $popover-padding-content-top $popover-padding-content-horizontal $popover-padding-content-bottom;
     box-sizing: border-box;
-    overflow: scroll;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
 
     // BACKDROP
