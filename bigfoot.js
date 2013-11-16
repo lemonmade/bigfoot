@@ -130,6 +130,7 @@
 
 			var footnotes 		= [],
 				footnoteLinks 	= [],
+				finalFNLinks    = [],
 				relatedFN,
 				$closestFootnoteLi;
 
@@ -142,6 +143,7 @@
 				$closestFootnoteLi = $(relatedFN).closest("li");
 				if($closestFootnoteLi.length > 0) {
 					footnotes.push($closestFootnoteLi);
+					finalFNLinks.push(this);
 				}
 			});
 
@@ -150,7 +152,7 @@
 			for(var i = 0; i<footnotes.length; i++) {
 
 				// Removes any backlinks and hackily encodes double quotes and >/< symbols to prevent conflicts
-				var footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(footnoteLinks[i]).data("footnote-backlink-ref"))
+				var footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i]).data("footnote-backlink-ref"))
 										.replace(/"/g, "&quot;").replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;"),
 					$footnoteNum = +(i + 1),
 					footnoteButton = "",
@@ -166,11 +168,11 @@
 				footnoteButton = settings.buttonMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, $footnoteNum).replace(/\{\{FOOTNOTECONTENT\}\}/g, footnoteContent);
 
 				// Handles replacements of SUP/FN attribute requests
-				footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $(footnoteLinks[i]));
+				footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $(finalFNLinks[i]));
 				footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $(footnotes[i]));
 
-				$footnoteButton = $(footnoteButton).insertAfter($(footnoteLinks[i]));
-				$(footnoteLinks[i]).remove();
+				$footnoteButton = $(footnoteButton).insertAfter($(finalFNLinks[i]));
+				$(finalFNLinks[i]).remove();
 
 				var $parent = $(footnotes[i]).parent();
 				switch(settings.actionOriginalFN.toLowerCase()) {
