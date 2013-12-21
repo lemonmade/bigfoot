@@ -29,3 +29,6 @@
 .bottom .tooltip { top: -0.65em; bottom: auto; }
 
 .top .tooltip { bottom: -0.65em; top: auto; }
+
+@media not print { .footnote-print-only { display: none; } }
+@media print { .footnote-button { display: none; } }

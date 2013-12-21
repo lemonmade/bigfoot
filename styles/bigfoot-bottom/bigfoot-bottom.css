@@ -20,3 +20,6 @@
 .footnote-content-wrapper *:first-child { margin-top: 0; }
 
 .tooltip { display: none; }
+
+@media not print { .footnote-print-only { display: none; } }
+@media print { .footnote-button { display: none; } }
