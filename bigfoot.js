@@ -172,16 +172,17 @@
 				footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $(footnotes[i]));
 
 				$footnoteButton = $(footnoteButton).insertAfter($(finalFNLinks[i]));
-				$(finalFNLinks[i]).remove();
 
 				var $parent = $(footnotes[i]).parent();
 				switch(settings.actionOriginalFN.toLowerCase()) {
 					case "delete":
+						$(finalFNLinks[i]).remove();
 						$(footnotes[i]).remove();
 						deleteEmptyOrHR($parent);
 						break;
 					case "hide":
-						$(footnotes[i]).addClass("hidden").css({"display": "none"});
+						$(finalFNLinks[i]).addClass("footnote-print-only");
+						$(footnotes[i]).addClass("footnote-print-only");
 						deleteEmptyOrHR($parent);
 						break;
 				}
@@ -264,26 +265,26 @@
 
 		function deleteEmptyOrHR($el) {
 			// If it has no children or all children have been hidden
-			if($el.is(":empty") || $el.children(":not(.hidden)").length == 0) {
+			if($el.is(":empty") || $el.children(":not(.footnote-print-only)").length == 0) {
 				var $parent = $el.parent();
 				if(settings.actionOriginalFN.toLowerCase() === "delete") {
 					$el.remove();
 				} else {
-					$el.addClass("hidden").css({"display": "none"});
+					$el.addClass("footnote-print-only");
 				}
 
 				// Propogate up to the container element
 				deleteEmptyOrHR($parent);
 
-			} else if($el.children(":not(.hidden)").length == $el.children("hr:not(.hidden)").length) {
+			} else if($el.children(":not(.footnote-print-only)").length == $el.children("hr:not(.footnote-print-only)").length) {
 
 				// If the only child not hidden/ removed is a horizontal rule, remove the entire container
 				var $parent = $el.parent();
 				if(settings.actionOriginalFN.toLowerCase() === "delete") {
 					$el.remove();
 				} else {
-					$el.children("hr").addClass("hidden").css({"display": "none"});
-					$el.addClass("hidden").css({"display": "none"});
+					$el.children("hr").addClass("footnote-print-only");
+					$el.addClass("footnote-print-only");
 				}
 
 				// Propogate up to the container element
