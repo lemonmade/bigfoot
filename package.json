@@ -1,0 +1,23 @@
+{
+  "name": "bigfoot",
+  "version": "0.1.1",
+  "main": "./bigfoot.js",
+  "description": "A jQuery plugin for empowering HTML footnotes.",
+  "dependencies": {
+    "jquery": ">= 1.8"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-sass": "~0.6.0",
+    "load-grunt-tasks": "~0.2.1",
+    "jshint-stylish": "~0.1.4",
+    "grunt-autoprefixer": "~0.5.0",
+    "grunt-contrib-jshint": "~0.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pxldot/bigfoot.git"
+  }
+}

@@ -1,3 +1,7 @@
 *.rar
 *.zip
 tests/
+node_modules/
+Makefile
+links/
+.sass-cache

@@ -1,8 +1,0 @@
-{
-	"name": "bigfoot.js",
-	"version": "0.1",
-	"main": "./bigfoot.js",
-	"dependencies": {
-		"jquery": ">= 1.8"
-	}
-}

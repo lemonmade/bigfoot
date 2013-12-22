@@ -719,9 +719,11 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     background: $popover-content-color-background;
     border-radius: $popover-content-border-radius;
 
-    // INTERIOR ELEMENTS
+    // TEXT
+    -webkit-font-smoothing: subpixel-antialiased;
     font-family: Avenir, 'Segoe UI', 'Lucida Grande', Lucida, Verdana, sans-serif;
 
+    // INTERIOR ELEMENTS
     h1, h2, h3, h4, h5, h6 {
         font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
         font-weight: normal;
@@ -786,14 +788,14 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
 
 
 //
-//  ______   ______     ________  ___   __    _________  
-// /_____/\ /_____/\   /_______/\/__/\ /__/\ /________/\ 
-// \:::_ \ \\:::_ \ \  \__.::._\/\::\_\\  \ \\__.::.__\/ 
-//  \:(_) \ \\:(_) ) )_   \::\ \  \:. `-\  \ \  \::\ \   
-//   \: ___\/ \: __ `\ \  _\::\ \__\:. _    \ \  \::\ \  
-//    \ \ \    \ \ `\ \ \/__\::\__/\\. \`-\  \ \  \::\ \ 
-//     \_\/     \_\/ \_\/\________\/ \__\/ \__\/   \__\/ 
-//                                                       
+//  ______   ______     ________  ___   __    _________
+// /_____/\ /_____/\   /_______/\/__/\ /__/\ /________/\
+// \:::_ \ \\:::_ \ \  \__.::._\/\::\_\\  \ \\__.::.__\/
+//  \:(_) \ \\:(_) ) )_   \::\ \  \:. `-\  \ \  \::\ \
+//   \: ___\/ \: __ `\ \  _\::\ \__\:. _    \ \  \::\ \
+//    \ \ \    \ \ `\ \ \/__\::\__/\\. \`-\  \ \  \::\ \
+//     \_\/     \_\/ \_\/\________\/ \__\/ \__\/   \__\/
+//
 // These styles restore the original footnote numbers and texts when the page is printed
 @media not print {
 	.footnote-print-only {

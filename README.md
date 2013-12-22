@@ -1,4 +1,5 @@
-BIGFOOT
+# BIGFOOT
+
 by [Chris Sauve](http://cmsauve.com/projects)
 
 Bigfoot is a jQuery plugin that creates exceptional footnotes. Simply include the code on your pages and footnotes will be detected automatically and improved in the following ways:

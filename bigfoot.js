@@ -41,6 +41,7 @@
 
 
 
+
 (function($) {
 
 	$.bigfoot = function(options) {
