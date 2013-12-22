@@ -782,3 +782,27 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     .tooltip { display: none; }
 
 } // end of the tooltip styling
+
+
+
+//
+//  ______   ______     ________  ___   __    _________  
+// /_____/\ /_____/\   /_______/\/__/\ /__/\ /________/\ 
+// \:::_ \ \\:::_ \ \  \__.::._\/\::\_\\  \ \\__.::.__\/ 
+//  \:(_) \ \\:(_) ) )_   \::\ \  \:. `-\  \ \  \::\ \   
+//   \: ___\/ \: __ `\ \  _\::\ \__\:. _    \ \  \::\ \  
+//    \ \ \    \ \ `\ \ \/__\::\__/\\. \`-\  \ \  \::\ \ 
+//     \_\/     \_\/ \_\/\________\/ \__\/ \__\/   \__\/ 
+//                                                       
+// These styles restore the original footnote numbers and texts when the page is printed
+@media not print {
+	.footnote-print-only {
+		display: none;
+	}
+}
+
+@media print {
+	.footnote-button {
+		display: none;
+	}
+}
