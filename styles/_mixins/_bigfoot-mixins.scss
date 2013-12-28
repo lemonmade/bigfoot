@@ -7,6 +7,8 @@
 //     \__\/ \__\/\________\/ \_\/  \__\/\________\/ \__\/ \__\/ \_____\/
 //
 
+@import "bourbon";
+
 @mixin transitions($transitions...) {
     $transition: nth($transitions, 1);
     @if length($transitions) > 1 {
@@ -85,4 +87,19 @@
     background: -o-linear-gradient($startingFrom, $startColor 0%, $startColor $stop, $toColor 100%);
     background: -ms-linear-gradient($startingFrom, $startColor 0%, $startColor $stop, $toColor 100%);
     background: linear-gradient(to $towards, $startColor 0%, $startColor $stop, $toColor 100%);
+}
+
+@mixin print-styles {
+    // These styles restore the original footnote numbers and texts when the page is printed
+    @media not print {
+        .footnote-print-only {
+            display: none !important;
+        }
+    }
+
+    @media print {
+        .footnote-button {
+            display: none !important;
+        }
+    }
 }

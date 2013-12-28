@@ -15,7 +15,7 @@ module.exports = function(grunt) {
                 }
             },
 
-            target: ["/.bigfoot.js"]
+            target: ["./bigfoot.js"]
         },
 
         uglify: {
@@ -25,9 +25,43 @@ module.exports = function(grunt) {
             }
         },
 
+        concat: {
+            options: {
+                stripBanners: true,
+                banner: "// <%= pkg.name %> - v<%= pkg.version %> - " +
+                        "<%= grunt.template.today(\"yyyy.mm.dd\") %>\n\n\n",
+                separator: "\n\n\n// -----\n\n\n"
+            },
+
+            main: {
+                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-default.scss"],
+                dest: "styles/bigfoot-default/bigfoot-default.scss"
+            },
+
+            number: {
+                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-number.scss", "styles/_popovers/_popover-default.scss"],
+                dest: "styles/bigfoot-number/bigfoot-number.scss"
+            },
+
+            daring: {
+                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-daring.scss"],
+                dest: "styles/bigfoot-daring/bigfoot-daring.scss"
+            },
+
+            hypercritical: {
+                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-hypercritical.scss"],
+                dest: "styles/bigfoot-hypercritical/bigfoot-hypercritical.scss"
+            },
+
+            bottom: {
+                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_buttons/_button-default.scss", "styles/_*/*-bottom.scss"],
+                dest: "styles/bigfoot-bottom/bigfoot-bottom.scss"
+            },
+        },
+
         sass: {
             dist: {
-                options: { style: "compressed" },
+                options: { style: "expanded", loadPath: require("node-bourbon").includePaths },
 
                 files: {
                     "styles/bigfoot-bottom/bigfoot-bottom.css": "styles/bigfoot-bottom/bigfoot-bottom.scss",
@@ -62,7 +96,7 @@ module.exports = function(grunt) {
 
             scss: {
                 files: ["styles/*/*.scss"],
-                tasks: ["sass"],
+                tasks: ["concat", "sass"],
                 options: { spawn: false }
             },
 
@@ -79,6 +113,6 @@ module.exports = function(grunt) {
     require("load-grunt-tasks")(grunt);
 
     // 3. PERFORM
-    grunt.registerTask("default", ["jshint", "autoprefixer", "uglify", "sass", "watch"]);
+    grunt.registerTask("default", ["jshint", "autoprefixer", "uglify", "concat", "sass"]);
 
 }

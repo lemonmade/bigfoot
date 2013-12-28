@@ -1,0 +1,270 @@
+//   ___   __    __  __   ___ __ __    _______   ______   ______
+//  /__/\ /__/\ /_/\/_/\ /__//_//_/\ /_______/\ /_____/\ /_____/\
+//  \::\_\\  \ \\:\ \:\ \\::\| \| \ \\::: _  \ \\::::_\/_\:::_ \ \
+//   \:. `-\  \ \\:\ \:\ \\:.      \ \\::(_)  \/_\:\/___/\\:(_) ) )_
+//    \:. _    \ \\:\ \:\ \\:.\-/\  \ \\::  _  \ \\::___\/_\: __ `\ \
+//     \. \`-\  \ \\:\_\:\ \\. \  \  \ \\::(_)  \ \\:\____/\\ \ `\ \ \
+//      \__\/ \__\/ \_____\/ \__\/ \__\/ \_______\/ \_____\/ \_\/ \_\/
+//
+// Buttons with the footnote numbers included inside them
+
+
+
+//  ___   ___   ______   __  __     __   __   ________   ______    ______
+// /___/\/__/\ /_____/\ /_/\/_/\   /_/\ /_/\ /_______/\ /_____/\  /_____/\
+// \::.\ \\ \ \\::::_\/_\ \ \ \ \  \:\ \\ \ \\::: _  \ \\:::_ \ \ \::::_\/_
+//  \:: \/_) \ \\:\/___/\\:\_\ \ \  \:\ \\ \ \\::(_)  \ \\:(_) ) )_\:\/___/\
+//   \:. __  ( ( \::___\/_\::::_\/   \:\_/.:\ \\:: __  \ \\: __ `\ \\_::._\:\
+//    \: \ )  \ \ \:\____/\ \::\ \    \ ..::/ / \:.\ \  \ \\ \ `\ \ \ /____\:\
+//     \__\/\__\/  \_____\/  \__\/     \___/_(   \__\/\__\/ \_\/ \_\/ \_____\/
+//
+// These are the key variables for styling the button.
+// Just set the variable to none if you don't want that styling.
+
+$button-height:                         1em;                            // The total height of the button
+$button-width:                          1em;                            // The total button width (applies only if $button-apply-dimensions is true)
+$button-inner-circle-size:              0.35em;                         // Total height/width of the ellipsis circles
+$button-border-radius:                  0.6em;                          // Border radius on the button itself
+$button-left-margin:                    0.2em;                          // Margin between the button and the text to its left
+$button-right-margin:                   0.1em;                          // Margin between the button and the text to its right
+$button-vertical-adjust:                -0.2em;                         // Pushes the buttons along the vertical axis to align it with text as desired
+$button-inner-circle-left-margin:       0.5*$button-inner-circle-size;  // Space between the ellipsis circles
+
+$button-color:                          rgb(70, 70, 70);                // Background color of the button
+$button-hovered-color:                  $button-color;                  // Background color of the button when being hovered
+$button-activating-color:               $button-color;                  // Background color of the button when being clicked
+$button-active-color:                   $button-color;                  // Background color of the button when active
+$button-standard-opacity:               0.3;                            // Opacity for when the button is just sittin' there
+$button-hovered-opacity:                0.6;                            // Opacity for when the button is being hovered over
+$button-activating-opacity:             $button-hovered-opacity;        // Opacity for when the button is being clicked
+$button-active-opacity:                 0.9;                            // Opacity for when the button is active
+$button-active-style-delay:             0.15s;                          // Delay before applying .active styles; this can be used to match to the popover activation transition
+
+$button-inner-circle-color:             none;                           // Background color of the ellipsis circle
+$button-inner-circle-border:            none;                           // Border of the ellipsis circle
+$button-perspective-shadow-color:       none;                           // The color of the button front
+$button-perspective-shadow-height:      none;                           // The (unpressed) height of the button
+$button-perspective-active-height:      none;                           // The height of the activated button
+$button-content:                        none;                           // Text to insert using :before on the button
+$button-content-color:                  white;                          // Color of the inserted text
+$button-content-font-size:              0.8em;                          // Font size of the inserted text
+$button-content-vertical-adjust:        0.63em;                         // Vertical adjustment of the inserted text (to center it in the button)
+$button-content-font-family:            inherit;                        // Font family of the inserted text
+$button-content-font-weight:            bold;                           // Font weight of the inserted text
+$button-content-font-style:             normal;                         // Font style of the inserted text
+
+$button-use-ellipsis:                   false;                          // Determines whether or not the footnote circles will be styled
+$button-use-number:                     true;                           // Determines whether the footnote number will be included
+$button-use-perspective-shadow:         false;                          // Determines whether or not a pretend button front will be used (makes the button function like a cartoonish, toggle-able button)
+$button-apply-dimensions:               true;                           // Determines whether or not the dimensions above will apply directly to the footnote button (use for creating particular button shapes, like a circle)
+
+
+
+//  ______   _________  ___   ___   ______   ______        __   __   ________   ______    ______
+// /_____/\ /________/\/__/\ /__/\ /_____/\ /_____/\      /_/\ /_/\ /_______/\ /_____/\  /_____/\
+// \:::_ \ \\__.::.__\/\::\ \\  \ \\::::_\/_\:::_ \ \     \:\ \\ \ \\::: _  \ \\:::_ \ \ \::::_\/_
+//  \:\ \ \ \  \::\ \   \::\/_\ .\ \\:\/___/\\:(_) ) )_    \:\ \\ \ \\::(_)  \ \\:(_) ) )_\:\/___/\
+//   \:\ \ \ \  \::\ \   \:: ___::\ \\::___\/_\: __ `\ \    \:\_/.:\ \\:: __  \ \\: __ `\ \\_::._\:\
+//    \:\_\ \ \  \::\ \   \: \ \\::\ \\:\____/\\ \ `\ \ \    \ ..::/ / \:.\ \  \ \\ \ `\ \ \ /____\:\
+//     \_____\/   \__\/    \__\/ \::\/ \_____\/ \_\/ \_\/     \___/_(   \__\/\__\/ \_\/ \_\/ \_____\/
+//
+
+$button-total-padding:              $button-height - $button-inner-circle-size;
+$button-per-side-padding:           0.5*$button-total-padding;
+$button-inside-content:             none;
+$button-perspective-shadow-zindex:  8;
+
+
+
+//   _______   __  __   _________  _________  ______   ___   __
+// /_______/\ /_/\/_/\ /________/\/________/\/_____/\ /__/\ /__/\
+// \::: _  \ \\:\ \:\ \\__.::.__\/\__.::.__\/\:::_ \ \\::\_\\  \ \
+//  \::(_)  \/_\:\ \:\ \  \::\ \     \::\ \   \:\ \ \ \\:. `-\  \ \
+//   \::  _  \ \\:\ \:\ \  \::\ \     \::\ \   \:\ \ \ \\:. _    \ \
+//    \::(_)  \ \\:\_\:\ \  \::\ \     \::\ \   \:\_\ \ \\. \`-\  \ \
+//     \_______\/ \_____\/   \__\/      \__\/    \_____\/ \__\/ \__\/
+//
+// The actual button, including just-created, active, and hovered states
+.footnote-button {
+
+    // POSITIONING
+    position: relative;
+    z-index: 5;
+    top: $button-vertical-adjust;
+
+    // DISPLAY AND SIZING
+    box-sizing: border-box;
+    display: inline-block;
+    padding: $button-per-side-padding;
+    margin: 0 $button-right-margin 0 $button-left-margin;
+    @if $button-apply-dimensions == true {
+        height: $button-height;
+        width: $button-width;
+    }
+
+    // BACKDROP
+    border: none;
+    border-radius: $button-border-radius;
+    cursor: pointer;
+    opacity: $button-standard-opacity;
+    background-color: $button-color;
+
+    // TEXT
+    line-height: 0;
+    vertical-align: middle;
+    text-decoration: none;
+
+    // TRANSITIONS AND ANIMATIONS
+    @include transition-property(opacity);
+    @include transition-duration(0.25s);
+
+
+    // Put styles to apply when the button is being hovered over
+    &:hover {
+        opacity: $button-hovered-opacity;
+        @if $button-hovered-color != $button-color { background-color: $button-hovered-color; }
+    }
+
+    // Put styles to apply when the button is being clicked
+    &:active {
+        opacity: $button-activating-opacity;
+        @if $button-activating-color != $button-color { background-color: $button-activating-color; }
+    }
+
+    // Put styles to apply when the button is active (during after it has been pressed to activate the footnote)
+    &.active {
+        opacity: $button-active-opacity;
+        @if $button-active-color != $button-color { background-color: $button-active-color; }
+        @include transition-delay($button-active-style-delay);
+    }
+
+    @if $button-use-perspective-shadow == true {
+        // Adjust the button downwards as needed
+        &:active, &.active {
+            top: $button-vertical-adjust + $button-perspective-shadow-height - $button-perspective-active-height;
+
+            &:after { top: $button-perspective-active-height; }
+        }
+
+        // The top (before) and side (after) of the button
+        &:before, &:after {
+
+            // CONTENT
+            content: '';
+
+            // POSITION
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: $button-perspective-shadow-zindex;
+
+            // DISPLAY AND SIZING
+            display: block;
+            height: 100%;
+            width: 100%;
+
+            // BACKDROP
+            border-radius: $button-border-radius;
+            background-color: $button-color;
+        }
+
+        // Vertically adjust the side downwards and place it below the top (before) element
+        &:after {
+            top: $button-perspective-shadow-height;
+            z-index: $button-perspective-shadow-zindex - 1;
+            background-color: $button-perspective-shadow-color;
+        }
+    }
+
+} // end of .footnote-button styling
+
+
+
+//  ______   __       __        ________  ______   ______    ________  ______
+// /_____/\ /_/\     /_/\      /_______/\/_____/\ /_____/\  /_______/\/_____/\
+// \::::_\/_\:\ \    \:\ \     \__.::._\/\:::_ \ \\::::_\/_ \__.::._\/\::::_\/_
+//  \:\/___/\\:\ \    \:\ \       \::\ \  \:(_) \ \\:\/___/\   \::\ \  \:\/___/\
+//   \::___\/_\:\ \____\:\ \____  _\::\ \__\: ___\/ \_::._\:\  _\::\ \__\_::._\:\
+//    \:\____/\\:\/___/\\:\/___/\/__\::\__/\\ \ \     /____\:\/__\::\__/\ /____\:\
+//     \_____\/ \_____\/ \_____\/\________\/ \_\/     \_____\/\________\/ \_____\/
+//
+// Styles to apply to the inner dots included in the button
+@if $button-use-ellipsis == true {
+
+    .footnote-circle {
+
+        // DISPLAY AND SIZING
+        display: inline-block;
+        width: $button-inner-circle-size;
+        height: $button-inner-circle-size;
+        margin-right: $button-inner-circle-left-margin;
+
+        // BACKDROP
+        border-radius: 100%;
+        background-color: $button-inner-circle-color;
+        border: $button-inner-circle-border;
+
+        // TEXT
+        line-height: 0.5em;
+
+        &:last-child { margin-right: 0; } // Gets rid of margin on the last circle
+
+    } // end of .footnote-circle styling
+
+}
+
+
+
+//  ______   ______   ___   __    _________  ______   ___   __    _________
+// /_____/\ /_____/\ /__/\ /__/\ /________/\/_____/\ /__/\ /__/\ /________/\
+// \:::__\/ \:::_ \ \\::\_\\  \ \\__.::.__\/\::::_\/_\::\_\\  \ \\__.::.__\/
+//  \:\ \  __\:\ \ \ \\:. `-\  \ \  \::\ \   \:\/___/\\:. `-\  \ \  \::\ \
+//   \:\ \/_/\\:\ \ \ \\:. _    \ \  \::\ \   \::___\/_\:. _    \ \  \::\ \
+//    \:\_\ \ \\:\_\ \ \\. \`-\  \ \  \::\ \   \:\____/\\. \`-\  \ \  \::\ \
+//     \_____\/ \_____\/ \__\/ \__\/   \__\/    \_____\/ \__\/ \__\/   \__\/
+//
+// Styles to apply to inserted content within the button
+@if $button-use-number == true or $button-content != none {
+
+    .footnote-button:before {
+
+        // CONTENT
+        @if $button-use-number == true {
+            content: attr(data-footnote-identifier);
+        } @else {
+            content: $button-content;
+        }
+
+        // POSITIONING
+        position: absolute;
+        bottom: $button-content-vertical-adjust;
+        left: 0; right: 0;
+
+        // DISPLAY AND SIZING
+        display: block;
+
+        // TEXT
+        font-size: $button-content-font-size;
+        color: $button-content-color;
+        font-family: $button-content-font-family;
+        font-weight: $button-content-font-weight;
+        font-style: $button-content-font-style;
+        line-height: 0;
+        text-align: center;
+    }
+
+}
+
+
+
+//
+//  ______   ______     ________  ___   __    _________
+// /_____/\ /_____/\   /_______/\/__/\ /__/\ /________/\
+// \:::_ \ \\:::_ \ \  \__.::._\/\::\_\\  \ \\__.::.__\/
+//  \:(_) \ \\:(_) ) )_   \::\ \  \:. `-\  \ \  \::\ \
+//   \: ___\/ \: __ `\ \  _\::\ \__\:. _    \ \  \::\ \
+//    \ \ \    \ \ `\ \ \/__\::\__/\\. \`-\  \ \  \::\ \
+//     \_\/     \_\/ \_\/\________\/ \__\/ \__\/   \__\/
+//
+
+@include print-styles;
