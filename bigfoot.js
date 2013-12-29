@@ -55,6 +55,8 @@
         //     \_____\/ \_____\/   \__\/      \__\/  \________\/ \__\/ \__\/ \_____\/   \_____\/
         //
 
+        var bigfoot;
+
         var settings = $.extend(
             {
                 actionOriginalFN    : "hide", // "delete", "hide", or "ignore"
@@ -69,6 +71,8 @@
                 positionContent     : true,
                 preventPageScroll   : true,
                 scope               : false,
+
+                activateCallback    : function() {},
 
                 contentMarkup       : "<aside class=\"footnote-content bottom\"" +
                                             "data-footnote-identifier=\"{{FOOTNOTENUM}}\" " +
@@ -524,18 +528,25 @@
                     content = replaceWithReferenceAttributes(content, "BUTTON", $this);
                 } finally {
 
+                    // Create content and activate user-defined callback on it
+                    $content = $(content);
+                    try { settings.activateCallback($content); } catch(err) {}
+
                     if(!settings.appendPopoversTo) {
+
                         // Insert content after next block-level element, or after the nearest footnote
                         $nearestBlock = $this.closest("p, div, pre, li, ul, section, article, main, aside");
                         $siblingFootnote = $nearestBlock.siblings(".footnote-content:last");
+
                         if($siblingFootnote.length > 0) {
-                            $content = $(content).insertAfter($siblingFootnote);
+                            $content.insertAfter($siblingFootnote);
                         } else {
-                            $content = $(content).insertAfter($nearestBlock);
+                            $content.insertAfter($nearestBlock);
                         }
 
                     } else {
-                        $content = $(content).appendTo(settings.appendPopoversTo + ":first");
+
+                        $content.appendTo(settings.appendPopoversTo + ":first");
                     }
 
                     // Instantiate the max-height for storage and use in repositioning
@@ -864,17 +875,38 @@
         // updateSetting
 
         // PURPOSE -----
-        // Updates the specified setting with the value you pass
+        // Updates the specified setting(s) with the value(s) you pass
 
         // IN ----------
-        // Setting to adjust and new value for the setting
+        // Setting to adjust and new value for the setting (or an object
+        // with all setting-new value pairs)
 
         // OUT ---------
-        // Returns the old value for the setting
+        // Returns the old value for the setting (or an object with old settings
+        // for each assigned property, if more than one were set)
 
-        var updateSetting = function(setting, value) {
-            var oldValue = settings[setting];
-            settings[setting] = value;
+        var updateSetting = function(newSettings, value) {
+
+            var oldValue;
+
+            if(typeof(newSettings) === "string") {
+
+                oldValue = settings[newSettings];
+                settings[newSettings] = value;
+
+            } else {
+
+                oldValue = {};
+
+                for(var prop in newSettings) {
+                    if(newSettings.hasOwnProperty(prop)) {
+                        oldValue[prop] = settings[prop];
+                        settings[prop] = newSettings[prop];
+                    }
+                }
+
+            }
+
             return oldValue;
         };
 
@@ -892,46 +924,77 @@
 
 
 
-        var breakpoints = [];
 
-        var addBreakpoint = function(size, callback, removeOpen) {
+        var breakpoints = {};
+
+        var addBreakpoint = function(size, removeOpen, trueCallback, falseCallback) {
 
             removeOpen = removeOpen || true;
 
-            var cutoff = +size.substring(1),
+            var cutoff = size.substring(1),
+                minMax,
                 $window = $(window),
                 closedPopovers = null;
 
-            var onBreak = function() {
-                if(removeOpen) closedPopovers = removePopovers();
-                setTimeout(function() {
-                    callback(closedPopovers);
-                }, settings.popoverDeleteDelay);
+            if(size.charAt(0) === ">") {
+                minMax = "min";
+            } else if(size.charAt(0) === "<") {
+                minMax = "max";
+            } else {
+                minMax = null;
+            }
+
+            var query = minMax ? "(" + minMax + "-width: " + cutoff + ")" : size,
+                mq = window.matchMedia(query);
+
+            if(mq.media === "invalid") return {
+                added: false,
+                mql: mq,
+                currentBreakpoints: breakpoints
             };
 
-            if(isNaN(cutoff)) {
-                return "Error setting up the breakpoint; make sure the 'size' string is a number.";
-            } else if(size.charAt(0) === ">") {
-                $window.on("resize." + size, function() {
-                    if($window.width() > cutoff) {
-                        onBreak();
-                    }
-                });
-                breakpoints.push(size);
-                return breakpoints;
+            breakpoints[size] = mq;
 
-            } else if(size.charAt(0) === "<") {
-                $window.resize("resize." + size, function() {
-                    if($window.width() < cutoff) {
-                        onBreak();
-                    }
-                });
-                breakpoints.push(size);
-                return breakpoints;
 
-            } else {
-                return "Error setting up the breakpoint; make sure it begins with '>' or '<'.";
-            }
+            var trueDefaultPositionSetting = minMax === "min",
+                falseDefaultPositionSetting = minMax === "max";
+
+            trueCallback = trueCallback || function(removeOpen, bigfoot) {
+                if(removeOpen) {
+                    var closedPopovers = bigfoot.close();
+                }
+                setTimeout(function() {
+                    bigfoot.updateSetting("positionContent", trueDefaultPositionSetting);
+                }, bigfoot.getSetting("popoverDeleteDelay"));
+            };
+
+            falseCallback = falseCallback || function(removeOpen, bigfoot) {
+                if(removeOpen) {
+                    var closedPopovers = bigfoot.close();
+                }
+                setTimeout(function() {
+                    bigfoot.updateSetting("positionContent", falseDefaultPositionSetting);
+                }, bigfoot.getSetting("popoverDeleteDelay"));
+            };
+
+            var mqListener = function(mql) {
+                if(mql.matches) {
+                    trueCallback(removeOpen, bigfoot);
+                } else {
+                    falseCallback(removeOpen, bigfoot);
+                }
+            };
+
+            mq.addListener(mqListener);
+
+            mqListener(mq);
+
+            return {
+                added: true,
+                mql: mq,
+                currentBreakpoints: breakpoints
+            };
+
         };
 
 
@@ -972,7 +1035,7 @@
         //     \_\/ \_\/ \_____\/   \__\/    \_____\/ \_\/ \_\/ \__\/ \__\/
         //
 
-        return {
+        bigfoot = {
             close: function(footnotes, timeout) {
                 return removePopovers(footnotes, timeout);
             },
@@ -995,6 +1058,8 @@
                 return updateSetting(setting, newValue);
             }
         };
+
+        return bigfoot;
     };
 
 })(jQuery);
