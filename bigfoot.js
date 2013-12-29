@@ -508,11 +508,17 @@
             // Activate all matching if multiple footnotes are allowed
             // Or only the first matching element otherwise
             var $buttons;
-            if(settings.allowMultipleFN) {
+            if(typeof(selector) !== "string" && settings.allowMultipleFN) {
+                $buttons = selector;
+            } else if(typeof(selector) !== "string") {
+                $buttons = selector.first();
+            } else if(settings.allowMultipleFN) {
                 $buttons = $(selector).closest(".footnote-button");
             } else {
                 $buttons = $(selector + ":first").closest(".footnote-button");
             }
+
+            var $popoversCreated = $();
 
             $buttons.each(function() {
                 var $this = $(this),
@@ -557,18 +563,16 @@
 
                     // Bind the scroll handler to the popover
                     $content.find(".footnote-content-wrapper").bindScrollHandler();
+                    $popoversCreated = $popoversCreated.add($content);
                 }
             });
 
-            // Get all footnotes activated by this function
-            var $allFootnotesActivated = $(selector.replace(".footnote-button", ".footnote-content"));
-
             // Add active class after a delay to give it time to transition
             setTimeout(function() {
-                $allFootnotesActivated.addClass("active");
+                $popoversCreated.addClass("active");
             }, settings.popoverCreateDelay);
 
-            return $allFootnotesActivated;
+            return $popoversCreated;
         };
 
 
@@ -702,21 +706,31 @@
             footnotes = footnotes || ".footnote-content";
             timeout = timeout || settings.popoverDeleteDelay;
 
-            $(footnotes).each(function() {
-                var $linkedButton = $(".footnote-button[data-footnote-identifier=\"" + $(this).attr("data-footnote-identifier") + "\"]"),
-                    $this = $(this);
-                if($linkedButton.hasClass("changing")) return;
-                $linkedButton.removeClass("active hover-instantiated click-instantiated").addClass("changing");
-                $this.removeClass("active").addClass("disapearing");
+            var $buttonsClosed = $(),
+                footnoteID,
+                $linkedButton,
+                $this;
 
-                // Gets rid of the footnote after the timeout
-                setTimeout(function() {
-                    $this.remove();
-                    $linkedButton.removeClass("changing");
-                }, timeout);
+            $(footnotes).each(function() {
+                $this = $(this);
+                footnoteID = $this.attr("data-footnote-identifier");
+                $linkedButton = $(".footnote-button[data-footnote-identifier=\"" + footnoteID + "\"]");
+
+                if(!$linkedButton.hasClass("changing")) {
+
+                    $buttonsClosed = $buttonsClosed.add($linkedButton);
+                    $linkedButton.removeClass("active hover-instantiated click-instantiated").addClass("changing");
+                    $this.removeClass("active").addClass("disapearing");
+
+                    // Gets rid of the footnote after the timeout
+                    setTimeout(function() {
+                        $this.remove();
+                        $linkedButton.removeClass("changing");
+                    }, timeout);
+                }
             });
 
-            return $(footnotes.replace(".footnote-content", ".footnote-button"));
+            return $buttonsClosed;
         };
 
 
@@ -927,9 +941,10 @@
 
         var breakpoints = {};
 
-        var addBreakpoint = function(size, removeOpen, trueCallback, falseCallback) {
+        var addBreakpoint = function(size, removeOpen, runImmediately trueCallback, falseCallback) {
 
             removeOpen = removeOpen || true;
+            runImmediately = runImmediately || true;
 
             var cutoff = size.substring(1),
                 minMax,
@@ -959,23 +974,17 @@
             var trueDefaultPositionSetting = minMax === "min",
                 falseDefaultPositionSetting = minMax === "max";
 
-            trueCallback = trueCallback || function(removeOpen, bigfoot) {
-                if(removeOpen) {
-                    var closedPopovers = bigfoot.close();
-                }
-                setTimeout(function() {
-                    bigfoot.updateSetting("positionContent", trueDefaultPositionSetting);
-                }, bigfoot.getSetting("popoverDeleteDelay"));
-            };
+            trueCallback = trueCallback ||
+                            makeDefaultCallbacks(
+                                removeOpen, trueDefaultPositionSetting, function($popover) {
+                                    $popover.addClass("fixed-bottom");
+                                }
+                            );
 
-            falseCallback = falseCallback || function(removeOpen, bigfoot) {
-                if(removeOpen) {
-                    var closedPopovers = bigfoot.close();
-                }
-                setTimeout(function() {
-                    bigfoot.updateSetting("positionContent", falseDefaultPositionSetting);
-                }, bigfoot.getSetting("popoverDeleteDelay"));
-            };
+            falseCallback = falseCallback ||
+                            makeDefaultCallbacks(
+                                removeOpen, falseDefaultPositionSetting, function() {}
+                            );
 
             var mqListener = function(mql) {
                 if(mql.matches) {
@@ -986,8 +995,7 @@
             };
 
             mq.addListener(mqListener);
-
-            mqListener(mq);
+            if(runImmediately) mqListener(mq);
 
             return {
                 added: true,
@@ -995,6 +1003,20 @@
                 currentBreakpoints: breakpoints
             };
 
+        };
+
+
+        var makeDefaultCallbacks = function(removeOpen, positioningBool, callback) {
+            return function(removeOpen, bigfoot) {
+                if(removeOpen) {
+                    var $closedPopovers = bigfoot.close();
+                    bigfoot.updateSetting("activateCallback", callback);
+                    bigfoot.activate($closedPopovers);
+                }
+                setTimeout(function() {
+                    bigfoot.updateSetting("positionContent", positioningBool);
+                }, bigfoot.getSetting("popoverDeleteDelay"));
+            };
         };
 
 
