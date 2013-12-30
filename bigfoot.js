@@ -162,6 +162,7 @@
                 footnoteContent,
                 footnoteIDNum,
                 $relevantFNLink,
+                $relevantFootnote,
                 footnoteButton,
                 $footnoteButton;
 
@@ -170,11 +171,13 @@
             for(var i = 0; i<footnotes.length; i++) {
 
                 // Removes any backlinks and hackily encodes double quotes and >/< symbols to prevent conflicts
-                footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i]).data("footnote-backlink-ref"))
-                                        .replace(/"/g, "&quot;").replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;");
+                footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i])
+                                    .data("footnote-backlink-ref")).replace(/"/g, "&quot;")
+                                    .replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;");
                 footnoteIDNum = +(i + 1);
                 footnoteButton = "";
                 $relevantFNLink = $(finalFNLinks[i]);
+                $relevantFootnote = $(footnotes[i]);
 
                 // Determines whether this is in the same number reset container (as defined in settings)
                 // as the last footnote and changes the footnote number accordingly
@@ -203,21 +206,24 @@
 
                 // Handles replacements of SUP/FN attribute requests
                 footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $relevantFNLink);
-                footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $(footnotes[i]));
+                footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $relevantFootnote);
 
                 $footnoteButton = $(footnoteButton).insertAfter($relevantFNLink);
 
-                var $parent = $(footnotes[i]).parent();
+                var $parent = $relevantFootnote.parent();
                 switch(settings.actionOriginalFN.toLowerCase()) {
                     case "delete":
-                        $(finalFNLinks[i]).remove();
-                        $(footnotes[i]).remove();
+                        $relevantFNLink.remove();
+                        $relevantFootnote.remove();
                         deleteEmptyOrHR($parent);
                         break;
                     case "hide":
-                        $(finalFNLinks[i]).addClass("footnote-print-only");
-                        $(footnotes[i]).addClass("footnote-print-only");
+                        $relevantFNLink.addClass("footnote-print-only");
+                        $relevantFootnote.addClass("footnote-print-only");
                         deleteEmptyOrHR($parent);
+                        break;
+                    case "ignore":
+                        $relevantFNLink.addClass("footnote-print-only");
                         break;
                 }
             } // end of loop through footnotes
