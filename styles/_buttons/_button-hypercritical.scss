@@ -99,6 +99,7 @@ $button-perspective-shadow-zindex:  8;
 
     // DISPLAY AND SIZING
     box-sizing: border-box;
+    -moz-box-sizing: border-box;;
     display: inline-block;
     padding: $button-per-side-padding;
     margin: 0 $button-right-margin 0 $button-left-margin;
@@ -241,9 +242,9 @@ $button-perspective-shadow-zindex:  8;
         // CONTENT
         @if $button-use-number == true {
             content: attr(data-footnote-identifier);
-        } @else {
-            content: $button-content;
-        }
+            } @else {
+                content: $button-content;
+            }
 
         // POSITIONING
         position: absolute;

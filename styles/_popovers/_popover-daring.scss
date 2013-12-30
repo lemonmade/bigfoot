@@ -117,12 +117,13 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
 
     // DISPLAY AND SIZING
     box-sizing: border-box;
+    -moz-box-sizing: border-box;;
     // Height is set in .footnote-content-wrapper
     @if $popover-width-application-element == popover {
         width: $popover-width;
-    } @else {
-        max-width: $popover-max-width;
-    }
+        } @else {
+            max-width: $popover-max-width;
+        }
     // 1.414213... is to get the diagonal height of the tooltip using pythagorus, yo.
     margin: ((1.4142135624 * $popover-tooltip-size / 2) + $button-height / 2 + $popover-margin-top) auto;
     display: $popover-display-style; // fits the popover to the contents
@@ -275,13 +276,14 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
 
     // DISPLAY AND SIZING
     box-sizing: border-box;
+    -moz-box-sizing: border-box;;
     overflow: hidden;
     margin: 0;
     @if $popover-width-application-element == content {
         max-width: $popover-width;
-    } @else {
-        max-width: $popover-max-width;
-    }
+        } @else {
+            max-width: $popover-max-width;
+        }
 
     // BACKDROP
     background-color: $popover-color-background;
@@ -315,6 +317,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     max-height: $popover-max-height;
     padding: $popover-padding-content-top $popover-padding-content-horizontal $popover-padding-content-bottom;
     box-sizing: border-box;
+    -moz-box-sizing: border-box;;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 
@@ -363,6 +366,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
 
         // DISPLAY AND SIZING
         box-sizing: border-box;
+        -moz-box-sizing: border-box;;
         margin-left: -0.5 * ($popover-tooltip-size);
         width: $popover-tooltip-size; // Smaller by one border-width's worth
         height: $popover-tooltip-size;
@@ -387,8 +391,8 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
         top: auto;
     }
 
-} @else {
+    } @else {
 
-    .tooltip { display: none; }
+        .tooltip { display: none; }
 
 } // end of the tooltip styling

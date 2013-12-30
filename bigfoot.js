@@ -65,12 +65,13 @@
                 appendPopoversTo    : undefined,
                 deleteOnUnhover     : false,
                 hoverDelay          : 250,
-                popoverDeleteDelay  : 500,
+                popoverDeleteDelay  : 300,
                 popoverCreateDelay  : 100,
                 positionNextToBlock : true,
                 positionContent     : true,
                 preventPageScroll   : true,
                 scope               : false,
+                breakpoints         : {},
 
                 activateCallback    : function() {},
 
@@ -875,6 +876,209 @@
 
 
 
+        //    _______   ______    ______   ________   ___   ___   ______   ______    ________  ___   __    _________  ______
+        //  /_______/\ /_____/\  /_____/\ /_______/\ /___/\/__/\ /_____/\ /_____/\  /_______/\/__/\ /__/\ /________/\/_____/\
+        //  \::: _  \ \\:::_ \ \ \::::_\/_\::: _  \ \\::.\ \\ \ \\:::_ \ \\:::_ \ \ \__.::._\/\::\_\\  \ \\__.::.__\/\::::_\/_
+        //   \::(_)  \/_\:(_) ) )_\:\/___/\\::(_)  \ \\:: \/_) \ \\:(_) \ \\:\ \ \ \   \::\ \  \:. `-\  \ \  \::\ \   \:\/___/\
+        //    \::  _  \ \\: __ `\ \\::___\/_\:: __  \ \\:. __  ( ( \: ___\/ \:\ \ \ \  _\::\ \__\:. _    \ \  \::\ \   \_::._\:\
+        //     \::(_)  \ \\ \ `\ \ \\:\____/\\:.\ \  \ \\: \ )  \ \ \ \ \    \:\_\ \ \/__\::\__/\\. \`-\  \ \  \::\ \    /____\:\
+        //      \_______\/ \_\/ \_\/ \_____\/ \__\/\__\/ \__\/\__\/  \_\/     \_____\/\________\/ \__\/ \__\/   \__\/    \_____\/
+        //
+
+
+        // FUNCTION ----
+        // addBreakpoint
+
+        // PURPOSE -----
+        // Adds a breakpoint within the HTML at which a user-defined function
+        // will be called. The minimum requirement is that a min/ max size is
+        // provided; after that point, the footnote will stop being positioned
+        // (i.e., to allow for bottom-fixed footnotes on small screens).
+
+        // IN ----------
+        // size: Size to break at. Can be simple (i.e., ">10px" or "<10em"), full
+        // media query (i.e., "(max-width: 400px)"), or a MediaQueryList object.
+        // deleteDelay: the delay by which to wait when closing/ reopening footnotes
+        // on breakpoint changes. Defaults to settings.popoverDeleteDelay.
+        // removeOpen: whether or not to close (and reopen) footnotes that are open
+        // at the time the breakpoint changes. Defaults to true.
+        // trueCallback: function to call when the media query is initially matched.
+        // will be passed the removeOpen option and a copy of the bigfoot object.
+        // falseCallback: function to call when the media query is initially not matched.
+        // The same variables are passed in.
+
+        // OUT ---------
+        // Object indicating whether the breakpoint was added and, if so, the MQList object
+        // and listener function.
+
+        var addBreakpoint = function(size, deleteDelay, removeOpen,
+                                trueCallback, falseCallback) {
+
+            // Set defaults
+            deleteDelay = deleteDelay || settings.popoverDeleteDelay;
+            if(removeOpen === null || removeOpen !== false) removeOpen = true;
+
+            var mql, minMax, s;
+
+            // If they passed a string representation
+            if(typeof(size) === "string") {
+
+                // Repalce special strings with corresponding widths
+                if(size.toLowerCase() === "iphone") {
+                    s = "<320px";
+                } else if(size.toLowerCase() === "ipad") {
+                    s = "<768px";
+                } else {
+                    s = size;
+                }
+
+                // Check on the nature of the string (simple or full media query)
+                if(s.charAt(0) === ">") {
+                    minMax = "min";
+                } else if(s.charAt(0) === "<") {
+                    minMax = "max";
+                } else {
+                    minMax = null;
+                }
+
+                // Create the media query
+                var query = minMax ? "(" + minMax + "-width: " + s.substring(1) + ")" : s;
+                mql = window.matchMedia(query);
+
+            } else {
+
+                // Assumption is that a MediaQueryList object was passed.
+                mql = size;
+            }
+
+            // If a non-MQList object is passed on the media is invalid
+            if(mql.media && mql.media === "invalid") return {
+                added: false,
+                mq: mql,
+                listener: null
+            };
+
+            // Determine whether to close/ remove popovers on the true/false callbacks
+            var trueDefaultPositionSetting = minMax === "min",
+                falseDefaultPositionSetting = minMax === "max";
+
+            // Create default trueCallback
+            trueCallback = trueCallback ||
+                            makeDefaultCallbacks(
+                                removeOpen, deleteDelay,
+                                trueDefaultPositionSetting, function($popover) {
+                                    $popover.addClass("fixed-bottom");
+                                }
+                            );
+
+            // Create default falseCallback
+            falseCallback = falseCallback ||
+                            makeDefaultCallbacks(
+                                removeOpen, deleteDelay,
+                                falseDefaultPositionSetting, function() {}
+                            );
+
+            // MQ Listener function
+            var mqListener = function(mq) {
+                if(mq.matches) {
+                    trueCallback(removeOpen, bigfoot);
+                } else {
+                    falseCallback(removeOpen, bigfoot);
+                }
+            };
+
+            // Attach listener and call it for the initial match/ non-match
+            mql.addListener(mqListener);
+            mqListener(mql);
+
+            // Add to the breakpoints setting
+            settings.breakpoints[size] = {
+                added: true,
+                mq: mql,
+                listener: mqListener
+            };
+
+            return settings.breakpoints[size];
+
+        };
+
+
+        // FUNCTION ----
+        // makeDefaultCallbacks
+
+        // PURPOSE -----
+        // Creates the default callbacks to attach to the MQ events.
+
+        // IN ----------
+        // See above for the first three variables.
+        // callback: The function to be assigned to the "activateCallback" setting
+        // (called when creating new footnotes)
+
+        // OUT ---------
+        // Default MQ matches/ non-matches function.
+
+        var makeDefaultCallbacks = function(removeOpen, deleteDelay, positioningBool, callback) {
+            return function(removeOpen, bigfoot) {
+                var $closedPopovers;
+
+                if(removeOpen) {
+                    $closedPopovers = bigfoot.close();
+                    bigfoot.updateSetting("activateCallback", callback);
+                }
+                setTimeout(function() {
+                    bigfoot.updateSetting("positionContent", positioningBool);
+                    if(removeOpen) bigfoot.activate($closedPopovers);
+                }, deleteDelay);
+            };
+        };
+
+
+        // FUNCTION ----
+        // removeBreakpoint
+
+        // PURPOSE -----
+        // Removes a previously-created breakpoint, calling the false condition
+        // before doing so (or, a user-provided function instead).
+
+        // IN ----------
+        // target: the media query to remove, either by passing the string used to create
+        // the breakpoint initially, or by passing the associated MediaQueryList object.
+        // callback: the (optional) function to call before removing the listener.
+
+        // OUT ---------
+        // true if a media query was found and deleted, false otherwise.
+
+        var removeBreakpoint = function(target, callback) {
+            var mq = null,
+                b, mqFount = false;
+            if(typeof(target) === "string") {
+                mqFound = settings.breakpoints[target] !== undefined;
+            } else {
+                for(b in settings.breakpoints) {
+                    if(settings.breakpoints.hasOwnProperty(b) && settings.breakpoints[b].mq === target) {
+                        mqFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if(mqFound) {
+                var breakpoint = settings.breakpoints[b || target];
+                // Calls the non-matching callback one last time
+                if(callback) {
+                    callback({matches: false});
+                } else {
+                    breakpoint.listener({matches: false});
+                }
+                breakpoint.mq.removeListener(breakpoint.listener);
+                delete settings.breakpoints[b || target];
+            }
+
+            return mqFound;
+        };
+
+
+
         //  ______   _________  ___   ___   ______   ______
         // /_____/\ /________/\/__/\ /__/\ /_____/\ /_____/\
         // \:::_ \ \\__.::.__\/\::\ \\  \ \\::::_\/_\:::_ \ \
@@ -938,94 +1142,6 @@
 
 
 
-
-        var breakpoints = {};
-
-        var addBreakpoint = function(size, removeOpen, runImmediately trueCallback, falseCallback) {
-
-            removeOpen = removeOpen || true;
-            runImmediately = runImmediately || true;
-
-            var cutoff = size.substring(1),
-                minMax,
-                $window = $(window),
-                closedPopovers = null;
-
-            if(size.charAt(0) === ">") {
-                minMax = "min";
-            } else if(size.charAt(0) === "<") {
-                minMax = "max";
-            } else {
-                minMax = null;
-            }
-
-            var query = minMax ? "(" + minMax + "-width: " + cutoff + ")" : size,
-                mq = window.matchMedia(query);
-
-            if(mq.media === "invalid") return {
-                added: false,
-                mql: mq,
-                currentBreakpoints: breakpoints
-            };
-
-            breakpoints[size] = mq;
-
-
-            var trueDefaultPositionSetting = minMax === "min",
-                falseDefaultPositionSetting = minMax === "max";
-
-            trueCallback = trueCallback ||
-                            makeDefaultCallbacks(
-                                removeOpen, trueDefaultPositionSetting, function($popover) {
-                                    $popover.addClass("fixed-bottom");
-                                }
-                            );
-
-            falseCallback = falseCallback ||
-                            makeDefaultCallbacks(
-                                removeOpen, falseDefaultPositionSetting, function() {}
-                            );
-
-            var mqListener = function(mql) {
-                if(mql.matches) {
-                    trueCallback(removeOpen, bigfoot);
-                } else {
-                    falseCallback(removeOpen, bigfoot);
-                }
-            };
-
-            mq.addListener(mqListener);
-            if(runImmediately) mqListener(mq);
-
-            return {
-                added: true,
-                mql: mq,
-                currentBreakpoints: breakpoints
-            };
-
-        };
-
-
-        var makeDefaultCallbacks = function(removeOpen, positioningBool, callback) {
-            return function(removeOpen, bigfoot) {
-                if(removeOpen) {
-                    var $closedPopovers = bigfoot.close();
-                    bigfoot.updateSetting("activateCallback", callback);
-                    bigfoot.activate($closedPopovers);
-                }
-                setTimeout(function() {
-                    bigfoot.updateSetting("positionContent", positioningBool);
-                }, bigfoot.getSetting("popoverDeleteDelay"));
-            };
-        };
-
-
-        var getBreakpoints = function() {
-            return breakpoints;
-        };
-
-
-
         //   _______    ________  ___   __    ______    ________  ___   __    _______
         // /_______/\  /_______/\/__/\ /__/\ /_____/\  /_______/\/__/\ /__/\ /______/\
         // \::: _  \ \ \__.::._\/\::\_\\  \ \\:::_ \ \ \__.::._\/\::\_\\  \ \\::::__\/__
@@ -1070,8 +1186,8 @@
             addBreakpoint: function(size, callback, removeOpen) {
                 return addBreakpoint(size, callback, removeOpen);
             },
-            getBreakpoints: function() {
-                return getBreakpoints();
+            removeBreakpoint: function(remove) {
+                return removeBreakpoint(remove);
             },
             getSetting: function(setting) {
                 return getSetting(setting);
