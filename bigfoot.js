@@ -147,7 +147,8 @@
 
             // Get the footnote that the link was pointing to
             $(footnoteLinks).each(function() {
-                relatedFN = $(this).attr("data-footnote-ref").replace(":", "\\:");
+                // escape symbols with special jQuery/ CSS selector meaning
+                relatedFN = $(this).attr("data-footnote-ref").replace(/[:.+~*\]\[]/g, "\\$&");
                 $closestFootnoteLi = $(relatedFN).closest("li");
                 if($closestFootnoteLi.length > 0) {
                     footnotes.push($closestFootnoteLi);
@@ -1213,11 +1214,11 @@
             reposition: function() {
                 return repositionFeet();
             },
-            addBreakpoint: function(size, callback, removeOpen) {
-                return addBreakpoint(size, callback, removeOpen);
+            addBreakpoint: function(size, deleteDelay, removeOpen, trueCallback, falseCallback) {
+                return addBreakpoint(size, deleteDelay, removeOpen, trueCallback, falseCallback);
             },
-            removeBreakpoint: function(remove) {
-                return removeBreakpoint(remove);
+            removeBreakpoint: function(target, callback) {
+                return removeBreakpoint(target, callback);
             },
             getSetting: function(setting) {
                 return getSetting(setting);
