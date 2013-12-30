@@ -39,7 +39,7 @@
 }
 
 .footnote-button:before {
-  content: attr(data-footnote-identifier);
+  content: attr(data-footnote-number);
   position: absolute;
   bottom: 0.63em;
   left: 0;

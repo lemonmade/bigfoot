@@ -60,23 +60,24 @@
         var settings = $.extend(
             {
                 actionOriginalFN    : "hide", // "delete", "hide", or "ignore"
+                activateCallback    : function() {},
                 activateOnHover     : false,
                 allowMultipleFN     : false,
                 appendPopoversTo    : undefined,
+                breakpoints         : {},
                 deleteOnUnhover     : false,
                 hoverDelay          : 250,
+                numberResetSelector : undefined,
                 popoverDeleteDelay  : 300,
                 popoverCreateDelay  : 100,
                 positionNextToBlock : true,
                 positionContent     : true,
                 preventPageScroll   : true,
                 scope               : false,
-                breakpoints         : {},
-
-                activateCallback    : function() {},
 
                 contentMarkup       : "<aside class=\"footnote-content bottom\"" +
-                                            "data-footnote-identifier=\"{{FOOTNOTENUM}}\" " +
+                                            "data-footnote-number=\"{{FOOTNOTENUM}}\" " +
+                                            "data-footnote-identifier=\"{{FOOTNOTEID}}\" " +
                                             "alt=\"Footnote {{FOOTNOTENUM}}\">" +
                                                 "<div class=\"footnote-main-wrapper\">" +
                                                     "<div class=\"footnote-content-wrapper\">" +
@@ -86,11 +87,12 @@
                                         "</aside>",
 
                 buttonMarkup        :  "<a href=\"#\" class=\"footnote-button\" " +
-                                            "data-footnote-identifier=\"{{FOOTNOTENUM}}\" " +
+                                            "data-footnote-number=\"{{FOOTNOTENUM}}\" " +
+                                            "data-footnote-identifier=\"{{FOOTNOTEID}}\" " +
                                             "alt=\"See Footnote {{FOOTNOTENUM}}\" " +
                                             "rel=\"footnote\"" +
                                             "data-footnote-content=\"{{FOOTNOTECONTENT}}\">" +
-                                                "<span class=\"footnote-circle\" data-footnote-identifier=\"{{FOOTNOTENUM}}\"></span>" +
+                                                "<span class=\"footnote-circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span>" +
                                                 "<span class=\"footnote-circle\"></span>" +
                                                 "<span class=\"footnote-circle\"></span>" +
                                         "</a>"
@@ -152,16 +154,39 @@
                 }
             });
 
+            var $lastResetElement,
+                $curResetElement,
+                footnoteNum = 1,
+                footnoteContent,
+                footnoteIDNum,
+                $relevantFNLink,
+                footnoteButton,
+                $footnoteButton;
+
             // Initiates the button with the footnote content
             // Also performs the desired action on the original footnotes
             for(var i = 0; i<footnotes.length; i++) {
 
                 // Removes any backlinks and hackily encodes double quotes and >/< symbols to prevent conflicts
-                var footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i]).data("footnote-backlink-ref"))
-                                        .replace(/"/g, "&quot;").replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;"),
-                    $footnoteNum = +(i + 1),
-                    footnoteButton = "",
-                    $footnoteButton;
+                footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i]).data("footnote-backlink-ref"))
+                                        .replace(/"/g, "&quot;").replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;");
+                footnoteIDNum = +(i + 1);
+                footnoteButton = "";
+                $relevantFNLink = $(finalFNLinks[i]);
+
+                // Determines whether this is in the same number reset container (as defined in settings)
+                // as the last footnote and changes the footnote number accordingly
+                if(settings.numberResetSelector) {
+                    $curResetElement = $relevantFNLink.closest(settings.numberResetSelector);
+                    if($curResetElement.is($lastResetElement)) {
+                        footnoteNum += 1;
+                    } else {
+                        footnoteNum = 1;
+                    }
+                    $lastResetElement = $curResetElement;
+                } else {
+                    footnoteNum = footnoteIDNum;
+                }
 
                 // Add a paragraph container if the footnote was written directly in the list element
                 if(footnoteContent.indexOf("<") !== 0) {
@@ -170,13 +195,17 @@
 
                 // Gives default button markup unless custom one is defined
                 // Gets the easy replacements out of the way
-                footnoteButton = settings.buttonMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, $footnoteNum).replace(/\{\{FOOTNOTECONTENT\}\}/g, footnoteContent);
+                footnoteButton = settings.buttonMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, footnoteNum)
+                                    .replace(/\{\{FOOTNOTEID\}\}/g, footnoteIDNum)
+                                    .replace(/\{\{FOOTNOTECONTENT\}\}/g, footnoteContent);
+
+                console.log(footnoteButton);
 
                 // Handles replacements of SUP/FN attribute requests
-                footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $(finalFNLinks[i]));
+                footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $relevantFNLink);
                 footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $(footnotes[i]));
 
-                $footnoteButton = $(footnoteButton).insertAfter($(finalFNLinks[i]));
+                $footnoteButton = $(footnoteButton).insertAfter($relevantFNLink);
 
                 var $parent = $(footnotes[i]).parent();
                 switch(settings.actionOriginalFN.toLowerCase()) {
@@ -528,8 +557,10 @@
                 try {
                     // Gets the easy replacements out of the way (try is there to ignore the "replacing undefined" error if it's activated too freuqnetly)
                     content = settings.contentMarkup
-                                .replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-identifier"))
-                                .replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-footnote-content").replace(/&gtsym;/, "&gt;").replace(/&ltsym;/, "&lt;"));
+                                .replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number"))
+                                .replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier"))
+                                .replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-footnote-content")
+                                .replace(/&gtsym;/, "&gt;").replace(/&ltsym;/, "&lt;"));
 
                     // Handles replacements of BUTTON attribute requests
                     content = replaceWithReferenceAttributes(content, "BUTTON", $this);
