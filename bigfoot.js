@@ -30,6 +30,7 @@
 // - Better handling of hover
 // - Ability to position/ size popover relative to a containing element (rather than the window)
 // - Compensate for zoom position on mobile
+// - Update numbered style to handle more than 9 footnotes
 
 // KNOWN ISSUES -
 // - Safari 7 doesn't properly calculate the scrollheight of the content wrapper and, as a result, will not
@@ -198,8 +199,6 @@
                 footnoteButton = settings.buttonMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, footnoteNum)
                                     .replace(/\{\{FOOTNOTEID\}\}/g, footnoteIDNum)
                                     .replace(/\{\{FOOTNOTECONTENT\}\}/g, footnoteContent);
-
-                console.log(footnoteButton);
 
                 // Handles replacements of SUP/FN attribute requests
                 footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $relevantFNLink);
