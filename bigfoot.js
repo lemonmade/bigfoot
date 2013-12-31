@@ -379,9 +379,6 @@
         // New string with replacements performed
 
         var replaceWithReferenceAttributes = function(string, referenceKeyword, $referenceElement) {
-            console.log(string);
-            console.log(referenceKeyword);
-            console.log($referenceElement);
             var refRegex = new RegExp("\\{\\{" + referenceKeyword + ":([^\\}]*)\\}\\}", "g"),
                 refMatches,
                 refReplaceText,
@@ -392,12 +389,8 @@
             while (refMatches) {
                 // refMatches[1] stores the attribute that is to be matched
                  if(refMatches[1]) {
-                    console.log(refMatches);
                     refReplaceText = $referenceElement.attr(refMatches[1]) || "";
-                    console.log(refReplaceText);
-                    console.log("\\{\\{" + referenceKeyword + ":" + refMatches[1] + "\\}\\}");
                     string = string.replace("{{" + referenceKeyword + ":" + refMatches[1] + "}}", refReplaceText);
-                    console.log(string);
                 }
                 refMatches = refRegex.exec(string);
             }
