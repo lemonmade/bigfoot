@@ -88,6 +88,7 @@
                                         "</aside>",
 
                 buttonMarkup        :  "<a href=\"#\" class=\"footnote-button\" " +
+                                            "id=\"{{SUP:data-footnote-backlink-ref}}\" " +
                                             "data-footnote-number=\"{{FOOTNOTENUM}}\" " +
                                             "data-footnote-identifier=\"{{FOOTNOTEID}}\" " +
                                             "alt=\"See Footnote {{FOOTNOTENUM}}\" " +
@@ -208,7 +209,7 @@
                 footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $relevantFNLink);
                 footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $relevantFootnote);
 
-                $footnoteButton = $(footnoteButton).insertAfter($relevantFNLink);
+                $footnoteButton = $(footnoteButton).insertBefore($relevantFNLink);
 
                 var $parent = $relevantFootnote.parent();
                 switch(settings.actionOriginalFN.toLowerCase()) {
@@ -378,6 +379,9 @@
         // New string with replacements performed
 
         var replaceWithReferenceAttributes = function(string, referenceKeyword, $referenceElement) {
+            console.log(string);
+            console.log(referenceKeyword);
+            console.log($referenceElement);
             var refRegex = new RegExp("\\{\\{" + referenceKeyword + ":([^\\}]*)\\}\\}", "g"),
                 refMatches,
                 refReplaceText,
@@ -388,8 +392,12 @@
             while (refMatches) {
                 // refMatches[1] stores the attribute that is to be matched
                  if(refMatches[1]) {
+                    console.log(refMatches);
                     refReplaceText = $referenceElement.attr(refMatches[1]) || "";
-                    string = string.replace("\\{\\{" + referenceKeyword + ":" + refMatches[1] + "\\}\\}", refReplaceText);
+                    console.log(refReplaceText);
+                    console.log("\\{\\{" + referenceKeyword + ":" + refMatches[1] + "\\}\\}");
+                    string = string.replace("{{" + referenceKeyword + ":" + refMatches[1] + "}}", refReplaceText);
+                    console.log(string);
                 }
                 refMatches = refRegex.exec(string);
             }
