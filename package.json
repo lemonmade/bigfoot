@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "main": "./bigfoot.js",
   "description": "A jQuery plugin for empowering HTML footnotes.",
+  "homepage": "http://www.bigfootjs.com",
   "dependencies": {
     "jquery": ">= 1.8"
   },
@@ -21,5 +22,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/pxldot/bigfoot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pxldot/bigfoot/issues"
   }
 }
