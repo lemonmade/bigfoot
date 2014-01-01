@@ -1,4 +1,4 @@
-# BIGFOOT
+# bigfoot.js
 
 by [Chris Sauve](http://cmsauve.com/projects)
 
@@ -12,6 +12,6 @@ Bigfoot is a jQuery plugin that creates exceptional footnotes. Simply include th
 
 This project includes both the script itself and default styles to apply to the footnote button/ content that are eventually generated. There are also a variety of additional styles that illustrate some of the possibilities for styling these components.
 
-The script has many configurable options from having popovers instantiated on hover, to allowing multiple active footnotes, to setting specific timeouts for popover creation/ deletion. It also returns an object that allows you to activate, remove, and reposition popovers properly. All of these options and return functions are shown in detail at the script's [project page](http://cmsauve.com/labs/bigfoot). You can also see a [demo of the project in action](http://cmsauve.com/labs/bigfoot/#demo) on the same page.
+The script has many configurable options from having popovers instantiated on hover, to allowing multiple active footnotes, to setting specific timeouts for popover creation/ deletion. It also returns an object that allows you to activate, remove, and reposition popovers properly. All of these options and return functions are shown in detail at the script's [project page](http://www.bigfootjs.com/). You can also see a [demo of the project in action](http://www.bigfootjs.com/#demo) on the same page.
 
 Questions? Issues? Feature requests? Check out the [Github page](https://github.com/pxldot/bigfoot) for this project.
