@@ -118,6 +118,7 @@ $button-perspective-shadow-zindex:  8;
     line-height: 0;
     vertical-align: middle;
     text-decoration: none;
+    font-smoothing: antialiased;
 
     // TRANSITIONS AND ANIMATIONS
     @include transition-property(opacity);
@@ -208,9 +209,6 @@ $button-perspective-shadow-zindex:  8;
         border-radius: 100%;
         background-color: $button-inner-circle-color;
         border: $button-inner-circle-border;
-
-        // TEXT
-        line-height: 0.5em;
 
         &:last-child { margin-right: 0; } // Gets rid of margin on the last circle
 

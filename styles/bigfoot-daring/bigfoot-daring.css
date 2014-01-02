@@ -17,6 +17,7 @@
   line-height: 0;
   vertical-align: middle;
   text-decoration: none;
+  font-smoothing: antialiased;
   -webkit-transition: opacity, background-color;
   -moz-transition: opacity, background-color;
   -ms-transition: opacity, background-color;
