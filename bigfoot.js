@@ -150,7 +150,11 @@
             $(footnoteLinks).each(function() {
                 // escape symbols with special jQuery/ CSS selector meaning
                 relatedFN = $(this).attr("data-footnote-ref").replace(/[:.+~*\]\[]/g, "\\$&");
-                $closestFootnoteLi = $(relatedFN).closest("li");
+                if(!settings.numberResetSelector) {
+                    $closestFootnoteLi = $(relatedFN).closest("li");
+                } else {
+                    $closestFootnoteLi = $(this).closest(settings.numberResetSelector).find(relatedFN).closest("li");
+                }
                 if($closestFootnoteLi.length > 0) {
                     footnotes.push($closestFootnoteLi);
                     finalFNLinks.push(this);
