@@ -75,6 +75,7 @@
                 positionContent     : true,
                 preventPageScroll   : true,
                 scope               : false,
+                useFootnoteOnlyOnce : true,
 
                 contentMarkup       : "<aside class=\"footnote-content bottom\"" +
                                             "data-footnote-number=\"{{FOOTNOTENUM}}\" " +
@@ -141,7 +142,8 @@
                 footnoteLinks   = [],
                 finalFNLinks    = [],
                 relatedFN,
-                $closestFootnoteLi;
+                $closestFootnoteLi,
+                $actualFootnoteLi;
 
             // Resolve issues with superscript/ anchor combination
             cleanFootnoteLinks($footnoteAnchors, footnoteLinks);
@@ -150,13 +152,11 @@
             $(footnoteLinks).each(function() {
                 // escape symbols with special jQuery/ CSS selector meaning
                 relatedFN = $(this).attr("data-footnote-ref").replace(/[:.+~*\]\[]/g, "\\$&");
-                if(!settings.numberResetSelector) {
-                    $closestFootnoteLi = $(relatedFN).closest("li");
-                } else {
-                    $closestFootnoteLi = $(this).closest(settings.numberResetSelector).find(relatedFN).closest("li");
-                }
+                if(settings.useFootnoteOnlyOnce) relatedFN = relatedFN + ":not(.footnote-processed)";
+                $closestFootnoteLi = $(relatedFN).closest("li");
+
                 if($closestFootnoteLi.length > 0) {
-                    footnotes.push($closestFootnoteLi);
+                    footnotes.push($closestFootnoteLi.first().addClass("footnote-processed"));
                     finalFNLinks.push(this);
                 }
             });
