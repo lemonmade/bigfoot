@@ -109,6 +109,7 @@ $button-perspective-shadow-zindex:  8;
     cursor: pointer;
     opacity: $button-standard-opacity;
     background-color: $button-color;
+    -webkit-backface-visibility: hidden;
 
     // TEXT
     line-height: 0;
@@ -250,6 +251,7 @@ $button-perspective-shadow-zindex:  8;
         font-style: $button-content-font-style;
         line-height: 0;
         text-align: center;
+        -webkit-backface-visibility: hidden;
     }
 
 }

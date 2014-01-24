@@ -1,4 +1,4 @@
-// bigfoot - v0.1.1 - 2014.01.12
+// bigfoot - v0.1.1 - 2014.01.24
 
 
 //  ___ __ __    ________  __     __    ________  ___   __    ______
@@ -222,6 +222,7 @@ $button-perspective-shadow-zindex:  8;
     cursor: pointer;
     opacity: $button-standard-opacity;
     background-color: $button-color;
+    -webkit-backface-visibility: hidden;
 
     // TEXT
     line-height: 0;
@@ -363,6 +364,7 @@ $button-perspective-shadow-zindex:  8;
         font-style: $button-content-font-style;
         line-height: 0;
         text-align: center;
+        -webkit-backface-visibility: hidden;
     }
 
 }
