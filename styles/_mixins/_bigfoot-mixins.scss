@@ -33,8 +33,10 @@
 
 @function prefix-properties($properties, $prefix) {
     $new-props: property-checker(nth($properties, 1), $prefix);
-    @for $i from 2 through length($properties) {
-        $new-props: $new-props + ", " + property-checker(nth($properties, $i), $prefix);
+    @if(length($properties) > 1) {
+        @for $i from 2 through length($properties) {
+            $new-props: $new-props + ", " + property-checker(nth($properties, $i), $prefix);
+        }
     }
     @return unquote($new-props);
 }
