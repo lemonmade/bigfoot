@@ -85,7 +85,7 @@
                                                     "<div class=\"footnote-content-wrapper\">" +
                                                         "{{FOOTNOTECONTENT}}" +
                                                 "</div></div>" +
-                                            "<div class=\"tooltip\"></div>" +
+                                            "<div class=\"bigfoot-tooltip\"></div>" +
                                         "</aside>",
 
                 buttonMarkup        :  "<a href=\"#\" class=\"footnote-button\" " +
@@ -855,7 +855,7 @@
 
         var positionTooltip = function($popover, leftRelative) {
             leftRelative = leftRelative || 0.5; // default to 50%
-            var $tooltip = $popover.find(".tooltip");
+            var $tooltip = $popover.find(".bigfoot-tooltip");
 
             if($tooltip.length > 0) {
                 $tooltip.css({"left": leftRelative*100 + "%"});

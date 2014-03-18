@@ -256,7 +256,7 @@
   margin-top: 0;
 }
 
-.tooltip {
+.bigfoot-tooltip {
   position: absolute;
   z-index: 12;
   box-sizing: border-box;
@@ -275,12 +275,12 @@
   border-top-left-radius: 0;
 }
 
-.bottom .tooltip {
+.bottom .bigfoot-tooltip {
   top: -0.65em;
   bottom: auto;
 }
 
-.top .tooltip {
+.top .bigfoot-tooltip {
   bottom: -0.65em;
   top: auto;
 }

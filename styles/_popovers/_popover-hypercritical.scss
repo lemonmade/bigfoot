@@ -349,7 +349,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
 // These create the tooltip. The horizontal positioning of the tooltip is set by the script itself
 @if $popover-include-tooltip == true {
 
-    .tooltip {
+    .bigfoot-tooltip {
 
         // POSITIONING
         position: absolute;
@@ -372,18 +372,18 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     }
 
     // Mandatory vertical-positioning stuff for the tooltip
-    .bottom .tooltip {
+    .bottom .bigfoot-tooltip {
         top: -0.5 * $popover-tooltip-size;
         bottom: auto;
     }
 
-    .top .tooltip {
+    .top .bigfoot-tooltip {
         bottom: -0.5 * $popover-tooltip-size;
         top: auto;
     }
 
     } @else {
 
-        .tooltip { display: none; }
+        .bigfoot-tooltip { display: none; }
 
 } // end of the tooltip styling
