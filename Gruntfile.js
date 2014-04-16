@@ -15,13 +15,13 @@ module.exports = function(grunt) {
                 }
             },
 
-            target: ["./bigfoot.js"]
+            target: ["src/bigfoot.js"]
         },
 
         uglify: {
             build: {
-                src: "./bigfoot.js",
-                dest: "./bigfoot.min.js"
+                src: "src/bigfoot.js",
+                dest: "dist/bigfoot.min.js"
             }
         },
 
@@ -34,28 +34,28 @@ module.exports = function(grunt) {
             },
 
             main: {
-                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-default.scss"],
-                dest: "styles/bigfoot-default/bigfoot-default.scss"
+                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-default.scss"],
+                dest: "dist/bigfoot-default.scss"
             },
 
             number: {
-                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-number.scss", "styles/_popovers/_popover-default.scss"],
-                dest: "styles/bigfoot-number/bigfoot-number.scss"
+                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-number.scss", "src/_popovers/_popover-default.scss"],
+                dest: "dist/bigfoot-number.scss"
             },
 
             daring: {
-                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-daring.scss"],
-                dest: "styles/bigfoot-daring/bigfoot-daring.scss"
+                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-daring.scss"],
+                dest: "dist/bigfoot-daring.scss"
             },
 
             hypercritical: {
-                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_*/*-hypercritical.scss"],
-                dest: "styles/bigfoot-hypercritical/bigfoot-hypercritical.scss"
+                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-hypercritical.scss"],
+                dest: "dist/bigfoot-hypercritical.scss"
             },
 
             bottom: {
-                src: ["styles/_mixins/_bigfoot-mixins.scss", "styles/_buttons/_button-default.scss", "styles/_*/*-bottom.scss"],
-                dest: "styles/bigfoot-bottom/bigfoot-bottom.scss"
+                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_buttons/_button-default.scss", "src/_*/*-bottom.scss"],
+                dest: "dist/bigfoot-bottom.scss"
             },
         },
 
@@ -64,11 +64,11 @@ module.exports = function(grunt) {
                 options: { style: "expanded", loadPath: require("node-bourbon").includePaths },
 
                 files: {
-                    "styles/bigfoot-bottom/bigfoot-bottom.css": "styles/bigfoot-bottom/bigfoot-bottom.scss",
-                    "styles/bigfoot-daring/bigfoot-daring.css": "styles/bigfoot-daring/bigfoot-daring.scss",
-                    "styles/bigfoot-default/bigfoot-default.css": "styles/bigfoot-default/bigfoot-default.scss",
-                    "styles/bigfoot-hypercritical/bigfoot-hypercritical.css": "styles/bigfoot-hypercritical/bigfoot-hypercritical.scss",
-                    "styles/bigfoot-number/bigfoot-number.css": "styles/bigfoot-number/bigfoot-number.scss"
+                    "dist/bigfoot-bottom.css": "dist/bigfoot-bottom.scss",
+                    "dist/bigfoot-daring.css": "dist/bigfoot-daring.scss",
+                    "dist/bigfoot-default.css": "dist/bigfoot-default.scss",
+                    "dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.scss",
+                    "dist/bigfoot-number.css": "dist/bigfoot-number.scss"
                 }
             }
         },
@@ -76,11 +76,11 @@ module.exports = function(grunt) {
         autoprefixer: {
             dist: {
                 files: {
-                    "styles/bigfoot-bottom/bigfoot-bottom.css": "styles/bigfoot-bottom/bigfoot-bottom.css",
-                    "styles/bigfoot-daring/bigfoot-daring.css": "styles/bigfoot-daring/bigfoot-daring.css",
-                    "styles/bigfoot-default/bigfoot-default.css": "styles/bigfoot-default/bigfoot-default.css",
-                    "styles/bigfoot-hypercritical/bigfoot-hypercritical.css": "styles/bigfoot-hypercritical/bigfoot-hypercritical.css",
-                    "styles/bigfoot-number/bigfoot-number.css": "styles/bigfoot-number/bigfoot-number.css"
+                    "dist/bigfoot-bottom.css": "dist/bigfoot-bottom.css",
+                    "dist/bigfoot-daring.css": "dist/bigfoot-daring.css",
+                    "dist/bigfoot-default.css": "dist/bigfoot-default.css",
+                    "dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.css",
+                    "dist/bigfoot-number.css": "dist/bigfoot-number.css"
                 }
             }
         },
@@ -89,30 +89,35 @@ module.exports = function(grunt) {
             options: { livereload: false },
 
             js: {
-                files: ["./bigfoot.js"],
+                files: ["src/bigfoot.js"],
                 tasks: ["uglify", "jshint"],
                 options: { spawn: false }
             },
 
             scss: {
-                files: ["styles/*/*.scss"],
+                files: ["src/**/*.scss"],
                 tasks: ["concat", "sass"],
                 options: { spawn: false }
             },
 
             css: {
-                files: ["styles/*/*.css"],
+                files: ["dist/**/*.css"],
                 tasks: ["autoprefixer"],
                 options: { spawn: false }
             }
         },
 
+        shell: {
+            copyMain: {
+                command: 'cp src/bigfoot.js dist/bigfoot.js'
+            }
+        }
     });
 
     // 2. TASKS
     require("load-grunt-tasks")(grunt);
 
     // 3. PERFORM
-    grunt.registerTask("default", ["jshint", "autoprefixer", "uglify", "concat", "sass"]);
+    grunt.registerTask("default", ["jshint", "autoprefixer", "uglify", "concat", "sass", "shell"]);
 
 }

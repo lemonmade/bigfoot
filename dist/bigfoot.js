@@ -878,11 +878,23 @@
         // All measurements are relative to the middle of the element
 
         var roomCalc = function($el) {
+            var topLeft     = { x: window.pageXOffset,             y: window.pageYOffset },
+                bottomRight = { x: topLeft.x + window.innerWidth,  y: topLeft.y + window.innerHeight },
+                zoom        = window.innerHeight / document.documentElement.clientHeight;
+
             var elWidth     = parseFloat($el.outerWidth()),
                 elHeight    = parseFloat($el.outerHeight()),
                 w           = viewportSize(),
                 topRoom     = $el.offset().top - $(window).scrollTop() + elHeight/2,
                 leftRoom    = $el.offset().left + elWidth/2;
+
+            console.log($el[0].getBoundingClientRect());
+
+            console.log("Window scrolltop: ", $(window).scrollTop());
+            console.log("El offset: ", $el.offset().top);
+
+            var $leftGuide = $("<div class='guide top-left'></div>").appendTo("body");
+            $leftGuide.css({"width": leftRoom + "px", "height": (topRoom) + "px", "top": topLeft.y*zoom + "px"});
 
             return {
                 topRoom         : topRoom,
@@ -906,6 +918,12 @@
 
         var viewportSize = function() {
             var test = document.createElement("div");
+
+            var topLeft     = { x: window.pageXOffset,             y: window.pageYOffset },
+                bottomRight = { x: topLeft.x + window.innerWidth,  y: topLeft.y + window.innerHeight },
+                zoom        = window.innerWidth / document.documentElement.clientWidth;
+
+            console.log("topLeft: x=", topLeft.x, " y=", topLeft.y);
 
             test.style.cssText = "position: fixed;top: 0;left: 0;bottom: 0;right: 0;";
             document.documentElement.insertBefore(test, document.documentElement.firstChild);

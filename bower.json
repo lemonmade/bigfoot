@@ -1,0 +1,34 @@
+{
+  "name": "bigfoot",
+  "main": [
+    "src/bigfoot.js",
+    "src/bigfoot-default.css",
+    "src/bigfoot-number.css"
+  ],
+  "version": "1.0.0",
+  "homepage": "http://www.bigfootjs.com",
+  "authors": [
+    "Chris Sauve <chris@pxldot.com>"
+  ],
+  "description": "A jQuery plugin for creating exceptional HTML footnotes.",
+  "keywords": [
+    "jquery",
+    "plugin",
+    "footnotes",
+    "footnote",
+    "bigfoot",
+    "popover"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "links"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.9.0"
+  }
+}
