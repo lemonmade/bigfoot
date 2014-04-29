@@ -166,10 +166,20 @@
                 footnoteNum = 1,
                 footnoteContent,
                 footnoteIDNum,
+                $currentLastFootnoteLink,
                 $relevantFNLink,
                 $relevantFootnote,
                 footnoteButton,
                 $footnoteButton;
+
+            // If there are already footnote links, look for the last one and set
+            // it as the beginning value for the next set of footnotes.
+            $currentLastFootnoteLink = $("[data-footnote-identifier]:last");
+            if($currentLastFootnoteLink.length > 0) {
+                footnoteIDNum = +$currentLastFootnoteLink.data("footnote-identifier");
+            } else {
+                footnoteIDNum = 0;
+            }
 
             // Initiates the button with the footnote content
             // Also performs the desired action on the original footnotes
@@ -179,7 +189,7 @@
                 footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i])
                                     .data("footnote-backlink-ref")).replace(/"/g, "&quot;")
                                     .replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;");
-                footnoteIDNum = +(i + 1);
+                footnoteIDNum += 1;
                 footnoteButton = "";
                 $relevantFNLink = $(finalFNLinks[i]);
                 $relevantFootnote = $(footnotes[i]);

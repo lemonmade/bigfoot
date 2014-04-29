@@ -85,12 +85,18 @@ module.exports = function(grunt) {
             }
         },
 
+        shell: {
+            copyMain: {
+                command: 'cp src/bigfoot.js dist/bigfoot.js'
+            }
+        },
+
         watch: {
             options: { livereload: false },
 
             js: {
                 files: ["src/bigfoot.js"],
-                tasks: ["uglify", "jshint"],
+                tasks: ["uglify", "jshint", "shell:copyMain"],
                 options: { spawn: false }
             },
 
@@ -104,12 +110,6 @@ module.exports = function(grunt) {
                 files: ["dist/**/*.css"],
                 tasks: ["autoprefixer"],
                 options: { spawn: false }
-            }
-        },
-
-        shell: {
-            copyMain: {
-                command: 'cp src/bigfoot.js dist/bigfoot.js'
             }
         }
     });
