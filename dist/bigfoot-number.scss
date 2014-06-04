@@ -1,4 +1,4 @@
-// bigfoot - v1.0.0 - 2014.04.29
+// bigfoot - v1.0.0 - 2014.06.04
 
 
 //  ___ __ __    ________  __     __    ________  ___   __    ______
@@ -123,6 +123,11 @@
 //
 // Buttons with the footnote numbers included inside them
 
+
+.footnote-container {
+    display: inline-block;
+    position: relative;
+}
 
 
 //  ___   ___   ______   __  __     __   __   ________   ______    ______
@@ -439,7 +444,6 @@ $popover-active-transform-state:        scale(1) translateZ(0);         // The t
 $popover-include-tooltip:               true;                           // Adds a tooltip pointing to the footnote button
 $popover-include-scroll-indicator:      true;                           // Adds an elipsis at the bottom of scrollable popovers
 $popover-include-scrolly-fades:         true;                           // Fades content in on scrollable popovers
-$popover-width-application-element:     content;                        // content or the popover itself
 
 
 
@@ -454,7 +458,7 @@ $popover-width-application-element:     content;                        // conte
 
 // POPOVER
 $button-height:                         0.8em; // Helps setting vertical position of popover
-$popover-margin-top:                    -0.1em;
+$popover-margin-top:                    0.1em;
 $popover-padding-content-horizontal:    1.3em;
 $popover-padding-content-top:           1.1em;
 $popover-padding-content-bottom:        1.2em;
@@ -499,22 +503,19 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
 .footnote-content {
 
     // POSITIONING
-    position: fixed;
+    position: absolute;
     z-index: $popover-z-index;
-    bottom: $popover-bottom-position;
-    left: $popover-left-position;
+    top: 0; left: 0;
 
     // DISPLAY AND SIZING
+    display: inline-block;
     box-sizing: border-box;
     -moz-box-sizing: border-box;;
     // Height is set in .footnote-content-wrapper
-    @if $popover-width-application-element == popover {
-        width: $popover-width;
-        } @else {
-            max-width: $popover-max-width;
-        }
+    max-width: $popover-max-width;
+
     // 1.414213... is to get the diagonal height of the tooltip using pythagorus, yo.
-    margin: ((1.4142135624 * $popover-tooltip-size / 2) + $button-height / 2 + $popover-margin-top) auto;
+    margin: ((1.4142135624 * $popover-tooltip-size / 2) + $button-height + $popover-margin-top) 0;
     display: $popover-display-style; // fits the popover to the contents
     @if $popover-initial-transform-state != none {
         &:not(.fixed-bottom) {
@@ -536,6 +537,10 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
         @include transition-duration($popover-transition-default-duration);
     }
 
+    &.top {
+        top: auto; bottom: 0.2em;
+    }
+
     // Put styles here to apply when the popover is active (can be transitioned in/ out of from the CSS properties above)
     &.active:not(.fixed-bottom) {
         @if $popover-active-transform-state != none { @include transform($popover-active-transform-state); }
@@ -545,16 +550,6 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     // Put styles to apply when the popover is being hovered over
     &:hover {
 
-    }
-
-    // Put styles to apply when the popover is positioning on the bottom of the footnote button
-    &.bottom {
-        @include transform-origin(top);
-    }
-
-    // Put styles to apply when the popover is positioning on the top of the footnote button
-    &.top {
-        @include transform-origin(bottom);
     }
 
     &.fixed-bottom {
@@ -702,15 +697,12 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     z-index: $popover-z-index + 4; // Above the outer tooltip, below the inner tooltip
 
     // DISPLAY AND SIZING
+    width: $popover-width;
+    display: inline-block;
     box-sizing: border-box;
-    -moz-box-sizing: border-box;;
+    -moz-box-sizing: border-box;
     overflow: hidden;
     margin: 0;
-    @if $popover-width-application-element == content {
-        max-width: $popover-width;
-        } @else {
-            max-width: $popover-max-width;
-        }
 
     // BACKDROP
     background-color: $popover-color-background;
@@ -741,6 +733,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     z-index: $popover-z-index - 2; // Below fading bars
 
     // DISPLAY AND SIZING
+    display: inline-block;
     max-height: $popover-max-height;
     padding: $popover-padding-content-top $popover-padding-content-horizontal $popover-padding-content-bottom;
     box-sizing: border-box;
@@ -808,7 +801,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
         top: auto;
     }
 
-    } @else {
+} @else {
 
         .bigfoot-tooltip { display: none; }
 

@@ -14,4 +14,6 @@ This project includes both the script itself and a default style to apply to the
 
 The script has many configurable options from having popovers instantiated on hover, to allowing multiple active footnotes, to setting specific timeouts for popover creation/ deletion. It also returns an object that allows you to activate, remove, add breakpoints, and reposition popovers properly. All of these options and return functions are shown in detail at the script's [project page](http://www.bigfootjs.com/). You can also see a [demo of the project in action](http://www.bigfootjs.com/#demo) on the same page.
 
+Requires jQuery 1.7+ at a minimum (for `.on()`) and jQuery 1.8+ for full functionality (1.8 automatically prefixes the `transform`/ `transition` properties).
+
 Questions? Issues? Feature requests? Check out the [Github page](https://github.com/pxldot/bigfoot) for this project.

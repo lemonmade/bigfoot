@@ -29,16 +29,10 @@
 // TODO --------
 // - Better handling of hover
 // - Ability to position/ size popover relative to a containing element (rather than the window)
-// - Compensate for zoom position on mobile
 // - Update numbered style to handle more than 9 footnotes
-
-// KNOWN ISSUES -
-// - Safari 7 doesn't properly calculate the scrollheight of the content wrapper and, as a result, will not
-//      properly indicate a scrollable footnote
-// - Popovers that are instantiated at a smaller font size which is then resized to a larger one won't adhere
-//      to your chosen max-height (in CSS) since JS tries to keep it from running off the top/ bottom of the page
-//      but does so using pixel values tied to the sizes of the footnote content when it was originally activated.
-//      If anyone has any ideas on this, please let me know!
+// - A new property to normalize the popover text size for a zoom
+// - Make button use actual `button` element instead of `a`
+// - Prevent bottom popovers from covering the popover button
 
 
 
@@ -64,14 +58,13 @@
                 activateCallback    : function() {},
                 activateOnHover     : false,
                 allowMultipleFN     : false,
-                appendPopoversTo    : undefined,
                 breakpoints         : {},
                 deleteOnUnhover     : false,
                 hoverDelay          : 250,
+                maxWidthRelativeTo  : undefined,
                 numberResetSelector : undefined,
                 popoverDeleteDelay  : 300,
                 popoverCreateDelay  : 100,
-                positionNextToBlock : true,
                 positionContent     : true,
                 preventPageScroll   : true,
                 scope               : false,
@@ -88,7 +81,8 @@
                                             "<div class=\"bigfoot-tooltip\"></div>" +
                                         "</aside>",
 
-                buttonMarkup        :  "<a href=\"#\" class=\"footnote-button\" " +
+                buttonMarkup        :   "<div class='footnote-container'>" +
+                                        "<a href=\"#\" class=\"footnote-button\" " +
                                             "id=\"{{SUP:data-footnote-backlink-ref}}\" " +
                                             "data-footnote-number=\"{{FOOTNOTENUM}}\" " +
                                             "data-footnote-identifier=\"{{FOOTNOTEID}}\" " +
@@ -98,8 +92,10 @@
                                                 "<span class=\"footnote-circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span>" +
                                                 "<span class=\"footnote-circle\"></span>" +
                                                 "<span class=\"footnote-circle\"></span>" +
-                                        "</a>"
+                                        "</a></div>"
             }, options);
+
+        var popoverStates = {};
 
 
 
@@ -591,25 +587,21 @@
                     $content = $(content);
                     try { settings.activateCallback($content); } catch(err) {}
 
-                    if(!settings.appendPopoversTo) {
+                    $content.insertAfter($buttons);
 
-                        // Insert content after next block-level element, or after the nearest footnote
-                        $nearestBlock = $this.closest("p, div, pre, li, ul, section, article, main, aside");
-                        $siblingFootnote = $nearestBlock.siblings(".footnote-content:last");
+                    // Default state is init to allow the initial positioning to set transform-origin
+                    popoverStates[$this.attr("data-footnote-identifier")] = "init";
 
-                        if($siblingFootnote.length > 0) {
-                            $content.insertAfter($siblingFootnote);
-                        } else {
-                            $content.insertAfter($nearestBlock);
-                        }
-
-                    } else {
-
-                        $content.appendTo(settings.appendPopoversTo + ":first");
-                    }
+                    // Instantiate the max-width for storage and use in repositioning
+                    // Adjust the max-width for the relevant units
+                    $content.attr("bigfoot-max-width", calculatePixelDimension($content.css("max-width"), $content));
+                    // Max max-width non-restricting
+                    $content.css("max-width", 10000);
 
                     // Instantiate the max-height for storage and use in repositioning
-                    $content.attr("data-bigfoot-max-height", $content.height());
+                    // Adjust the max-height for the relevant units
+                    var $contentContainer = $content.find(".footnote-content-wrapper");
+                    $content.attr("data-bigfoot-max-height", calculatePixelDimension($contentContainer.css("max-height"), $contentContainer));
 
                     repositionFeet();
                     $this.addClass("active");
@@ -626,6 +618,58 @@
             }, settings.popoverCreateDelay);
 
             return $popoversCreated;
+        };
+
+
+        // FUNCTION ----
+        // baseFontSize
+
+        // PURPOSE -----
+        // Calculates the base font size for `rem`-based sizing
+
+        var baseFontSize = function() {
+            var el = document.createElement("div");
+            el.style.cssText = "display:inline-block;padding:0;line-height:1;position:absolute;visibility:hidden;font-size:1em;";
+            el.appendChild(document.createElement("M"));
+            document.body.appendChild(el);
+
+            var size = el.offsetHeight;
+            document.body.removeChild(el);
+
+            return size;
+        };
+
+
+        // FUNCTION ----
+        // calculatePixelDimension
+
+        // PURPOSE -----
+        // Calculates a pixel dimension (as a regular integer)
+        // based on a string with an unknown unit.
+
+        // IN ----------
+        // (String) dimension to be evaluated.
+        // (jQuery) element that is being measured (for `em` calculations)
+
+        var calculatePixelDimension = function(dim, $el) {
+            if(dim == "none") {
+                // No value set, make it non-restricting
+                dim = 10000;
+            } else if(dim.indexOf("rem") >= 0) {
+                // Set in rem
+                dim = parseFloat(dim)*baseFontSize();
+            } else if(dim.indexOf("em") >= 0) {
+                // Set in em
+                dim = parseFloat(dim)*parseFloat($el.css("font-size"));
+            } else if(dim.indexOf("px") >= 0) {
+                // Set in px
+                dim = parseFloat(dim);
+            } else if(dim.indexOf("%") >= 0) {
+                // Set in percentages
+                dim = parseFloat(dim)/100;
+            }
+
+            return dim;
         };
 
 
@@ -778,6 +822,7 @@
                     // Gets rid of the footnote after the timeout
                     setTimeout(function() {
                         $this.remove();
+                        delete popoverStates[footnoteID];
                         $linkedButton.removeClass("changing");
                     }, timeout);
                 }
@@ -804,54 +849,111 @@
         // PURPOSE -----
         // Positions each footnote relative to its button
 
-        var repositionFeet = function() {
+        var repositionFeet = function(e) {
             if(settings.positionContent) {
+
+                var type = e ? e.type : "resize";
 
                 $(".footnote-content").each(function() {
 
                     // Element Definitions
                     var $this               = $(this),
-                        dataIdentifier      = "data-footnote-identifier=\"" + $this.attr("data-footnote-identifier") + "\"",
+                        identifier          = $this.attr("data-footnote-identifier"),
+                        dataIdentifier      = "data-footnote-identifier=\"" + identifier + "\"",
                         $contentWrapper     = $this.find(".footnote-content-wrapper"),
-                        $button             = $(".footnote-button[" + dataIdentifier + "]");
+                        $button             = $this.siblings(".footnote-button");
 
                     // Spacing Information
                     var roomLeft            = roomCalc($button),
-                        contentWidth        = parseFloat($this.css("width")),
                         marginSize          = parseFloat($this.css("margin-top")),
                         maxHeightInCSS      = +($this.attr("data-bigfoot-max-height")),
-                        totalHeightInCSS    = 2*marginSize + maxHeightInCSS,
+                        totalHeight         = 2*marginSize + $this.outerHeight(),
                         maxHeightOnScreen   = 10000;
 
                     // Position tooltip on top if:
                     // total space on bottom is not enough to hold footnote AND
                     // top room is larger than bottom room
-                    if(roomLeft.bottomRoom < totalHeightInCSS && roomLeft.topRoom > roomLeft.bottomRoom) {
-                        $this.css({"top": "auto", "bottom": roomLeft.bottomRoom + "px"}).addClass("top").removeClass("bottom");
+                    var positionOnTop = (roomLeft.bottomRoom < totalHeight && roomLeft.topRoom > roomLeft.bottomRoom),
+                        lastState = popoverStates[identifier];
+
+                    if(positionOnTop) {
+                        // Previous state was bottom, switch it and change classes
+                        if(lastState != "top") {
+                            popoverStates[identifier] = "top";
+                            $this.addClass("top").removeClass("bottom");
+                            $this.css("transform-origin", (roomLeft.leftRelative*100) + "% 100%");
+                        }
                         maxHeightOnScreen = roomLeft.topRoom - marginSize - 15;
-                        $this.css({"transform-origin": (roomLeft.leftRelative*100) + "% 100%"});
                     } else {
-                        $this.css({"bottom": "auto", "top": roomLeft.topRoom + "px"}).addClass("bottom").removeClass("top");
+                        // Previous state was top, switch it and change classes
+                        if(lastState != "bottom" || lastState == "init") {
+                            popoverStates[identifier] = "bottom";
+                            $this.removeClass("top").addClass("bottom");
+                            $this.css("transform-origin", (roomLeft.leftRelative*100) + "% 0%");
+                        }
                         maxHeightOnScreen = roomLeft.bottomRoom - marginSize - 15;
-                        $this.css({"transform-origin": (roomLeft.leftRelative*100) + "% 0%"});
                     }
 
                     // Sets the max height so that there is no footnote overflow
                     $this.find(".footnote-content-wrapper").css({"max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px"});
 
-                    // Positions the popover
-                    $this.css({"left": (roomLeft.leftRoom - (roomLeft.leftRelative * contentWidth)) + "px"});
+                    // Only perform sizing operations when the actual window was resized.
+                    if(type == "resize") {
 
-                    // Position the tooltip
-                    positionTooltip($this, roomLeft.leftRelative);
+                        var maxWidthInCSS = parseFloat($this.attr("bigfoot-max-width")),
+                            $mainWrap = $this.find(".footnote-main-wrapper"),
+                            maxWidth = maxWidthInCSS; // default to assuming pixel/em/rem value
+
+                        if(maxWidthInCSS <= 1) {
+                            // Max width in CSS set as a percentage
+
+                            // If a relative element has been set for max width, the actual max width
+                            // by which to multiply the percentage is the lesser of the element's width
+                            // and the width of the viewport
+                            var relativeToWidth = (function() {
+                                // Width of user-specified element width, set to non-constraining
+                                // value in case it does not exist
+                                var userSpecifiedRelativeElWidth = 10000;
+                                if(settings.maxWidthRelativeTo) {
+                                    var jq = $(settings.maxWidthRelativeTo);
+                                    if(jq.length > 0) { userSpecifiedRelativeElWidth = jq.outerWidth(); }
+                                }
+
+                                return Math.min(window.innerWidth, userSpecifiedRelativeElWidth);
+                            })();
+
+                            // Applicable constraining width times the percentage in CSS
+                            maxWidth = relativeToWidth*maxWidthInCSS;
+                        }
+
+                        // Set the max width to the smaller of the calculated width based on the
+                        // percentage/ other value and the width of the actual content (prevents
+                        // excess width for small footnotes)
+                        maxWidth = Math.min(
+                            maxWidth,
+                            $this.find(".footnote-content-wrapper").outerWidth() + 1
+                        );
+
+                        // Set this on the main wrapper. This allows the footnote-content div
+                        // to be displayed as inline-block, wrapping it around the content.
+                        $mainWrap.css("max-width", maxWidth + "px");
+
+                        // Positions the popover
+                        $this.css({"left": (-roomLeft.leftRelative*maxWidth + parseFloat($button.css("margin-left")) + $button.outerWidth()/2) + "px"});
+
+                        // Position the tooltip
+                        positionTooltip($this, roomLeft.leftRelative);
+                    }
 
                     // Give scrollable class if the content hight is larger than the container
-                    if(parseInt($this.css("height")) < $this.find(".footnote-content-wrapper")[0].scrollHeight) {
+                    if(parseInt($this.outerHeight()) < $this.find(".footnote-content-wrapper")[0].scrollHeight) {
                         $this.addClass("scrollable");
                     }
                 });
             }
         };
+
+
 
 
         // FUNCTION ----
@@ -888,23 +990,13 @@
         // All measurements are relative to the middle of the element
 
         var roomCalc = function($el) {
-            var topLeft     = { x: window.pageXOffset,             y: window.pageYOffset },
-                bottomRight = { x: topLeft.x + window.innerWidth,  y: topLeft.y + window.innerHeight },
-                zoom        = window.innerHeight / document.documentElement.clientHeight;
 
-            var elWidth     = parseFloat($el.outerWidth()),
-                elHeight    = parseFloat($el.outerHeight()),
-                w           = viewportSize(),
-                topRoom     = $el.offset().top - $(window).scrollTop() + elHeight/2,
-                leftRoom    = $el.offset().left + elWidth/2;
-
-            // console.log($el[0].getBoundingClientRect());
-
-            // console.log("Window scrolltop: ", $(window).scrollTop());
-            // console.log("El offset: ", $el.offset().top);
-
-            // var $leftGuide = $("<div class='guide top-left'></div>").appendTo("body");
-            // $leftGuide.css({"width": leftRoom + "px", "height": (topRoom) + "px", "top": topLeft.y*zoom + "px"});
+            var elLeftMargin = parseFloat($el.css("margin-left")),
+                elWidth      = parseFloat($el.outerWidth()) - elLeftMargin,
+                elHeight     = parseFloat($el.outerHeight()),
+                w            = viewportDetails(),
+                topRoom      = $el.offset().top - w.scrollY + elHeight/2,
+                leftRoom     = $el.offset().left - w.scrollX + elWidth/2;
 
             return {
                 topRoom         : topRoom,
@@ -918,30 +1010,21 @@
 
 
         // FUNCTION ----
-        // viewportSize
+        // viewportDetails
 
         // PURPOSE -----
-        // Calculates the height and width of the viewport
+        // Calculates the dimensions of the viewport
 
         // OUT ---------
-        // Object with .width and .height properties
+        // Object with width, height, and scrollX/Y properties
 
-        var viewportSize = function() {
-            var test = document.createElement("div");
-
-            var topLeft     = { x: window.pageXOffset,             y: window.pageYOffset },
-                bottomRight = { x: topLeft.x + window.innerWidth,  y: topLeft.y + window.innerHeight },
-                zoom        = window.innerWidth / document.documentElement.clientWidth;
-
-            // console.log("topLeft: x=", topLeft.x, " y=", topLeft.y);
-
-            test.style.cssText = "position: fixed;top: 0;left: 0;bottom: 0;right: 0;";
-            document.documentElement.insertBefore(test, document.documentElement.firstChild);
-
-            var dims = { width: test.offsetWidth, height: test.offsetHeight };
-            document.documentElement.removeChild(test);
-
-            return dims;
+        var viewportDetails = function() {
+            return {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                scrollX: window.scrollX,
+                scrollY: window.scrollY
+            };
         };
 
 
@@ -1087,7 +1170,7 @@
         // OUT ---------
         // Default MQ matches/ non-matches function.
 
-        var makeDefaultCallbacks = function(removeOpen, deleteDelay, positioningBool, callback) {
+        var makeDefaultCallbacks = function(removeOpen, deleteDelay, position, callback) {
             return function(removeOpen, bigfoot) {
                 var $closedPopovers;
 
@@ -1096,7 +1179,7 @@
                     bigfoot.updateSetting("activateCallback", callback);
                 }
                 setTimeout(function() {
-                    bigfoot.updateSetting("positionContent", positioningBool);
+                    bigfoot.updateSetting("positionContent", position);
                     if(removeOpen) bigfoot.activate($closedPopovers);
                 }, deleteDelay);
             };
@@ -1230,6 +1313,9 @@
             $(document).on("mouseout", ".hover-instantiated", unhoverFeet);
             $(document).on("keyup", escapeKeypress);
             $(window).on("scroll resize", repositionFeet);
+            $(document).on("gestureend", function(e) {
+                repositionFeet();
+            });
         });
 
 

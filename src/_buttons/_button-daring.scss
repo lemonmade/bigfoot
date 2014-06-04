@@ -79,6 +79,11 @@ $button-inside-content:             none;
 $button-perspective-shadow-zindex:  8;
 
 
+.footnote-container {
+    display: inline-block;
+    position: relative;
+}
+
 
 //   _______   __  __   _________  _________  ______   ___   __
 // /_______/\ /_/\/_/\ /________/\/________/\/_____/\ /__/\ /__/\
