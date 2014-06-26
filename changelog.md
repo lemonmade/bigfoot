@@ -5,3 +5,6 @@
 
 # 2.0.1
 - Fixed an issue where only the first escaped tag would be rendered properly.
+
+# 2.0.2
+- Fixed an issue where text-indent would cause popover elements to be misalligned.
