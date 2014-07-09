@@ -577,8 +577,7 @@
                                 .replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number"))
                                 .replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier"))
                                 .replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-footnote-content"));
-                    console.log(content);
-                    content = content.replace(/\&gtsym\;/gi, "&gt;").replace(/\&ltsym\;/gi, "&lt;");
+                                .replace(/\&gtsym\;/gi, "&gt;").replace(/\&ltsym\;/gi, "&lt;");
 
                     // Handles replacements of BUTTON attribute requests
                     content = replaceWithReferenceAttributes(content, "BUTTON", $this);
