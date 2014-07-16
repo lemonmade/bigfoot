@@ -576,9 +576,9 @@
                     content = settings.contentMarkup
                                 .replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number"))
                                 .replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier"))
-                                .replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-footnote-content"));
-                    console.log(content);
-                    content = content.replace(/\&gtsym\;/gi, "&gt;").replace(/\&ltsym\;/gi, "&lt;");
+                                .replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-footnote-content"))
+                                .replace(/\&gtsym\;/gi, "&gt;")
+                                .replace(/\&ltsym\;/gi, "&lt;");
 
                     // Handles replacements of BUTTON attribute requests
                     content = replaceWithReferenceAttributes(content, "BUTTON", $this);
@@ -586,7 +586,7 @@
 
                     // Create content and activate user-defined callback on it
                     $content = $(content);
-                    try { settings.activateCallback($content); } catch(err) {}
+                    try { settings.activateCallback($content, $this); } catch(err) {}
 
                     $content.insertAfter($buttons);
 

@@ -586,7 +586,7 @@
 
                     // Create content and activate user-defined callback on it
                     $content = $(content);
-                    try { settings.activateCallback($content); } catch(err) {}
+                    try { settings.activateCallback($content, $this); } catch(err) {}
 
                     $content.insertAfter($buttons);
 
