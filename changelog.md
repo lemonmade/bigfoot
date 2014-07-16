@@ -8,3 +8,6 @@
 
 # 2.0.2
 - Fixed an issue where text-indent would cause popover elements to be misalligned.
+
+# 2.0.3
+- Added a second argument (`$button`) to the `activateCallback` setting to allow users to access the footnote button (most notably, the footnote's `data` attributes) in their callbacks.
