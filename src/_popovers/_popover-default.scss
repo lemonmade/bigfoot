@@ -134,6 +134,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     border-radius: $popover-border-radius;
     border: $popover-border;
     box-shadow: $popover-box-shadow;
+    line-height: 0;
 
     // TRANSITIONS AND ANIMATIONS
     @if $popover-transition != none {

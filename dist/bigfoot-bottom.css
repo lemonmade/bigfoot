@@ -92,6 +92,7 @@
   border-radius: 0;
   border: 1px solid #c3c3c3;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+  line-height: 0;
   -webkit-transition: -webkit-transform;
   -moz-transition: -moz-transform;
   -ms-transition: -ms-transform;

@@ -1,4 +1,4 @@
-// bigfoot - v2.0.2 - 2014.07.15
+// bigfoot - v2.0.3 - 2014.07.15
 
 
 //  ___ __ __    ________  __     __    ________  ___   __    ______
@@ -29,16 +29,18 @@
 @mixin transition-property($properties) {
     $prefixes: ("-webkit-", "-moz-", "-ms-", "");
 
-    @for $i from 1 through length($prefixes) {
-        #{unquote(nth($prefixes, $i))}transition: prefix-properties($properties, nth($prefixes, $i));
+    @each $prefix in $prefixes {
+        #{unquote($prefix)}transition: prefix-properties($properties, $prefix);
     }
 }
 
 @function prefix-properties($properties, $prefix) {
     $new-props: property-checker(nth($properties, 1), $prefix);
     @if(length($properties) > 1) {
-        @for $i from 2 through length($properties) {
-            $new-props: $new-props + ", " + property-checker(nth($properties, $i), $prefix);
+        @if length($properties) > 1 {
+            @for $i from 2 through length($properties) {
+                $new-props: $new-props + ", " + property-checker(nth($properties, $i), $prefix);
+            }
         }
     }
     @return unquote($new-props);
@@ -108,6 +110,7 @@
         }
     }
 }
+
 
 
 // -----
@@ -546,6 +549,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
     border-radius: $popover-border-radius;
     border: $popover-border;
     box-shadow: $popover-box-shadow;
+    line-height: 0;
 
     // TRANSITIONS AND ANIMATIONS
     @if $popover-transition != none {

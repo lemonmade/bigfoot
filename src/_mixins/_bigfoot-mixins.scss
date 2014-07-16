@@ -26,16 +26,18 @@
 @mixin transition-property($properties) {
     $prefixes: ("-webkit-", "-moz-", "-ms-", "");
 
-    @for $i from 1 through length($prefixes) {
-        #{unquote(nth($prefixes, $i))}transition: prefix-properties($properties, nth($prefixes, $i));
+    @each $prefix in $prefixes {
+        #{unquote($prefix)}transition: prefix-properties($properties, $prefix);
     }
 }
 
 @function prefix-properties($properties, $prefix) {
     $new-props: property-checker(nth($properties, 1), $prefix);
     @if(length($properties) > 1) {
-        @for $i from 2 through length($properties) {
-            $new-props: $new-props + ", " + property-checker(nth($properties, $i), $prefix);
+        @if length($properties) > 1 {
+            @for $i from 2 through length($properties) {
+                $new-props: $new-props + ", " + property-checker(nth($properties, $i), $prefix);
+            }
         }
     }
     @return unquote($new-props);

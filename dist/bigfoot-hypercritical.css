@@ -107,6 +107,7 @@
   border-radius: 0.5em;
   border: 2px solid #567271;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  line-height: 0;
   -webkit-transition: opacity, -webkit-transform;
   -moz-transition: opacity, -moz-transform;
   -ms-transition: opacity, -ms-transform;
