@@ -665,6 +665,14 @@
             } else if(dim.indexOf("px") >= 0) {
                 // Set in px
                 dim = parseFloat(dim);
+                if(dim <= 60) {
+                    // Weird issue in FF where %-based widths would be resolved
+                    // to px before being reported. Assume that smallest possible
+                    // expicitly-set max width is 60px, otherwise, it's the result
+                    // of this calculation.
+                    dim = dim / parseFloat($el.parent().css("width"));
+                }
+                dim = parseFloat(dim);
             } else if(dim.indexOf("%") >= 0) {
                 // Set in percentages
                 dim = parseFloat(dim)/100;
