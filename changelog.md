@@ -11,3 +11,6 @@
 
 # 2.0.3
 - Added a second argument (`$button`) to the `activateCallback` setting to allow users to access the footnote button (most notably, the footnote's `data` attributes) in their callbacks.
+
+# 2.0.4
+- Fixed line height issues on the standard themes.
