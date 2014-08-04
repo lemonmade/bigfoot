@@ -1,4 +1,4 @@
-// bigfoot - v2.0.3 - 2014.07.15
+// bigfoot - v2.0.3 - 2014.08.03
 
 
 //  ___ __ __    ________  __     __    ________  ___   __    ______
@@ -752,6 +752,7 @@ $popover-scroll-up-transition-delay:            0.4s; // Sets the delay for the 
 
     // TEXT
     -webkit-font-smoothing: subpixel-antialiased;
+    line-height: 1.3;
 
     // INTERIOR ELEMENTS
     img { max-width: 100%; }
