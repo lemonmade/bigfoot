@@ -1,123 +1,107 @@
 module.exports = function(grunt) {
 
-    // 1. CONFIG
-    grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
+	// 1. CONFIG
+	grunt.initConfig({
+		pkg: grunt.file.readJSON("package.json"),
 
-        jshint: {
-            options: {
-                reporter: require("jshint-stylish"),
+		uglify: {
+			build: {
+				src: "dist/bigfoot.js",
+				dest: "dist/bigfoot.min.js"
+			}
+		},
 
-                globals: {
-                    console:    true,
-                    $:          true,
-                    jQuery:     true,
-                }
-            },
+		concat: {
+			options: {
+				stripBanners: true,
+				banner: "// <%= pkg.name %> - v<%= pkg.version %> - " +
+						"<%= grunt.template.today(\"yyyy.mm.dd\") %>\n\n\n",
+				separator: "\n\n\n// -----\n\n\n"
+			},
 
-            target: ["src/bigfoot.js"]
-        },
+			main: {
+				src: [
+          "src/_mixins/_bigfoot-mixins.scss",
+          "src/_*/*-default.scss"
+        ],
+				dest: "dist/bigfoot-default.scss"
+			},
 
-        uglify: {
-            build: {
-                src: "src/bigfoot.js",
-                dest: "dist/bigfoot.min.js"
-            }
-        },
+			number: {
+				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-number.scss", "src/_popovers/_popover-default.scss"],
+				dest: "dist/bigfoot-number.scss"
+			},
 
-        concat: {
-            options: {
-                stripBanners: true,
-                banner: "// <%= pkg.name %> - v<%= pkg.version %> - " +
-                        "<%= grunt.template.today(\"yyyy.mm.dd\") %>\n\n\n",
-                separator: "\n\n\n// -----\n\n\n"
-            },
+			daring: {
+				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-daring.scss"],
+				dest: "dist/bigfoot-daring.scss"
+			},
 
-            main: {
-                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-default.scss"],
-                dest: "dist/bigfoot-default.scss"
-            },
+			hypercritical: {
+				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-hypercritical.scss"],
+				dest: "dist/bigfoot-hypercritical.scss"
+			},
 
-            number: {
-                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-number.scss", "src/_popovers/_popover-default.scss"],
-                dest: "dist/bigfoot-number.scss"
-            },
+			bottom: {
+				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_buttons/_button-default.scss", "src/_*/*-bottom.scss"],
+				dest: "dist/bigfoot-bottom.scss"
+			},
+		},
 
-            daring: {
-                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-daring.scss"],
-                dest: "dist/bigfoot-daring.scss"
-            },
+		coffee: {
+			dist: {
+				src: "src/bigfoot.coffee",
+				dest: "dist/bigfoot.js"
+			}
+		},
 
-            hypercritical: {
-                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-hypercritical.scss"],
-                dest: "dist/bigfoot-hypercritical.scss"
-            },
+		sass: {
+			dist: {
+				options: { style: "expanded", loadPath: require("node-bourbon").includePaths },
 
-            bottom: {
-                src: ["src/_mixins/_bigfoot-mixins.scss", "src/_buttons/_button-default.scss", "src/_*/*-bottom.scss"],
-                dest: "dist/bigfoot-bottom.scss"
-            },
-        },
+				files: {
+					"dist/bigfoot-bottom.css": "dist/bigfoot-bottom.scss",
+					"dist/bigfoot-daring.css": "dist/bigfoot-daring.scss",
+					"dist/bigfoot-default.css": "dist/bigfoot-default.scss",
+					"dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.scss",
+					"dist/bigfoot-number.css": "dist/bigfoot-number.scss"
+				}
+			}
+		},
 
-        sass: {
-            dist: {
-                options: { style: "expanded", loadPath: require("node-bourbon").includePaths },
+		autoprefixer: {
+			dist: {
+				files: {
+					"dist/bigfoot-bottom.css": "dist/bigfoot-bottom.css",
+					"dist/bigfoot-daring.css": "dist/bigfoot-daring.css",
+					"dist/bigfoot-default.css": "dist/bigfoot-default.css",
+					"dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.css",
+					"dist/bigfoot-number.css": "dist/bigfoot-number.css"
+				}
+			}
+		},
 
-                files: {
-                    "dist/bigfoot-bottom.css": "dist/bigfoot-bottom.scss",
-                    "dist/bigfoot-daring.css": "dist/bigfoot-daring.scss",
-                    "dist/bigfoot-default.css": "dist/bigfoot-default.scss",
-                    "dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.scss",
-                    "dist/bigfoot-number.css": "dist/bigfoot-number.scss"
-                }
-            }
-        },
+		watch: {
+			options: { livereload: false },
 
-        autoprefixer: {
-            dist: {
-                files: {
-                    "dist/bigfoot-bottom.css": "dist/bigfoot-bottom.css",
-                    "dist/bigfoot-daring.css": "dist/bigfoot-daring.css",
-                    "dist/bigfoot-default.css": "dist/bigfoot-default.css",
-                    "dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.css",
-                    "dist/bigfoot-number.css": "dist/bigfoot-number.css"
-                }
-            }
-        },
+			coffee: {
+				files: ["src/bigfoot.coffee"],
+				tasks: ["coffee", "uglify"],
+				options: { spawn: false }
+			},
 
-        shell: {
-            copyMain: {
-                command: 'cp src/bigfoot.js dist/bigfoot.js'
-            }
-        },
+			scss: {
+				files: ["src/**/*.scss"],
+				tasks: ["concat", "sass", "autoprefixer"],
+				options: { spawn: false }
+			}
+		}
+	});
 
-        watch: {
-            options: { livereload: false },
+	// 2. TASKS
+	require("load-grunt-tasks")(grunt);
 
-            js: {
-                files: ["src/bigfoot.js"],
-                tasks: ["uglify", "jshint", "shell:copyMain"],
-                options: { spawn: false }
-            },
-
-            scss: {
-                files: ["src/**/*.scss"],
-                tasks: ["concat", "sass"],
-                options: { spawn: false }
-            },
-
-            css: {
-                files: ["dist/**/*.css"],
-                tasks: ["autoprefixer"],
-                options: { spawn: false }
-            }
-        }
-    });
-
-    // 2. TASKS
-    require("load-grunt-tasks")(grunt);
-
-    // 3. PERFORM
-    grunt.registerTask("default", ["jshint", "autoprefixer", "uglify", "concat", "sass", "shell"]);
+	// 3. PERFORM
+	grunt.registerTask("default", ["coffee", "uglify", "concat", "sass", "autoprefixer"]);
 
 }
