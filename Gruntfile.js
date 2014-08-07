@@ -48,11 +48,7 @@ module.exports = function(grunt) {
 		autoprefixer: {
 			dist: {
 				files: {
-					"dist/bigfoot-bottom.css": "dist/bigfoot-bottom.css",
-					"dist/bigfoot-daring.css": "dist/bigfoot-daring.css",
-					"dist/bigfoot-default.css": "dist/bigfoot-default.css",
-					"dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.css",
-					"dist/bigfoot-number.css": "dist/bigfoot-number.css"
+					"dist/bigfoot-default.css": "dist/bigfoot-default.css"
 				}
 			}
 		},
