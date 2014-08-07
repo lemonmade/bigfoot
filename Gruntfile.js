@@ -77,5 +77,7 @@ module.exports = function(grunt) {
 
 	// 3. PERFORM
 	grunt.registerTask("default", ["coffee", "uglify", "concat", "sass", "autoprefixer"]);
+  grunt.registerTask("styles", ["concat", "sass", "autoprefixer"]);
+  grunt.registerTask("scripts", ["coffee", "uglify"]);
 
 }
