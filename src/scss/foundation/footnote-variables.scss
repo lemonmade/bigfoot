@@ -1,0 +1,125 @@
+//        ___       ___          ___       ___                      ___          ___
+//       /  /\     /  /\        /  /\     /  /\         ___        /  /\        /  /\
+//      /  /::\   /  /::\      /  /::\   /  /::\       /__/\      /  /:/_      /  /::\
+//     /  /:/\:\ /  /:/\:\    /  /:/\:\ /  /:/\:\      \  \:\    /  /:/ /\    /  /:/\:\
+//    /  /:/~/://  /:/  \:\  /  /:/~/://  /:/  \:\      \  \:\  /  /:/ /:/_  /  /:/~/:/
+//   /__/:/ /://__/:/ \__\:\/__/:/ /://__/:/ \__\:\ ___  \__\:\/__/:/ /:/ /\/__/:/ /:/___
+//   \  \:\/:/ \  \:\ /  /:/\  \:\/:/ \  \:\ /  /://__/\ |  |:|\  \:\/:/ /:/\  \:\/:::::/
+//    \  \::/   \  \:\  /:/  \  \::/   \  \:\  /:/ \  \:\|  |:| \  \::/ /:/  \  \::/~~~~
+//     \  \:\    \  \:\/:/    \  \:\    \  \:\/:/   \  \:\__|:|  \  \:\/:/    \  \:\
+//      \  \:\    \  \::/      \  \:\    \  \::/     \__\::::/    \  \::/      \  \:\
+//       \__\/     \__\/        \__\/     \__\/          ~~~~      \__\/        \__\/
+//
+// These are the key variables for styling the popover.
+// Just set the variable to none if you don't want that styling.
+
+// KEY VARIABLES
+// =============================================================================
+
+// STYLES
+$popover-width:                         22em;                           // Ideal width of the popover
+$popover-max-width:                     90%;                            // Best as a % to accommodate smaller viewports
+$popover-max-height:                    15em;                           // Maximum size of the content area
+$popover-color-background:              rgb(250, 250, 250);             // Color of the popover background
+$popover-border-radius:                 0.5em;                          // Radius of the corners of the popover
+$popover-border:                        1px solid rgb(195, 195, 195);   // Border of the popover/ tooltip
+$popover-inactive-opacity:              0;                              // Opacity of the popover when instantiated/ deactivating
+$popover-active-opacity:                0.97;                           // Opacity of the popover when active
+$popover-box-shadow:                    0px 0px 8px rgba(0, 0, 0, 0.3); // Sets the box shadow under the popover/ tooltip
+$popover-display-style:                 inline-block;                   // Determines the display style of the main popover
+$popover-bottom-position:               auto;                           // Sets the bottom position of the popover. Use only when setting positionPopover to false in the script
+$popover-left-position:                 auto;                           // Sets the left position of the popover. Use only when setting positionPopover to false in the script
+$popover-tooltip-size:                  1.3em;                          // Sets the side lengths of the tooltip
+$popover-scroll-indicator-color:        rgba(black, 0.08);              // The color of the scroll indicator
+$popover-scroll-indicator-size:         1.8em;                          // The font size of the scroll indicator ellipsis
+$popover-initial-transform-state:       scale(0.1) translateZ(0);       // The inital transform state for the popover
+$popover-active-transform-state:        scale(1) translateZ(0);         // The transform state for the popover once it is fully activated
+
+// OPTIONAL ELEMENTS
+$popover-include-tooltip:               true;                           // Adds a tooltip pointing to the footnote button
+$popover-include-scroll-indicator:      true;                           // Adds an elipsis at the bottom of scrollable popovers
+$popover-include-scrolly-fades:         true;                           // Fades content in on scrollable popovers
+
+
+// OTHER VARIABLES
+// =============================================================================
+
+// POPOVER
+$popover-margin-top:                            0.1em;
+$popover-padding-content-horizontal:            1.3em;
+$popover-padding-content-top:                   1.1em;
+$popover-padding-content-bottom:                1.2em;
+$popover-z-index:                               10;                         // Set the base so that it's above the other body children
+$popover-initial-transform-origin:              50% 0;
+
+// POPOVER CONTENT WRAPPER
+$popover-content-color-background:              $popover-color-background;
+$popover-content-border-radius:                 $popover-border-radius;
+
+// OTHER POPOVER ELEMENTS
+$popover-tooltip-background:                    $popover-color-background;
+$popover-tooltip-radius:                        0;
+$popover-scroll-indicator-bottom-position:      0.45em;
+$popover-scrolly-fade-gradient-start-location:  50%;
+$popover-scroll-indicator-width:                1.5em;
+
+// TRANSITIONS
+$popover-transition-default-duration:           0.25s;
+
+// Use none for areas you don't want to transition
+$popover-transition-properties:                 opacity, transform;         // no mixin to do proper prefixing of the transform, so I have to do it manually; see mixin below
+$popover-scroll-indicator-transition-properties:opacity;
+$popover-scroll-up-transition-delay:            0.4s;                       // Sets the delay for the transition of the scroll indicator when scrolling upwards
+$popover-transition-default-timing-function:   ease;
+
+
+
+
+
+//                     ___                             ___          ___
+//       _____        /__/\         ___       ___     /  /\        /__/\
+//      /  /::\       \  \:\       /  /\     /  /\   /  /::\       \  \:\
+//     /  /:/\:\       \  \:\     /  /:/    /  /:/  /  /:/\:\       \  \:\
+//    /  /:/~/::\  ___  \  \:\   /  /:/    /  /:/  /  /:/  \:\  _____\__\:\
+//   /__/:/ /:/\:|/__/\  \__\:\ /  /::\   /  /::\ /__/:/ \__\:\/__/::::::::\
+//   \  \:\/:/~/:/\  \:\ /  /://__/:/\:\ /__/:/\:\\  \:\ /  /:/\  \:\~~\~~\/
+//    \  \::/ /:/  \  \:\  /:/ \__\/  \:\\__\/  \:\\  \:\  /:/  \  \:\  ~~~
+//     \  \:\/:/    \  \:\/:/       \  \:\    \  \:\\  \:\/:/    \  \:\
+//      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
+//       \__\/        \__\/                           \__\/        \__\/
+//
+// These are the key variables for styling the button.
+// Just set the variable to none if you don't want that styling.
+
+// KEY VARIABLES
+// =============================================================================
+
+$button-height:                         1em;                            // The total height of the button
+$button-width:                          auto;                           // The total button width (applies only if $button-apply-dimensions is true)
+$button-inner-circle-size:              0.32em;                         // Total height/width of the ellipsis circles
+$button-border-radius:                  0.3em;                          // Border radius on the button itself
+$button-left-margin:                    0.2em;                          // Margin between the button and the text to its left
+$button-right-margin:                   0.1em;                          // Margin between the button and the text to its right
+$button-vertical-adjust:                -0.15em;                        // Pushes the buttons along the vertical axis to align it with text as desired
+$button-inner-circle-left-margin:       0.7*$button-inner-circle-size;  // Space between the ellipsis circles
+
+$button-color:                          rgb(70, 70, 70);                // Background color of the button
+$button-hovered-color:                  $button-color;                  // Background color of the button when being hovered
+$button-activating-color:               $button-color;                  // Background color of the button when being clicked
+$button-active-color:                   $button-color;                  // Background color of the button when active
+$button-standard-opacity:               0.3;                            // Opacity for when the button is just sittin' there
+$button-hovered-opacity:                0.6;                            // Opacity for when the button is being hovered over
+$button-activating-opacity:             $button-hovered-opacity;        // Opacity for when the button is being clicked
+$button-active-opacity:                 0.9;                            // Opacity for when the button is active
+$button-active-style-delay:             0.15s;                          // Delay before applying .active styles; this can be used to match to the popover activation transition
+
+$button-inner-circle-color:             rgb(230, 230, 230);             // Background color of the ellipsis circle
+$button-inner-circle-border:            none;                           // Border of the ellipsis circle
+
+
+// OTHER VARIABLES
+// =============================================================================
+
+$button-total-padding:              $button-height - $button-inner-circle-size;
+$button-per-side-padding:           0.5*$button-total-padding;
+$button-transition-properties:      opacity;

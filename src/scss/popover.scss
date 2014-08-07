@@ -1,0 +1,224 @@
+//        ___       ___          ___       ___                      ___          ___
+//       /  /\     /  /\        /  /\     /  /\         ___        /  /\        /  /\
+//      /  /::\   /  /::\      /  /::\   /  /::\       /__/\      /  /:/_      /  /::\
+//     /  /:/\:\ /  /:/\:\    /  /:/\:\ /  /:/\:\      \  \:\    /  /:/ /\    /  /:/\:\
+//    /  /:/~/://  /:/  \:\  /  /:/~/://  /:/  \:\      \  \:\  /  /:/ /:/_  /  /:/~/:/
+//   /__/:/ /://__/:/ \__\:\/__/:/ /://__/:/ \__\:\ ___  \__\:\/__/:/ /:/ /\/__/:/ /:/___
+//   \  \:\/:/ \  \:\ /  /:/\  \:\/:/ \  \:\ /  /://__/\ |  |:|\  \:\/:/ /:/\  \:\/:::::/
+//    \  \::/   \  \:\  /:/  \  \::/   \  \:\  /:/ \  \:\|  |:| \  \::/ /:/  \  \::/~~~~
+//     \  \:\    \  \:\/:/    \  \:\    \  \:\/:/   \  \:\__|:|  \  \:\/:/    \  \:\
+//      \  \:\    \  \::/      \  \:\    \  \::/     \__\::::/    \  \::/      \  \:\
+//       \__\/     \__\/        \__\/     \__\/          ~~~~      \__\/        \__\/
+//
+// Default style for the popover: light gray background, dark gray border, box-shadow,
+// and scales/ fades in when activated
+
+.bigfoot-footnote {
+  // POSITIONING
+  position: absolute;
+  z-index: $popover-z-index;
+  top: 0; left: 0;
+
+  // DISPLAY AND SIZING
+  display: inline-block;
+  box-sizing: border-box;
+  // Height is set in .footnote-content-wrapper
+  max-width: $popover-max-width;
+  // 1.414213... is to get the diagonal height of the tooltip using pythagorus, yo.
+  margin: ((1.4142135624 * $popover-tooltip-size / 2) + $button-height + $popover-margin-top) 0;
+  // fits the popover to the contents
+  display: $popover-display-style;
+
+  // BACKDROP
+  background: $popover-color-background;
+  opacity: $popover-inactive-opacity;
+  border-radius: $popover-border-radius;
+  border: $popover-border;
+  box-shadow: $popover-box-shadow;
+
+  // TRANSITIONS
+  transition-property: $popover-transition-properties;
+  transition-duration: $popover-transition-default-duration;
+  transition-timing-function: $popover-transition-default-timing-function;
+
+  // TRANSFORMS
+  transform: $popover-initial-transform-state;
+  transform-origin: $popover-initial-transform-origin;
+
+
+
+  &.is-positioned-top {
+    top: auto;
+    bottom: 0;
+  }
+
+
+
+  &.is-active {
+    transform: $popover-active-transform-state;
+    opacity: $popover-active-opacity;
+  }
+
+
+
+  &.is-scrollable {
+    &:after {
+      // CONTENT
+      content: '...';
+
+      // POSITIONING
+      position: fixed;
+      bottom: $popover-scroll-indicator-bottom-position;
+      right: 50%;
+      z-index: 20;
+
+      // DISPLAY AND SIZING
+      width: $popover-scroll-indicator-width;
+      // Centers the indicator
+      margin-right: (-0.5 * $popover-scroll-indicator-width);
+
+      // BACKDROP
+      opacity: 1;
+      background-color: $popover-color-background;
+
+      // TEXT
+      // Use Georgia as the periods are round
+      font-family: Georgia;
+      font-weight: bold;
+      font-size: $popover-scroll-indicator-size;
+      text-align: center;
+      color: $popover-scroll-indicator-color;
+      line-height: 0;
+
+      // TRANSITIONS
+      transition-property: $popover-scroll-indicator-transition-properties;
+      transition-duration: $popover-transition-default-duration;
+      transition-property: $popover-scroll-up-transition-delay;
+    }
+
+    .bigfoot-footnote__wrapper {
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        // Above the content
+        z-index: ($popover-z-index + 2);
+        left: 0;
+      }
+
+      &:before {
+        top: -1px;
+        height: $popover-padding-content-top;
+        border-radius: $popover-border-radius $popover-border-radius 0 0;
+        background-image: linear-gradient(to bottom, $popover-color-background $popover-scrolly-fade-gradient-start-location, transparentize($popover-color-background, 1) 100%);
+      }
+
+      &:after {
+        bottom: -1px;
+        height: $popover-padding-content-bottom;
+        border-radius: 0 0 $popover-border-radius $popover-border-radius;
+        background-image: linear-gradient(to top, $popover-color-background $popover-scrolly-fade-gradient-start-location, transparentize($popover-color-background, 1) 100%);
+      }
+    }
+
+    ::-webkit-scrollbar { display: none; }
+  }
+
+
+
+  &.is-fully-scrolled {
+    &:after {
+      opacity: 0;
+      transition-delay: 0;
+    }
+  }
+}
+
+
+
+
+
+.bigfoot-footnote__wrapper {
+  // POSITIONING
+  position: relative;
+  // Above the outer tooltip, below the inner tooltip
+  z-index: ($popover-z-index + 4);
+
+  // DISPLAY AND SIZING
+  width: $popover-width;
+  display: inline-block;
+  box-sizing: inherit;
+  overflow: hidden;
+  margin: 0;
+
+  // BACKDROP
+  background-color: $popover-color-background;
+  border-radius: $popover-border-radius;
+}
+
+
+
+
+
+.bigfoot-footnote__content {
+  // POSITIONING
+  position: relative;
+  z-index: ($popover-z-index - 2); // Below fading bars
+
+  // DISPLAY AND SIZING
+  display: inline-block;
+  max-height: $popover-max-height;
+  padding: $popover-padding-content-top $popover-padding-content-horizontal $popover-padding-content-bottom;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  // BACKDROP
+  background: $popover-content-color-background;
+  border-radius: $popover-content-border-radius;
+
+  // TEXT
+  font-smoothing: subpixel-antialiased;
+
+  // INTERIOR ELEMENTS
+  img { max-width: 100%; }
+  *:last-child { margin-bottom: 0 !important; }
+  *:first-child { margin-top: 0 !important; }
+}
+
+
+
+
+
+.bigfoot-footnote__tooltip {
+  // POSITIONING
+  position: absolute;
+  // Above the footnote-main-wrapper and the outer tooltip
+  z-index: ($popover-z-index + 2);
+
+  // DISPLAY AND SIZING
+  box-sizing: border-box;
+  margin-left: (-0.5 * $popover-tooltip-size);
+  // Smaller by one border-width's worth
+  width: $popover-tooltip-size;
+  height: $popover-tooltip-size;
+  transform: rotate(45deg);
+
+  // BACKDROP
+  background: $popover-tooltip-background;
+  border: $popover-border;
+  box-shadow: $popover-box-shadow;
+  border-top-left-radius: $popover-tooltip-radius;
+
+
+
+  .is-positioned-bottom & {
+    top: (-0.5 * $popover-tooltip-size);
+  }
+
+  .is-positioned-top & {
+    bottom: (-0.5 * $popover-tooltip-size);
+  }
+}

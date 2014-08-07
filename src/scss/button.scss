@@ -1,0 +1,125 @@
+.bigfoot-footnote__container {
+  display: inline-block;
+  position: relative;
+  text-indent: 0;
+}
+
+
+
+
+
+//                     ___                             ___          ___
+//       _____        /__/\         ___       ___     /  /\        /__/\
+//      /  /::\       \  \:\       /  /\     /  /\   /  /::\       \  \:\
+//     /  /:/\:\       \  \:\     /  /:/    /  /:/  /  /:/\:\       \  \:\
+//    /  /:/~/::\  ___  \  \:\   /  /:/    /  /:/  /  /:/  \:\  _____\__\:\
+//   /__/:/ /:/\:|/__/\  \__\:\ /  /::\   /  /::\ /__/:/ \__\:\/__/::::::::\
+//   \  \:\/:/~/:/\  \:\ /  /://__/:/\:\ /__/:/\:\\  \:\ /  /:/\  \:\~~\~~\/
+//    \  \::/ /:/  \  \:\  /:/ \__\/  \:\\__\/  \:\\  \:\  /:/  \  \:\  ~~~
+//     \  \:\/:/    \  \:\/:/       \  \:\    \  \:\\  \:\/:/    \  \:\
+//      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
+//       \__\/        \__\/                           \__\/        \__\/
+
+.bigfoot-footnote__button {
+  // POSITIONING
+  position: relative;
+  z-index: 5;
+  top: $button-vertical-adjust;
+
+  // DISPLAY AND SIZING
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;;
+  display: inline-block;
+  padding: $button-per-side-padding;
+  margin: 0 $button-right-margin 0 $button-left-margin;
+  height: $button-height;
+  width: $button-width;
+
+  // BACKDROP
+  border: none;
+  border-radius: $button-border-radius;
+  cursor: pointer;
+  opacity: $button-standard-opacity;
+  background-color: $button-color;
+  backface-visibility: hidden;
+
+  // TEXT
+  line-height: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  font-smoothing: antialiased;
+
+  // TRANSITIONS
+  transition-property: $button-transition-properties;
+  transition-duration: $popover-transition-default-duration;
+
+  // Put styles to apply when the button is being hovered over
+  &:hover,
+  &:focus {
+    opacity: $button-hovered-opacity;
+    background-color: $button-hovered-color;
+  }
+
+  // Put styles to apply when the button is being clicked
+  &:active {
+    opacity: $button-activating-opacity;
+    background-color: $button-activating-color;
+  }
+
+  // Put styles to apply when the button is active (during after it has been pressed to activate the footnote)
+  &.is-active {
+    opacity: $button-active-opacity;
+    background-color: $button-active-color;
+    transition-delay: $button-active-style-delay;
+  }
+}
+
+
+
+
+
+//       _____         ___                   ___
+//      /  /::\       /  /\         ___     /  /\
+//     /  /:/\:\     /  /::\       /  /\   /  /:/_
+//    /  /:/  \:\   /  /:/\:\     /  /:/  /  /:/ /\
+//   /__/:/ \__\:| /  /:/  \:\   /  /:/  /  /:/ /::\
+//   \  \:\ /  /://__/:/ \__\:\ /  /::\ /__/:/ /:/\:\
+//    \  \:\  /:/ \  \:\ /  /://__/:/\:\\  \:\/:/~/:/
+//     \  \:\/:/   \  \:\  /:/ \__\/  \:\\  \::/ /:/
+//      \  \::/     \  \:\/:/       \  \:\\__\/ /:/
+//       \__\/       \  \::/         \__\/  /__/:/
+//                    \__\/                 \__\/
+
+// Styles to apply to the inner dots included in the button
+.bigfoot-footnote__button__circle {
+  // DISPLAY AND SIZING
+  display: inline-block;
+  width: $button-inner-circle-size;
+  height: $button-inner-circle-size;
+  margin-right: $button-inner-circle-left-margin;
+
+  // BACKDROP
+  border-radius: 100%;
+  background-color: $button-inner-circle-color;
+  border: $button-inner-circle-border;
+
+  &:last-child { margin-right: 0; } // Gets rid of margin on the last circle
+}
+
+
+
+
+
+//        ___       ___                     ___
+//       /  /\     /  /\       ___         /__/\         ___
+//      /  /::\   /  /::\     /  /\        \  \:\       /  /\
+//     /  /:/\:\ /  /:/\:\   /  /:/         \  \:\     /  /:/
+//    /  /:/~/://  /:/~/:/  /__/::\     _____\__\:\   /  /:/
+//   /__/:/ /://__/:/ /:/___\__\/\:\__ /__/::::::::\ /  /::\
+//   \  \:\/:/ \  \:\/:::::/   \  \:\/\\  \:\~~\~~\//__/:/\:\
+//    \  \::/   \  \::/~~~~     \__\::/ \  \:\  ~~~ \__\/  \:\
+//     \  \:\    \  \:\         /__/:/   \  \:\          \  \:\
+//      \  \:\    \  \:\        \__\/     \  \:\          \__\/
+//       \__\/     \__\/                   \__\/
+
+@include print-styles;
