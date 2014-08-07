@@ -25,28 +25,8 @@ module.exports = function(grunt) {
           "src/_*/*-default.scss"
         ],
 				dest: "dist/bigfoot-default.scss"
-			},
-
-			number: {
-				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-number.scss", "src/_popovers/_popover-default.scss"],
-				dest: "dist/bigfoot-number.scss"
-			},
-
-			daring: {
-				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-daring.scss"],
-				dest: "dist/bigfoot-daring.scss"
-			},
-
-			hypercritical: {
-				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_*/*-hypercritical.scss"],
-				dest: "dist/bigfoot-hypercritical.scss"
-			},
-
-			bottom: {
-				src: ["src/_mixins/_bigfoot-mixins.scss", "src/_buttons/_button-default.scss", "src/_*/*-bottom.scss"],
-				dest: "dist/bigfoot-bottom.scss"
-			},
-		},
+			}
+    },
 
 		coffee: {
 			dist: {
