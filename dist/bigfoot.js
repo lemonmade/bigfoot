@@ -18,8 +18,8 @@
         preventPageScroll: true,
         scope: false,
         useFootnoteOnlyOnce: true,
-        contentMarkup: "<aside class=\"footnote-content bottom\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"Footnote {{FOOTNOTENUM}}\"> <div class=\"footnote-main-wrapper\"> <div class=\"footnote-content-wrapper\"> {{FOOTNOTECONTENT}} </div></div> <div class=\"bigfoot-tooltip\"></div> </aside>",
-        buttonMarkup: "<div class='footnote-container'> <a class=\"footnote-button\" id=\"{{SUP:data-footnote-backlink-ref}}\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"See Footnote {{FOOTNOTENUM}}\" rel=\"footnote\" data-footnote-content=\"{{FOOTNOTECONTENT}}\"> <span class=\"footnote-circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span> <span class=\"footnote-circle\"></span> <span class=\"footnote-circle\"></span> </a></div>"
+        contentMarkup: "<aside class=\"bigfoot-footnote bottom\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"Footnote {{FOOTNOTENUM}}\"> <div class=\"bigfoot-footnote__wrapper\"> <div class=\"bigfoot-footnote__content\"> {{FOOTNOTECONTENT}} </div></div> <div class=\"bigfoot-footnote__tooltip\"></div> </aside>",
+        buttonMarkup: "<div class='bigfoot-footnote__container'> <button class=\"bigfoot-footnote__button\" id=\"{{SUP:data-footnote-backlink-ref}}\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"See Footnote {{FOOTNOTENUM}}\" rel=\"footnote\" data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\"> <span class=\"bigfoot-footnote__button__circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span> <span class=\"bigfoot-footnote__button__circle\"></span> <span class=\"bigfoot-footnote__button__circle\"></span> </button></div>"
       };
       settings = $.extend(defaults, options);
       popoverStates = {};
@@ -183,29 +183,29 @@
       buttonHover = function(event) {
         var $buttonHovered, dataIdentifier, otherPopoverSelector;
         if (settings.activateOnHover) {
-          $buttonHovered = $(event.target).closest(".footnote-button");
+          $buttonHovered = $(event.target).closest(".bigfoot-footnote__button");
           dataIdentifier = "[data-footnote-identifier=\"" + ($buttonHovered.attr("data-footnote-identifier")) + "\"]";
-          if ($buttonHovered.hasClass("active")) {
+          if ($buttonHovered.hasClass("is-active")) {
             return;
           }
-          $buttonHovered.addClass("hover-instantiated");
+          $buttonHovered.addClass("is-hover-instantiated");
           if (!settings.allowMultipleFN) {
-            otherPopoverSelector = ".footnote-content:not(" + dataIdentifier + ")";
+            otherPopoverSelector = ".bigfoot-footnote:not(" + dataIdentifier + ")";
             removePopovers(otherPopoverSelector);
           }
-          createPopover(".footnote-button" + dataIdentifier).addClass("hover-instantiated");
+          createPopover(".bigfoot-footnote__button" + dataIdentifier).addClass("is-hover-instantiated");
         }
       };
       touchClick = function(e) {
         var $nearButton, $nearFootnote, $target;
         $target = $(event.target);
-        $nearButton = $target.closest(".footnote-button");
-        $nearFootnote = $target.closest(".footnote-content");
+        $nearButton = $target.closest(".bigfoot-footnote__button");
+        $nearFootnote = $target.closest(".bigfoot-footnote");
         if ($nearButton.length > 0) {
           event.preventDefault();
           clickButton($nearButton);
         } else if ($nearFootnote.length < 1) {
-          if ($(".footnote-content").length > 0) {
+          if ($(".bigfoot-footnote").length > 0) {
             removePopovers();
           }
         }
@@ -216,21 +216,21 @@
         dataIdentifier = "data-footnote-identifier=\"" + ($button.attr("data-footnote-identifier")) + "\"";
         if ($button.hasClass("changing")) {
           return;
-        } else if (!$button.hasClass("active")) {
+        } else if (!$button.hasClass("is-active")) {
           $button.addClass("changing");
           setTimeout((function() {
             return $button.removeClass("changing");
           }), settings.popoverCreateDelay);
-          createPopover(".footnote-button[" + dataIdentifier + "]");
-          $button.addClass("click-instantiated");
+          createPopover(".bigfoot-footnote__button[" + dataIdentifier + "]");
+          $button.addClass("is-click-instantiated");
           if (!settings.allowMultipleFN) {
-            removePopovers(".footnote-content:not([" + dataIdentifier + "])");
+            removePopovers(".bigfoot-footnote:not([" + dataIdentifier + "])");
           }
         } else {
           if (!settings.allowMultipleFN) {
             removePopovers();
           } else {
-            removePopovers(".footnote-content[" + dataIdentifier + "]");
+            removePopovers(".bigfoot-footnote[" + dataIdentifier + "]");
           }
         }
       };
@@ -242,9 +242,9 @@
         } else if (typeof selector !== "string") {
           $buttons = selector.first();
         } else if (settings.allowMultipleFN) {
-          $buttons = $(selector).closest(".footnote-button");
+          $buttons = $(selector).closest(".bigfoot-footnote__button");
         } else {
-          $buttons = $(selector + ":first").closest(".footnote-button");
+          $buttons = $(selector + ":first").closest(".bigfoot-footnote__button");
         }
         $popoversCreated = $();
         $buttons.each(function() {
@@ -252,7 +252,7 @@
           $this = $(this);
           content = void 0;
           try {
-            content = settings.contentMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number")).replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier")).replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-footnote-content")).replace(/\&gtsym\;/g, "&gt;").replace(/\&ltsym\;/g, "&lt;");
+            content = settings.contentMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number")).replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier")).replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-bigfoot-footnote")).replace(/\&gtsym\;/g, "&gt;").replace(/\&ltsym\;/g, "&lt;");
             return content = replaceWithReferenceAttributes(content, "BUTTON", $this);
           } finally {
             $content = $(content);
@@ -263,16 +263,16 @@
             popoverStates[$this.attr("data-footnote-identifier")] = "init";
             $content.attr("bigfoot-max-width", calculatePixelDimension($content.css("max-width"), $content));
             $content.css("max-width", 10000);
-            $contentContainer = $content.find(".footnote-content-wrapper");
+            $contentContainer = $content.find(".bigfoot-footnote__content");
             $content.attr("data-bigfoot-max-height", calculatePixelDimension($contentContainer.css("max-height"), $contentContainer));
             repositionFeet();
-            $this.addClass("active");
-            $content.find(".footnote-content-wrapper").bindScrollHandler();
+            $this.addClass("is-active");
+            $content.find(".bigfoot-footnote__content").bindScrollHandler();
             $popoversCreated = $popoversCreated.add($content);
           }
         });
         setTimeout((function() {
-          return $popoversCreated.addClass("active");
+          return $popoversCreated.addClass("is-active");
         }), settings.popoverCreateDelay);
         return $popoversCreated;
       };
@@ -313,11 +313,11 @@
           scrollTop = $this.scrollTop();
           scrollHeight = $this[0].scrollHeight;
           height = parseInt($this.css("height"));
-          $popover = $this.closest(".footnote-content");
+          $popover = $this.closest(".bigfoot-footnote");
           if ($this.scrollTop() > 0 && $this.scrollTop() < 10) {
-            $popover.addClass("scrollable");
+            $popover.addClass("is-scrollable");
           }
-          if (!$popover.hasClass("scrollable")) {
+          if (!$popover.hasClass("is-scrollable")) {
             return;
           }
           delta = event.type === "DOMMouseScroll" ? event.originalEvent.detail * -40 : event.originalEvent.wheelDelta;
@@ -330,14 +330,14 @@
           };
           if (!up && -delta > scrollHeight - height - scrollTop) {
             $this.scrollTop(scrollHeight);
-            $popover.addClass("fully-scrolled");
+            $popover.addClass("is-fully-scrolled");
             return prevent();
           } else if (up && delta > scrollTop) {
             $this.scrollTop(0);
-            $popover.removeClass("fully-scrolled");
+            $popover.removeClass("is-fully-scrolled");
             return prevent();
           } else {
-            return $popover.removeClass("fully-scrolled");
+            return $popover.removeClass("is-fully-scrolled");
           }
         });
         return $(this);
@@ -346,8 +346,8 @@
         if (settings.deleteOnUnhover && settings.activateOnHover) {
           return setTimeout((function() {
             var $target;
-            $target = $(e.target).closest(".footnote-content, .footnote-button");
-            if ($(".footnote-button:hover, .footnote-content:hover").length < 1) {
+            $target = $(e.target).closest(".bigfoot-footnote, .bigfoot-footnote__button");
+            if ($(".bigfoot-footnote__button:hover, .bigfoot-footnote:hover").length < 1) {
               return removePopovers();
             }
           }), settings.hoverDelay);
@@ -361,7 +361,7 @@
       removePopovers = function(footnotes, timeout) {
         var $buttonsClosed, $linkedButton, $this, footnoteID;
         if (footnotes == null) {
-          footnotes = ".footnote-content";
+          footnotes = ".bigfoot-footnote";
         }
         if (timeout == null) {
           timeout = settings.popoverDeleteDelay;
@@ -373,11 +373,11 @@
         $(footnotes).each(function() {
           $this = $(this);
           footnoteID = $this.attr("data-footnote-identifier");
-          $linkedButton = $(".footnote-button[data-footnote-identifier=\"" + footnoteID + "\"]");
+          $linkedButton = $(".bigfoot-footnote__button[data-footnote-identifier=\"" + footnoteID + "\"]");
           if (!$linkedButton.hasClass("changing")) {
             $buttonsClosed = $buttonsClosed.add($linkedButton);
-            $linkedButton.removeClass("active hover-instantiated click-instantiated").addClass("changing");
-            $this.removeClass("active").addClass("disapearing");
+            $linkedButton.removeClass("is-active is-hover-instantiated is-click-instantiated").addClass("changing");
+            $this.removeClass("is-active").addClass("disapearing");
             return setTimeout((function() {
               $this.remove();
               delete popoverStates[footnoteID];
@@ -391,13 +391,13 @@
         var type;
         if (settings.positionContent) {
           type = e ? e.type : "resize";
-          $(".footnote-content").each(function() {
+          $(".bigfoot-footnote").each(function() {
             var $button, $contentWrapper, $mainWrap, $this, dataIdentifier, identifier, lastState, marginSize, maxHeightInCSS, maxHeightOnScreen, maxWidth, maxWidthInCSS, positionOnTop, relativeToWidth, roomLeft, totalHeight;
             $this = $(this);
             identifier = $this.attr("data-footnote-identifier");
             dataIdentifier = "data-footnote-identifier=\"" + identifier + "\"";
-            $contentWrapper = $this.find(".footnote-content-wrapper");
-            $button = $this.siblings(".footnote-button");
+            $contentWrapper = $this.find(".bigfoot-footnote__content");
+            $button = $this.siblings(".bigfoot-footnote__button");
             roomLeft = roomCalc($button);
             marginSize = parseFloat($this.css("margin-top"));
             maxHeightInCSS = +($this.attr("data-bigfoot-max-height"));
@@ -408,24 +408,24 @@
             if (positionOnTop) {
               if (lastState !== "top") {
                 popoverStates[identifier] = "top";
-                $this.addClass("top").removeClass("bottom");
+                $this.addClass("is-positioned-top").removeClass("is-positioned-bottom");
                 $this.css("transform-origin", (roomLeft.leftRelative * 100) + "% 100%");
               }
               maxHeightOnScreen = roomLeft.topRoom - marginSize - 15;
             } else {
               if (lastState !== "bottom" || lastState === "init") {
                 popoverStates[identifier] = "bottom";
-                $this.removeClass("top").addClass("bottom");
+                $this.removeClass("is-positioned-top").addClass("is-positioned-bottom");
                 $this.css("transform-origin", (roomLeft.leftRelative * 100) + "% 0%");
               }
               maxHeightOnScreen = roomLeft.bottomRoom - marginSize - 15;
             }
-            $this.find(".footnote-content-wrapper").css({
+            $this.find(".bigfoot-footnote__content").css({
               "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px"
             });
             if (type === "resize") {
               maxWidthInCSS = parseFloat($this.attr("bigfoot-max-width"));
-              $mainWrap = $this.find(".footnote-main-wrapper");
+              $mainWrap = $this.find(".bigfoot-footnote__wrapper");
               maxWidth = maxWidthInCSS;
               if (maxWidthInCSS <= 1) {
                 relativeToWidth = (function() {
@@ -441,15 +441,15 @@
                 })();
                 maxWidth = relativeToWidth * maxWidthInCSS;
               }
-              maxWidth = Math.min(maxWidth, $this.find(".footnote-content-wrapper").outerWidth() + 1);
+              maxWidth = Math.min(maxWidth, $this.find(".bigfoot-footnote__content").outerWidth() + 1);
               $mainWrap.css("max-width", maxWidth + "px");
               $this.css({
                 left: (-roomLeft.leftRelative * maxWidth + parseFloat($button.css("margin-left")) + $button.outerWidth() / 2) + "px"
               });
               positionTooltip($this, roomLeft.leftRelative);
             }
-            if (parseInt($this.outerHeight()) < $this.find(".footnote-content-wrapper")[0].scrollHeight) {
-              return $this.addClass("scrollable");
+            if (parseInt($this.outerHeight()) < $this.find(".bigfoot-footnote__content")[0].scrollHeight) {
+              return $this.addClass("is-scrollable");
             }
           });
         }
@@ -459,7 +459,7 @@
         if (leftRelative == null) {
           leftRelative = 0.5;
         }
-        $tooltip = $popover.find(".bigfoot-tooltip");
+        $tooltip = $popover.find(".bigfoot-footnote__tooltip");
         if ($tooltip.length > 0) {
           $tooltip.css("left", "" + (leftRelative * 100) + "%");
         }
@@ -605,9 +605,9 @@
       };
       $(document).ready(function() {
         footnoteInit();
-        $(document).on("mouseenter", ".footnote-button", buttonHover);
+        $(document).on("mouseenter", ".bigfoot-footnote__button", buttonHover);
         $(document).on("touchend click", touchClick);
-        $(document).on("mouseout", ".hover-instantiated", unhoverFeet);
+        $(document).on("mouseout", ".is-hover-instantiated", unhoverFeet);
         $(document).on("keyup", escapeKeypress);
         $(window).on("scroll resize", repositionFeet);
         return $(document).on("gestureend", function() {
