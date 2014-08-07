@@ -37,14 +37,10 @@ module.exports = function(grunt) {
 
 		sass: {
 			dist: {
-				options: { style: "expanded", loadPath: require("node-bourbon").includePaths },
+				options: { style: "expanded" },
 
 				files: {
-					"dist/bigfoot-bottom.css": "dist/bigfoot-bottom.scss",
-					"dist/bigfoot-daring.css": "dist/bigfoot-daring.scss",
-					"dist/bigfoot-default.css": "dist/bigfoot-default.scss",
-					"dist/bigfoot-hypercritical.css": "dist/bigfoot-hypercritical.scss",
-					"dist/bigfoot-number.css": "dist/bigfoot-number.scss"
+					"dist/bigfoot-default.css": "dist/bigfoot-default.scss"
 				}
 			}
 		},
