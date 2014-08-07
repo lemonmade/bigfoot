@@ -170,25 +170,25 @@
       # @since 0.0.1
       # @returns {String}
       # @default
-      # <aside class=\"footnote-content bottom\"
+      # <aside class=\"bigfoot-footnote bottom\"
       #   data-footnote-number=\"{{FOOTNOTENUM}}\"
       #   data-footnote-identifier=\"{{FOOTNOTEID}}\"
       #   alt=\"Footnote {{FOOTNOTENUM}}\">
-      #    <div class=\"footnote-main-wrapper\">
-      #    <div class=\"footnote-content-wrapper\">
+      #    <div class=\"bigfoot-footnote__wrapper\">
+      #    <div class=\"bigfoot-footnote__content\">
       #      {{FOOTNOTECONTENT}}
       #    </div></div>
-      #    <div class=\"bigfoot-tooltip\"></div>
+      #    <div class=\"bigfoot-footnote__tooltip\"></div>
       # </aside>
-      contentMarkup       : "<aside class=\"footnote-content bottom\"
+      contentMarkup       : "<aside class=\"bigfoot-footnote bottom\"
                               data-footnote-number=\"{{FOOTNOTENUM}}\"
                               data-footnote-identifier=\"{{FOOTNOTEID}}\"
                               alt=\"Footnote {{FOOTNOTENUM}}\">
-                                <div class=\"footnote-main-wrapper\">
-                                <div class=\"footnote-content-wrapper\">
+                                <div class=\"bigfoot-footnote__wrapper\">
+                                <div class=\"bigfoot-footnote__content\">
                                   {{FOOTNOTECONTENT}}
                                 </div></div>
-                                <div class=\"bigfoot-tooltip\"></div>
+                                <div class=\"bigfoot-footnote__tooltip\"></div>
                               </aside>"
 
       #*
@@ -202,31 +202,31 @@
       # @since 0.0.1
       # @returns {String}
       # @default
-      # <div class='footnote-container'>
-      #   <a href="#" class="footnote-button"
+      # <div class='bigfoot-footnote__container'>
+      #   <button href="#" class="bigfoot-footnote__button"
       #     id="{{SUP:data-footnote-backlink-ref}}"
       #     data-footnote-number="{{FOOTNOTENUM}}"
       #     data-footnote-identifier="{{FOOTNOTEID}}"
       #     alt="See Footnote {{FOOTNOTENUM}}"
       #     rel="footnote"
-      #     data-footnote-content="{{FOOTNOTECONTENT}}">
-      #       <span class="footnote-circle" data-footnote-number="{{FOOTNOTENUM}}"></span>
-      #       <span class="footnote-circle"></span>
-      #       <span class="footnote-circle"></span>
-      #   </a>
+      #     data-bigfoot-footnote="{{FOOTNOTECONTENT}}">
+      #       <span class="bigfoot-footnote__button__circle" data-footnote-number="{{FOOTNOTENUM}}"></span>
+      #       <span class="bigfoot-footnote__button__circle"></span>
+      #       <span class="bigfoot-footnote__button__circle"></span>
+      #   </button>
       # </div>
-      buttonMarkup        : "<div class='footnote-container'>
-                              <a class=\"footnote-button\"
+      buttonMarkup        : "<div class='bigfoot-footnote__container'>
+                              <button class=\"bigfoot-footnote__button\"
                                 id=\"{{SUP:data-footnote-backlink-ref}}\"
                                 data-footnote-number=\"{{FOOTNOTENUM}}\"
                                 data-footnote-identifier=\"{{FOOTNOTEID}}\"
                                 alt=\"See Footnote {{FOOTNOTENUM}}\"
                                 rel=\"footnote\"
-                                data-footnote-content=\"{{FOOTNOTECONTENT}}\">
-                                  <span class=\"footnote-circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span>
-                                  <span class=\"footnote-circle\"></span>
-                                  <span class=\"footnote-circle\"></span>
-                              </a></div>"
+                                data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\">
+                                  <span class=\"bigfoot-footnote__button__circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span>
+                                  <span class=\"bigfoot-footnote__button__circle\"></span>
+                                  <span class=\"bigfoot-footnote__button__circle\"></span>
+                              </button></div>"
 
     settings = $.extend defaults, options
 
@@ -520,16 +520,16 @@
 
     buttonHover = (event) ->
       if settings.activateOnHover
-        $buttonHovered = $(event.target).closest(".footnote-button")
+        $buttonHovered = $(event.target).closest(".bigfoot-footnote__button")
         dataIdentifier = "[data-footnote-identifier=\"#{$buttonHovered.attr("data-footnote-identifier")}\"]"
-        return if $buttonHovered.hasClass("active")
-        $buttonHovered.addClass "hover-instantiated"
+        return if $buttonHovered.hasClass("is-active")
+        $buttonHovered.addClass "is-hover-instantiated"
 
         # Delete other popovers, unless overriden in the settings
         unless settings.allowMultipleFN
-          otherPopoverSelector = ".footnote-content:not(#{dataIdentifier})"
+          otherPopoverSelector = ".bigfoot-footnote:not(#{dataIdentifier})"
           removePopovers otherPopoverSelector
-        createPopover(".footnote-button#{dataIdentifier}").addClass "hover-instantiated"
+        createPopover(".bigfoot-footnote__button#{dataIdentifier}").addClass "is-hover-instantiated"
 
       return
 
@@ -548,8 +548,8 @@
 
     touchClick = (e) ->
       $target = $(event.target)
-      $nearButton = $target.closest(".footnote-button")
-      $nearFootnote = $target.closest(".footnote-content")
+      $nearButton = $target.closest(".bigfoot-footnote__button")
+      $nearFootnote = $target.closest(".bigfoot-footnote")
 
       # If a button was tapped/ clicked
       if $nearButton.length > 0
@@ -562,7 +562,7 @@
 
       # Something other than a button or popover was pressed
       else if $nearFootnote.length < 1
-        removePopovers() if $(".footnote-content").length > 0
+        removePopovers() if $(".bigfoot-footnote").length > 0
 
       return
 
@@ -591,24 +591,24 @@
       if $button.hasClass("changing")
         return
 
-      else if !$button.hasClass("active")
+      else if !$button.hasClass("is-active")
         $button.addClass "changing"
         setTimeout (->
           $button.removeClass "changing"
         ), settings.popoverCreateDelay
 
-        createPopover ".footnote-button[#{dataIdentifier}]"
-        $button.addClass "click-instantiated"
+        createPopover ".bigfoot-footnote__button[#{dataIdentifier}]"
+        $button.addClass "is-click-instantiated"
 
         # Delete all other footnote popovers if we are only allowing one
-        removePopovers ".footnote-content:not([#{dataIdentifier}])" unless settings.allowMultipleFN
+        removePopovers ".bigfoot-footnote:not([#{dataIdentifier}])" unless settings.allowMultipleFN
 
       else
         # A fully instantiated footnote; either remove it or all footnotes, depending on settings
         unless settings.allowMultipleFN
           removePopovers()
         else
-          removePopovers ".footnote-content[#{dataIdentifier}]"
+          removePopovers ".bigfoot-footnote[#{dataIdentifier}]"
 
       return
 
@@ -617,7 +617,7 @@
     #*
     # Instantiates the footnote popover of the buttons matching the passed selector. This includes replacing any variables in the content markup, decoding any special characters, adding the new element to the page, calling the position function, and adding the scroll handler.
     #
-    # @param {String} selector (".footnote-button") - CSS selector of buttons that are to be activated.
+    # @param {String} selector (".bigfoot-footnote__button") - CSS selector of buttons that are to be activated.
     #
     # @alias activate
     # @author Chris Sauve
@@ -635,9 +635,9 @@
       else if typeof selector isnt "string"
         $buttons = selector.first()
       else if settings.allowMultipleFN
-        $buttons = $(selector).closest(".footnote-button")
+        $buttons = $(selector).closest(".bigfoot-footnote__button")
       else
-        $buttons = $(selector + ":first").closest(".footnote-button")
+        $buttons = $(selector + ":first").closest(".bigfoot-footnote__button")
 
       $popoversCreated = $()
 
@@ -649,7 +649,7 @@
           # Gets the easy replacements out of the way (try is there to ignore the "replacing undefined" error if it's activated too freuqnetly)
           content = settings.contentMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number"))
                                           .replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier"))
-                                          .replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-footnote-content"))
+                                          .replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-bigfoot-footnote"))
                                           .replace(/\&gtsym\;/g, "&gt;")
                                           .replace(/\&ltsym\;/g, "&lt;")
 
@@ -675,18 +675,18 @@
 
           # Instantiate the max-height for storage and use in repositioning
           # Adjust the max-height for the relevant units
-          $contentContainer = $content.find(".footnote-content-wrapper")
+          $contentContainer = $content.find(".bigfoot-footnote__content")
           $content.attr "data-bigfoot-max-height", calculatePixelDimension($contentContainer.css("max-height"), $contentContainer)
           repositionFeet()
-          $this.addClass "active"
+          $this.addClass "is-active"
 
           # Bind the scroll handler to the popover
-          $content.find(".footnote-content-wrapper").bindScrollHandler()
+          $content.find(".bigfoot-footnote__content").bindScrollHandler()
           $popoversCreated = $popoversCreated.add($content)
 
       # Add active class after a delay to give it time to transition
       setTimeout (->
-        $popoversCreated.addClass "active"
+        $popoversCreated.addClass "is-active"
       ), settings.popoverCreateDelay
 
       $popoversCreated
@@ -778,14 +778,14 @@
         scrollTop = $this.scrollTop()
         scrollHeight = $this[0].scrollHeight
         height = parseInt($this.css("height"))
-        $popover = $this.closest(".footnote-content")
+        $popover = $this.closest(".bigfoot-footnote")
 
         # Fix for Safari 7 not properly calculating scrollHeight()
         # Just add the class as soon as there is any scrolling
-        $popover.addClass "scrollable" if $this.scrollTop() > 0 and $this.scrollTop() < 10
+        $popover.addClass "is-scrollable" if $this.scrollTop() > 0 and $this.scrollTop() < 10
 
         # Return if the element isn't scrollable
-        return unless $popover.hasClass("scrollable")
+        return unless $popover.hasClass("is-scrollable")
 
         # Get the change in scroll position
         delta = if event.type is "DOMMouseScroll" then event.originalEvent.detail * -40 else event.originalEvent.wheelDelta
@@ -803,16 +803,16 @@
           # Scrolling down, but this will take us past the bottom.
           $this.scrollTop scrollHeight
           # Give a class for removal of scroll-related styles
-          $popover.addClass "fully-scrolled"
+          $popover.addClass "is-fully-scrolled"
           prevent()
 
         else if up and delta > scrollTop
           # Scrolling up, but this will take us past the top.
           $this.scrollTop 0
-          $popover.removeClass "fully-scrolled"
+          $popover.removeClass "is-fully-scrolled"
           prevent()
         else
-          $popover.removeClass "fully-scrolled"
+          $popover.removeClass "is-fully-scrolled"
 
       $(this)
 
@@ -847,8 +847,8 @@
       if settings.deleteOnUnhover and settings.activateOnHover
         setTimeout (->
           # If the new element is NOT a descendant of the footnote button
-          $target = $(e.target).closest(".footnote-content, .footnote-button")
-          removePopovers() if $(".footnote-button:hover, .footnote-content:hover").length < 1
+          $target = $(e.target).closest(".bigfoot-footnote, .bigfoot-footnote__button")
+          removePopovers() if $(".bigfoot-footnote__button:hover, .bigfoot-footnote:hover").length < 1
         ), settings.hoverDelay
 
 
@@ -872,7 +872,7 @@
     #*
     # Removes/ adds appropriate classes to the footnote content and button after a delay (to allow for transitions) it removes the actual footnote content.
     #
-    # @param {String} footnotes (".footnote-content")         - The CSS selector of the footnotes to be removed.
+    # @param {String} footnotes (".bigfoot-footnote")         - The CSS selector of the footnotes to be removed.
     # @param {Number} timeout   (settings.popoverDeleteDelay) - The delay between adding the removal classes and actually removing the popover from the DOM.
     #
     # @alias close
@@ -882,7 +882,7 @@
     # @access public
     # @returns {jQuery} - The buttons whose popovers were removed by the call.
 
-    removePopovers = (footnotes = ".footnote-content", timeout = settings.popoverDeleteDelay) ->
+    removePopovers = (footnotes = ".bigfoot-footnote", timeout = settings.popoverDeleteDelay) ->
       $buttonsClosed = $()
       footnoteID = undefined
       $linkedButton = undefined
@@ -891,12 +891,12 @@
       $(footnotes).each ->
         $this = $(this)
         footnoteID = $this.attr("data-footnote-identifier")
-        $linkedButton = $(".footnote-button[data-footnote-identifier=\"#{footnoteID}\"]")
+        $linkedButton = $(".bigfoot-footnote__button[data-footnote-identifier=\"#{footnoteID}\"]")
 
         unless $linkedButton.hasClass("changing")
           $buttonsClosed = $buttonsClosed.add($linkedButton)
-          $linkedButton.removeClass("active hover-instantiated click-instantiated").addClass "changing"
-          $this.removeClass("active").addClass "disapearing"
+          $linkedButton.removeClass("is-active is-hover-instantiated is-click-instantiated").addClass "changing"
+          $this.removeClass("is-active").addClass "disapearing"
 
           # Gets rid of the footnote after the timeout
           setTimeout (->
@@ -940,13 +940,13 @@
       if settings.positionContent
         type = if e then e.type else "resize"
 
-        $(".footnote-content").each ->
+        $(".bigfoot-footnote").each ->
           # Element Definitions
           $this = $(this)
           identifier = $this.attr("data-footnote-identifier")
           dataIdentifier = "data-footnote-identifier=\"" + identifier + "\""
-          $contentWrapper = $this.find(".footnote-content-wrapper")
-          $button = $this.siblings(".footnote-button")
+          $contentWrapper = $this.find(".bigfoot-footnote__content")
+          $button = $this.siblings(".bigfoot-footnote__button")
 
           # Spacing Information
           roomLeft = roomCalc($button)
@@ -965,7 +965,7 @@
             # Previous state was bottom, switch it and change classes
             unless lastState is "top"
               popoverStates[identifier] = "top"
-              $this.addClass("top").removeClass "bottom"
+              $this.addClass("is-positioned-top").removeClass "is-positioned-bottom"
               $this.css "transform-origin", (roomLeft.leftRelative * 100) + "% 100%"
             maxHeightOnScreen = roomLeft.topRoom - marginSize - 15
 
@@ -973,18 +973,18 @@
             # Previous state was top, switch it and change classes
             if lastState isnt "bottom" or lastState is "init"
               popoverStates[identifier] = "bottom"
-              $this.removeClass("top").addClass "bottom"
+              $this.removeClass("is-positioned-top").addClass "is-positioned-bottom"
               $this.css "transform-origin", (roomLeft.leftRelative * 100) + "% 0%"
 
             maxHeightOnScreen = roomLeft.bottomRoom - marginSize - 15
 
           # Sets the max height so that there is no footnote overflow
-          $this.find(".footnote-content-wrapper").css "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px"
+          $this.find(".bigfoot-footnote__content").css "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px"
 
           # Only perform sizing operations when the actual window was resized.
           if type is "resize"
             maxWidthInCSS = parseFloat($this.attr("bigfoot-max-width"))
-            $mainWrap = $this.find(".footnote-main-wrapper")
+            $mainWrap = $this.find(".bigfoot-footnote__wrapper")
             maxWidth = maxWidthInCSS # default to assuming pixel/em/rem value
             if maxWidthInCSS <= 1
               # Max width in CSS set as a percentage
@@ -1009,9 +1009,9 @@
             # Set the max width to the smaller of the calculated width based on the
             # percentage/ other value and the width of the actual content (prevents
             # excess width for small footnotes)
-            maxWidth = Math.min(maxWidth, $this.find(".footnote-content-wrapper").outerWidth() + 1)
+            maxWidth = Math.min(maxWidth, $this.find(".bigfoot-footnote__content").outerWidth() + 1)
 
-            # Set this on the main wrapper. This allows the footnote-content div
+            # Set this on the main wrapper. This allows the bigfoot-footnote div
             # to be displayed as inline-block, wrapping it around the content.
             $mainWrap.css "max-width", maxWidth + "px"
 
@@ -1022,7 +1022,7 @@
             positionTooltip $this, roomLeft.leftRelative
 
           # Give scrollable class if the content hight is larger than the container
-          $this.addClass "scrollable"  if parseInt($this.outerHeight()) < $this.find(".footnote-content-wrapper")[0].scrollHeight
+          $this.addClass "is-scrollable" if parseInt($this.outerHeight()) < $this.find(".bigfoot-footnote__content")[0].scrollHeight
 
       return
 
@@ -1041,7 +1041,7 @@
     # @returns {undefined}
 
     positionTooltip = ($popover, leftRelative = 0.5) ->
-      $tooltip = $popover.find(".bigfoot-tooltip")
+      $tooltip = $popover.find(".bigfoot-footnote__tooltip")
 
       $tooltip.css("left", "#{leftRelative*100}%") if $tooltip.length > 0
       return
@@ -1338,9 +1338,9 @@
     $(document).ready ->
       footnoteInit()
 
-      $(document).on "mouseenter", ".footnote-button", buttonHover
+      $(document).on "mouseenter", ".bigfoot-footnote__button", buttonHover
       $(document).on "touchend click", touchClick
-      $(document).on "mouseout", ".hover-instantiated", unhoverFeet
+      $(document).on "mouseout", ".is-hover-instantiated", unhoverFeet
       $(document).on "keyup", escapeKeypress
       $(window).on "scroll resize", repositionFeet
       $(document).on "gestureend", () ->
