@@ -21,8 +21,10 @@ module.exports = function(grunt) {
 
 			main: {
 				src: [
-          "src/_mixins/_bigfoot-mixins.scss",
-          "src/_*/*-default.scss"
+          "src/scss/foundation/footnote-variables.scss",
+          "src/scss/foundation/footnote-mixins.scss",
+          "src/scss/button.scss",
+          "src/scss/popover.scss"
         ],
 				dest: "dist/bigfoot-default.scss"
 			}
@@ -30,7 +32,7 @@ module.exports = function(grunt) {
 
 		coffee: {
 			dist: {
-				src: "src/bigfoot.coffee",
+				src: "src/coffee/bigfoot.coffee",
 				dest: "dist/bigfoot.js"
 			}
 		},
@@ -57,7 +59,7 @@ module.exports = function(grunt) {
 			options: { livereload: false },
 
 			coffee: {
-				files: ["src/bigfoot.coffee"],
+				files: ["src/coffee/bigfoot.coffee"],
 				tasks: ["coffee", "uglify"],
 				options: { spawn: false }
 			},
