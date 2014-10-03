@@ -1,4 +1,40 @@
 module.exports = function(grunt) {
+	var baseStyles = [
+		"src/scss/foundation/footnote-variables.scss",
+		"src/scss/foundation/footnote-mixins.scss",
+		"src/scss/button.scss",
+		"src/scss/popover.scss"
+	];
+
+	var variants = [
+		"bottom"
+	];
+
+	var concatSet = {
+		options: {
+			stripBanners: true,
+			banner: "// <%= pkg.name %> - v<%= pkg.version %> - " +
+					"<%= grunt.template.today(\"yyyy.mm.dd\") %>\n\n\n",
+			separator: "\n\n\n// -----\n\n\n"
+		},
+
+		main: { src: baseStyles, dest: "dist/bigfoot-default.scss" }
+  };
+
+	var sassSet =       { "dist/bigfoot-default.css": "dist/bigfoot-default.scss" };
+	var autoprefixSet = { "dist/bigfoot-default.css": "dist/bigfoot-default.css"  };
+
+	variants.forEach(function(variant) {
+		var css  = "dist/bigfoot-" + variant + ".css";
+		var scss = css.replace(".css", ".scss");
+		var src  = scss.replace("dist/", "src/scss/variants/");
+		var conc = baseStyles.slice(0);
+		conc.push(src)
+
+		concatSet[variant] = { src: conc, dest: scss };
+		sassSet[css] = scss;
+		autoprefixSet[css] = css;
+	});
 
 	// 1. CONFIG
 	grunt.initConfig({
@@ -11,24 +47,7 @@ module.exports = function(grunt) {
 			}
 		},
 
-		concat: {
-			options: {
-				stripBanners: true,
-				banner: "// <%= pkg.name %> - v<%= pkg.version %> - " +
-						"<%= grunt.template.today(\"yyyy.mm.dd\") %>\n\n\n",
-				separator: "\n\n\n// -----\n\n\n"
-			},
-
-			main: {
-				src: [
-          "src/scss/foundation/footnote-variables.scss",
-          "src/scss/foundation/footnote-mixins.scss",
-          "src/scss/button.scss",
-          "src/scss/popover.scss"
-        ],
-				dest: "dist/bigfoot-default.scss"
-			}
-    },
+		concat: concatSet,
 
 		coffee: {
 			dist: {
@@ -41,17 +60,13 @@ module.exports = function(grunt) {
 			dist: {
 				options: { style: "expanded" },
 
-				files: {
-					"dist/bigfoot-default.css": "dist/bigfoot-default.scss"
-				}
+				files: sassSet
 			}
 		},
 
 		autoprefixer: {
 			dist: {
-				files: {
-					"dist/bigfoot-default.css": "dist/bigfoot-default.css"
-				}
+				files: autoprefixSet
 			}
 		},
 
