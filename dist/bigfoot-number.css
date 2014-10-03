@@ -249,37 +249,34 @@
   bottom: -0.65em;
 }
 
-.bigfoot-footnote {
-  position: fixed;
-  bottom: 0;
-  top: auto;
-  left: 0;
-  right: auto;
-  width: 100%;
-  margin: 0;
-  border-radius: 0;
-  opacity: 1;
-  -webkit-transform: translateY(100%);
-  -ms-transform: translateY(100%);
-  transform: translateY(100%);
-  -webkit-transition: -webkit-transform 0.3s ease;
-  transition: transform 0.3s ease;
-  border-width: 1px 0 0;
+.bigfoot-footnote__button {
+  border-radius: 0.475em;
+  height: 0.95em;
+  width: 1.5em;
+  position: relative;
 }
 
-.bigfoot-footnote.is-active {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
+.bigfoot-footnote__button:after {
+  content: attr(data-footnote-number);
+  font-size: 0.57em;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: rgba(110, 110, 110, 0.5);
+  -webkit-transition: color 0.25s ease;
+  transition: color 0.25s ease;
 }
 
-.bigfoot-footnote__wrapper {
-  margin: 0 0 0 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
+.bigfoot-footnote__button:hover:after,
+.bigfoot-footnote__button.is-active:after {
+  color: white;
 }
 
-.bigfoot-footnote__tooltip {
+.bigfoot-footnote__button__circle {
   display: none;
 }

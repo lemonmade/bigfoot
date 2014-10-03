@@ -535,40 +535,44 @@ $button-transition-properties:      background-color;
 // -----
 
 
-//                     ___                             ___          ___
-//       _____        /  /\         ___       ___     /  /\        /__/\
-//      /  /::\      /  /::\       /  /\     /  /\   /  /::\      |  |::\
-//     /  /:/\:\    /  /:/\:\     /  /:/    /  /:/  /  /:/\:\     |  |:|:\
-//    /  /:/~/::\  /  /:/  \:\   /  /:/    /  /:/  /  /:/  \:\  __|__|:|\:\
-//   /__/:/ /:/\:|/__/:/ \__\:\ /  /::\   /  /::\ /__/:/ \__\:\/__/::::| \:\
-//   \  \:\/:/~/:/\  \:\ /  /://__/:/\:\ /__/:/\:\\  \:\ /  /:/\  \:\~~\__\/
-//    \  \::/ /:/  \  \:\  /:/ \__\/  \:\\__\/  \:\\  \:\  /:/  \  \:\
-//     \  \:\/:/    \  \:\/:/       \  \:\    \  \:\\  \:\/:/    \  \:\
-//      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
-//       \__\/        \__\/                           \__\/        \__\/
+//        ___          ___          ___                       ___          ___
+//       /__/\        /__/\        /__/\        _____        /  /\        /  /\
+//       \  \:\       \  \:\      |  |::\      /  /::\      /  /:/_      /  /::\
+//        \  \:\       \  \:\     |  |:|:\    /  /:/\:\    /  /:/ /\    /  /:/\:\
+//    _____\__\:\  ___  \  \:\  __|__|:|\:\  /  /:/~/::\  /  /:/ /:/_  /  /:/~/:/
+//   /__/::::::::\/__/\  \__\:\/__/::::| \:\/__/:/ /:/\:|/__/:/ /:/ /\/__/:/ /:/___
+//   \  \:\~~\~~\/\  \:\ /  /:/\  \:\~~\__\/\  \:\/:/~/:/\  \:\/:/ /:/\  \:\/:::::/
+//    \  \:\  ~~~  \  \:\  /:/  \  \:\       \  \::/ /:/  \  \::/ /:/  \  \::/~~~~
+//     \  \:\       \  \:\/:/    \  \:\       \  \:\/:/    \  \:\/:/    \  \:\
+//      \  \:\       \  \::/      \  \:\       \  \::/      \  \::/      \  \:\
+//       \__\/        \__\/        \__\/        \__\/        \__\/        \__\/
 
-.bigfoot-footnote {
-  position: fixed;
-  bottom: 0; top: auto;
-  left: 0; right: auto;
-  width: 100%;
-  margin: 0;
-  border-radius: 0;
-  opacity: 1;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-  border-width: 1px 0 0;
+.bigfoot-footnote__button {
+  border-radius: $button-height/2;
+  height: $button-height;
+  width: 1.5em;
+  position: relative;
 
+  &:after {
+    content: attr(data-footnote-number);
+    font-size: $button-height*0.6;
+    display: block;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: rgba($button-color, 0.5);
+    transition: color $popover-transition-default-duration $popover-transition-default-timing-function;
+  }
+
+  &:hover,
   &.is-active {
-    transform: translateY(0);
+    &:after {
+      color: white;
+    }
   }
 }
 
-.bigfoot-footnote__wrapper {
-  margin: 0 0 0 50%;
-  transform: translateX(-50%);
-}
-
-.bigfoot-footnote__tooltip {
+.bigfoot-footnote__button__circle {
   display: none;
 }

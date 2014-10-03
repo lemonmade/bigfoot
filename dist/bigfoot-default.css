@@ -11,8 +11,7 @@
   border: none;
   border-radius: 0.3em;
   cursor: pointer;
-  opacity: 0.2;
-  background-color: #6e6e6e;
+  background-color: rgba(110, 110, 110, 0.2);
   -webkit-backface-visibility: hidden;
   -ms-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -21,8 +20,8 @@
   vertical-align: middle;
   text-decoration: none;
   font-smoothing: antialiased;
-  -webkit-transition-property: opacity;
-  transition-property: opacity;
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
   -webkit-transition-duration: 0.25s;
   transition-duration: 0.25s;
 }
@@ -30,17 +29,14 @@
 .bigfoot-footnote__button:hover,
 .bigfoot-footnote__button:focus {
   outline: none;
-  opacity: 0.5;
-  background-color: #6e6e6e;
+  background-color: rgba(110, 110, 110, 0.5);
 }
 
 .bigfoot-footnote__button:active {
-  opacity: 0.5;
-  background-color: #6e6e6e;
+  background-color: rgba(110, 110, 110, 0.5);
 }
 
 .bigfoot-footnote__button.is-active {
-  opacity: 1;
   background-color: #6e6e6e;
   -webkit-transition-delay: 0.1s;
   transition-delay: 0.1s;
