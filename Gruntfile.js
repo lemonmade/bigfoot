@@ -1,9 +1,9 @@
 module.exports = function(grunt) {
 	var baseStyles = [
-		"src/scss/foundation/footnote-variables.scss",
-		"src/scss/foundation/footnote-mixins.scss",
-		"src/scss/button.scss",
-		"src/scss/popover.scss"
+		"src/scss/foundation/bigfoot-variables.scss",
+		"src/scss/foundation/bigfoot-mixins.scss",
+		"src/scss/base/bigfoot-button.scss",
+		"src/scss/base/bigfoot-popover.scss"
 	];
 
 	var variants = [
