@@ -1,0 +1,570 @@
+// bigfoot - v2.0.4 - 2014.10.02
+
+
+//        ___       ___          ___       ___                      ___          ___
+//       /  /\     /  /\        /  /\     /  /\         ___        /  /\        /  /\
+//      /  /::\   /  /::\      /  /::\   /  /::\       /__/\      /  /:/_      /  /::\
+//     /  /:/\:\ /  /:/\:\    /  /:/\:\ /  /:/\:\      \  \:\    /  /:/ /\    /  /:/\:\
+//    /  /:/~/://  /:/  \:\  /  /:/~/://  /:/  \:\      \  \:\  /  /:/ /:/_  /  /:/~/:/
+//   /__/:/ /://__/:/ \__\:\/__/:/ /://__/:/ \__\:\ ___  \__\:\/__/:/ /:/ /\/__/:/ /:/___
+//   \  \:\/:/ \  \:\ /  /:/\  \:\/:/ \  \:\ /  /://__/\ |  |:|\  \:\/:/ /:/\  \:\/:::::/
+//    \  \::/   \  \:\  /:/  \  \::/   \  \:\  /:/ \  \:\|  |:| \  \::/ /:/  \  \::/~~~~
+//     \  \:\    \  \:\/:/    \  \:\    \  \:\/:/   \  \:\__|:|  \  \:\/:/    \  \:\
+//      \  \:\    \  \::/      \  \:\    \  \::/     \__\::::/    \  \::/      \  \:\
+//       \__\/     \__\/        \__\/     \__\/          ~~~~      \__\/        \__\/
+//
+// These are the key variables for styling the popover.
+// Just set the variable to none if you don't want that styling.
+
+// KEY VARIABLES
+// =============================================================================
+
+// STYLES
+$popover-width:                         22em !default;                           // Ideal width of the popover
+$popover-max-width:                     90% !default;                            // Best as a % to accommodate smaller viewports
+$popover-max-height:                    15em !default;                           // Maximum size of the content area
+$popover-color-background:              rgb(250, 250, 250) !default;             // Color of the popover background
+$popover-border-radius:                 0.5em !default;                          // Radius of the corners of the popover
+$popover-border:                        1px solid rgb(195, 195, 195) !default;   // Border of the popover/ tooltip
+$popover-inactive-opacity:              0 !default;                              // Opacity of the popover when instantiated/ deactivating
+$popover-active-opacity:                0.97 !default;                           // Opacity of the popover when active
+$popover-box-shadow:                    0px 0px 8px rgba(0, 0, 0, 0.3) !default; // Sets the box shadow under the popover/ tooltip
+$popover-bottom-position:               auto !default;                           // Sets the bottom position of the popover. Use only when setting positionPopover to false in the script
+$popover-left-position:                 auto !default;                           // Sets the left position of the popover. Use only when setting positionPopover to false in the script
+$popover-tooltip-size:                  1.3em !default;                          // Sets the side lengths of the tooltip
+$popover-scroll-indicator-width:        0.625em !default;                        // The width of the scroll indicator
+$popover-scroll-indicator-aspect-ratio: (15/12) !default;                        // The ratio of the height over the width of the scroll indicator
+$popover-scroll-indicator-opacity:      0.1 !default;                            // The active opacity of scroll indicators
+$popover-initial-transform-state:       scale(0.1) translateZ(0) !default;       // The inital transform state for the popover
+$popover-active-transform-state:        scale(1) translateZ(0) !default;         // The transform state for the popover once it is fully activated
+
+// OPTIONAL ELEMENTS
+$popover-include-tooltip:               true !default;                           // Adds a tooltip pointing to the footnote button
+$popover-include-scroll-indicator:      true !default;                           // Adds an elipsis at the bottom of scrollable popovers
+$popover-include-scrolly-fades:         true !default;                           // Fades content in on scrollable popovers
+$popover-scroll-indicator-icon:         url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSIxNXB4IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pbllNaW4iPgogICAgPGcgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9IkFycm93IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxLjAwMDAwMCwgMS4wMDAwMDApIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiPgogICAgICAgICAgICA8cGF0aCBkPSJNNSwwIEw1LDExLjUiIGlkPSJMaW5lIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLjUsNy41IEw1LjAyNzY5Mjc5LDEyLjAyNzY5MjgiIGlkPSJMaW5lIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik00LjUsNy41IEw5LjAyNzY5Mjc5LDEyLjAyNzY5MjgiIGlkPSJMaW5lLTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcuMDAwMDAwLCAxMC4wMDAwMDApIHNjYWxlKC0xLCAxKSB0cmFuc2xhdGUoLTcuMDAwMDAwLCAtMTAuMDAwMDAwKSAiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPgo=") !default;
+
+
+// OTHER VARIABLES
+// =============================================================================
+
+// POPOVER
+$popover-margin-top:                             0.1em !default;
+$popover-padding-content-horizontal:             1.3em !default;
+$popover-padding-content-top:                    1.1em !default;
+$popover-padding-content-bottom:                 1.2em !default;
+$popover-z-index:                                10 !default;                         // Set the base so that it's above the other body children
+$popover-initial-transform-origin:               50% 0 !default;
+
+// POPOVER CONTENT WRAPPER
+$popover-content-color-background:               $popover-color-background !default;
+$popover-content-border-radius:                  $popover-border-radius !default;
+
+// OTHER POPOVER ELEMENTS
+$popover-tooltip-background:                     $popover-color-background !default;
+$popover-tooltip-radius:                         0 !default;
+$popover-scroll-indicator-bottom-position:       0.45em !default;
+$popover-scrolly-fade-gradient-start-location:   50% !default;
+$popover-scroll-indicator-padding:               (($popover-padding-content-horizontal/2) - ($popover-scroll-indicator-width/2)) !default;
+
+// TRANSITIONS
+$popover-transition-default-duration:            0.25s !default;
+$popover-scroll-indicator-transition-properties: opacity !default;
+
+// Use none for areas you don't want to transition
+$popover-transition-properties:                  opacity, transform !default;         // no mixin to do proper prefixing of the transform, so I have to do it manually; see mixin below
+$popover-scroll-indicator-transition-properties: opacity !default;
+$popover-scroll-up-transition-delay:             0.4s !default;                       // Sets the delay for the transition of the scroll indicator when scrolling upwards
+$popover-transition-default-timing-function:     ease !default;
+
+
+
+
+
+//                     ___                             ___          ___
+//       _____        /__/\         ___       ___     /  /\        /__/\
+//      /  /::\       \  \:\       /  /\     /  /\   /  /::\       \  \:\
+//     /  /:/\:\       \  \:\     /  /:/    /  /:/  /  /:/\:\       \  \:\
+//    /  /:/~/::\  ___  \  \:\   /  /:/    /  /:/  /  /:/  \:\  _____\__\:\
+//   /__/:/ /:/\:|/__/\  \__\:\ /  /::\   /  /::\ /__/:/ \__\:\/__/::::::::\
+//   \  \:\/:/~/:/\  \:\ /  /://__/:/\:\ /__/:/\:\\  \:\ /  /:/\  \:\~~\~~\/
+//    \  \::/ /:/  \  \:\  /:/ \__\/  \:\\__\/  \:\\  \:\  /:/  \  \:\  ~~~
+//     \  \:\/:/    \  \:\/:/       \  \:\    \  \:\\  \:\/:/    \  \:\
+//      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
+//       \__\/        \__\/                           \__\/        \__\/
+//
+// These are the key variables for styling the button.
+// Just set the variable to none if you don't want that styling.
+
+// KEY VARIABLES
+// =============================================================================
+
+$button-height:                         0.95em;                         // The total height of the button
+$button-width:                          auto;                           // The total button width (applies only if $button-apply-dimensions is true)
+$button-inner-circle-size:              0.25em;                         // Total height/width of the ellipsis circles
+$button-border-radius:                  0.3em;                          // Border radius on the button itself
+$button-left-margin:                    0.2em;                          // Margin between the button and the text to its left
+$button-right-margin:                   0.1em;                          // Margin between the button and the text to its right
+$button-vertical-adjust:                -0.1em;                         // Pushes the buttons along the vertical axis to align it with text as desired
+$button-inner-circle-left-margin:       1*$button-inner-circle-size;    // Space between the ellipsis circles
+
+$button-color:                          rgb(110, 110, 110);             // Background color of the button
+$button-hovered-color:                  $button-color;                  // Background color of the button when being hovered
+$button-activating-color:               $button-color;                  // Background color of the button when being clicked
+$button-active-color:                   $button-color;                  // Background color of the button when active
+$button-standard-opacity:               0.2;                            // Opacity for when the button is just sittin' there
+$button-hovered-opacity:                0.5;                            // Opacity for when the button is being hovered over
+$button-activating-opacity:             $button-hovered-opacity;        // Opacity for when the button is being clicked
+$button-active-opacity:                 1;                              // Opacity for when the button is active
+$button-active-style-delay:             0.1s;                           // Delay before applying .active styles; this can be used to match to the popover activation transition
+
+$button-inner-circle-color:             white;                          // Background color of the ellipsis circle
+$button-inner-circle-border:            none;                           // Border of the ellipsis circle
+
+
+// OTHER VARIABLES
+// =============================================================================
+
+$button-total-padding:              $button-height - $button-inner-circle-size;
+$button-per-side-padding:           0.5*$button-total-padding;
+$button-transition-properties:      opacity;
+
+
+
+// -----
+
+
+//        ___                    ___                     ___          ___
+//       /__/\       ___        /__/|       ___         /__/\        /  /\
+//      |  |::\     /  /\      |  |:|      /  /\        \  \:\      /  /:/_
+//      |  |:|:\   /  /:/      |  |:|     /  /:/         \  \:\    /  /:/ /\
+//    __|__|:|\:\ /__/::\    __|__|:|    /__/::\     _____\__\:\  /  /:/ /::\
+//   /__/::::| \:\\__\/\:\__/__/::::\____\__\/\:\__ /__/::::::::\/__/:/ /:/\:\
+//   \  \:\~~\__\/   \  \:\/\  ~\~~\::::/   \  \:\/\\  \:\~~\~~\/\  \:\/:/~/:/
+//    \  \:\          \__\::/   |~~|:|~~     \__\::/ \  \:\  ~~~  \  \::/ /:/
+//     \  \:\         /__/:/    |  |:|       /__/:/   \  \:\       \__\/ /:/
+//      \  \:\        \__\/     |  |:|       \__\/     \  \:\        /__/:/
+//       \__\/                  |__|/                   \__\/        \__\/
+
+@mixin print-styles {
+    // These styles restore the original footnote numbers and texts when the page is printed
+    @media not print {
+        .footnote-print-only {
+            display: none !important;
+        }
+    }
+
+    @media print {
+        .bigfoot-footnote,
+        .bigfoot-footnote__button {
+            display: none !important;
+        }
+    }
+}
+
+
+
+// -----
+
+
+//                     ___                             ___          ___
+//       _____        /__/\         ___       ___     /  /\        /__/\
+//      /  /::\       \  \:\       /  /\     /  /\   /  /::\       \  \:\
+//     /  /:/\:\       \  \:\     /  /:/    /  /:/  /  /:/\:\       \  \:\
+//    /  /:/~/::\  ___  \  \:\   /  /:/    /  /:/  /  /:/  \:\  _____\__\:\
+//   /__/:/ /:/\:|/__/\  \__\:\ /  /::\   /  /::\ /__/:/ \__\:\/__/::::::::\
+//   \  \:\/:/~/:/\  \:\ /  /://__/:/\:\ /__/:/\:\\  \:\ /  /:/\  \:\~~\~~\/
+//    \  \::/ /:/  \  \:\  /:/ \__\/  \:\\__\/  \:\\  \:\  /:/  \  \:\  ~~~
+//     \  \:\/:/    \  \:\/:/       \  \:\    \  \:\\  \:\/:/    \  \:\
+//      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
+//       \__\/        \__\/                           \__\/        \__\/
+
+.bigfoot-footnote__button {
+  // POSITIONING
+  position: relative;
+  z-index: 5;
+  top: $button-vertical-adjust;
+
+  // DISPLAY AND SIZING
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;;
+  display: inline-block;
+  padding: $button-per-side-padding;
+  margin: 0 $button-right-margin 0 $button-left-margin;
+
+  // BACKDROP
+  border: none;
+  border-radius: $button-border-radius;
+  cursor: pointer;
+  opacity: $button-standard-opacity;
+  background-color: $button-color;
+  backface-visibility: hidden;
+
+  // TEXT
+  font-size: 1rem;
+  line-height: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  font-smoothing: antialiased;
+
+  // TRANSITIONS
+  transition-property: $button-transition-properties;
+  transition-duration: $popover-transition-default-duration;
+
+
+
+  // Put styles to apply when the button is being hovered over
+  &:hover,
+  &:focus {
+    outline: none;
+    opacity: $button-hovered-opacity;
+    background-color: $button-hovered-color;
+  }
+
+
+
+  // Put styles to apply when the button is being clicked
+  &:active {
+    opacity: $button-activating-opacity;
+    background-color: $button-activating-color;
+  }
+
+
+
+  // Put styles to apply when the button is active (during after it has been
+  // pressed to activate the footnote)
+  &.is-active {
+    opacity: $button-active-opacity;
+    background-color: $button-active-color;
+    transition-delay: $button-active-style-delay;
+  }
+
+
+
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+
+
+
+
+//       _____         ___                   ___
+//      /  /::\       /  /\         ___     /  /\
+//     /  /:/\:\     /  /::\       /  /\   /  /:/_
+//    /  /:/  \:\   /  /:/\:\     /  /:/  /  /:/ /\
+//   /__/:/ \__\:| /  /:/  \:\   /  /:/  /  /:/ /::\
+//   \  \:\ /  /://__/:/ \__\:\ /  /::\ /__/:/ /:/\:\
+//    \  \:\  /:/ \  \:\ /  /://__/:/\:\\  \:\/:/~/:/
+//     \  \:\/:/   \  \:\  /:/ \__\/  \:\\  \::/ /:/
+//      \  \::/     \  \:\/:/       \  \:\\__\/ /:/
+//       \__\/       \  \::/         \__\/  /__/:/
+//                    \__\/                 \__\/
+
+// Styles to apply to the inner dots included in the button
+.bigfoot-footnote__button__circle {
+  // DISPLAY AND SIZING
+  display: inline-block;
+  width: $button-inner-circle-size;
+  height: $button-inner-circle-size;
+  margin-right: $button-inner-circle-left-margin;
+  float: left;
+
+  // Gets rid of margin on the last circle
+  &:last-child { margin-right: 0; }
+}
+
+
+
+
+
+//        ___          ___          ___                   ___                     ___
+//       /  /\        /  /\        /__/\         ___     /  /\       ___         /__/\
+//      /  /:/       /  /::\       \  \:\       /  /\   /  /::\     /  /\        \  \:\
+//     /  /:/       /  /:/\:\       \  \:\     /  /:/  /  /:/\:\   /  /:/         \  \:\
+//    /  /:/  ___  /  /:/  \:\  _____\__\:\   /  /:/  /  /:/~/::\ /__/::\     _____\__\:\
+//   /__/:/  /  /\/__/:/ \__\:\/__/::::::::\ /  /::\ /__/:/ /:/\:\\__\/\:\__ /__/::::::::\
+//   \  \:\ /  /:/\  \:\ /  /:/\  \:\~~\~~\//__/:/\:\\  \:\/:/__\/   \  \:\/\\  \:\~~\~~\/
+//    \  \:\  /:/  \  \:\  /:/  \  \:\  ~~~ \__\/  \:\\  \::/         \__\::/ \  \:\  ~~~
+//     \  \:\/:/    \  \:\/:/    \  \:\          \  \:\\  \:\         /__/:/   \  \:\
+//      \  \::/      \  \::/      \  \:\          \__\/ \  \:\        \__\/     \  \:\
+//       \__\/        \__\/        \__\/                 \__\/                   \__\/
+
+.bigfoot-footnote__container {
+  display: inline-block;
+  position: relative;
+  text-indent: 0;
+}
+
+
+
+
+
+//        ___       ___                     ___
+//       /  /\     /  /\       ___         /__/\         ___
+//      /  /::\   /  /::\     /  /\        \  \:\       /  /\
+//     /  /:/\:\ /  /:/\:\   /  /:/         \  \:\     /  /:/
+//    /  /:/~/://  /:/~/:/  /__/::\     _____\__\:\   /  /:/
+//   /__/:/ /://__/:/ /:/___\__\/\:\__ /__/::::::::\ /  /::\
+//   \  \:\/:/ \  \:\/:::::/   \  \:\/\\  \:\~~\~~\//__/:/\:\
+//    \  \::/   \  \::/~~~~     \__\::/ \  \:\  ~~~ \__\/  \:\
+//     \  \:\    \  \:\         /__/:/   \  \:\          \  \:\
+//      \  \:\    \  \:\        \__\/     \  \:\          \__\/
+//       \__\/     \__\/                   \__\/
+
+@include print-styles;
+
+
+
+// -----
+
+
+//        ___       ___          ___       ___                      ___          ___
+//       /  /\     /  /\        /  /\     /  /\         ___        /  /\        /  /\
+//      /  /::\   /  /::\      /  /::\   /  /::\       /__/\      /  /:/_      /  /::\
+//     /  /:/\:\ /  /:/\:\    /  /:/\:\ /  /:/\:\      \  \:\    /  /:/ /\    /  /:/\:\
+//    /  /:/~/://  /:/  \:\  /  /:/~/://  /:/  \:\      \  \:\  /  /:/ /:/_  /  /:/~/:/
+//   /__/:/ /://__/:/ \__\:\/__/:/ /://__/:/ \__\:\ ___  \__\:\/__/:/ /:/ /\/__/:/ /:/___
+//   \  \:\/:/ \  \:\ /  /:/\  \:\/:/ \  \:\ /  /://__/\ |  |:|\  \:\/:/ /:/\  \:\/:::::/
+//    \  \::/   \  \:\  /:/  \  \::/   \  \:\  /:/ \  \:\|  |:| \  \::/ /:/  \  \::/~~~~
+//     \  \:\    \  \:\/:/    \  \:\    \  \:\/:/   \  \:\__|:|  \  \:\/:/    \  \:\
+//      \  \:\    \  \::/      \  \:\    \  \::/     \__\::::/    \  \::/      \  \:\
+//       \__\/     \__\/        \__\/     \__\/          ~~~~      \__\/        \__\/
+//
+// Default style for the popover: light gray background, dark gray border, box-shadow,
+// and scales/ fades in when activated
+
+.bigfoot-footnote {
+  // POSITIONING
+  position: absolute;
+  z-index: $popover-z-index;
+  top: 0; left: 0;
+
+  // DISPLAY AND SIZING
+  display: inline-block;
+  box-sizing: border-box;
+  // Height is set in .footnote-content-wrapper
+  max-width: $popover-max-width;
+  // 1.414213... is to get the diagonal height of the tooltip using pythagorus, yo.
+  margin: ((1.4142135624 * $popover-tooltip-size / 2) + $button-height + $popover-margin-top) 0;
+  // fits the popover to the contents
+
+  // BACKDROP
+  background: $popover-color-background;
+  opacity: $popover-inactive-opacity;
+  border-radius: $popover-border-radius;
+  border: $popover-border;
+  box-shadow: $popover-box-shadow;
+
+  // TRANSITIONS
+  transition-property: $popover-transition-properties;
+  transition-duration: $popover-transition-default-duration;
+  transition-timing-function: $popover-transition-default-timing-function;
+
+  // TRANSFORMS
+  transform: $popover-initial-transform-state;
+  transform-origin: $popover-initial-transform-origin;
+
+
+
+  &.is-positioned-top {
+    top: auto;
+    bottom: 0;
+  }
+
+
+
+  &.is-active {
+    transform: $popover-active-transform-state;
+    opacity: $popover-active-opacity;
+  }
+
+  &.is-scrollable {
+    &:after {
+      // CONTENT
+      content: '';
+
+      // POSITIONING
+      position: absolute;
+      bottom: $popover-scroll-indicator-padding;
+      left: $popover-scroll-indicator-padding;
+      z-index: ($popover-z-index + 4);
+
+      // DISPLAY AND SIZING
+      display: block;
+      height: ($popover-scroll-indicator-width*$popover-scroll-indicator-aspect-ratio);
+      width: $popover-scroll-indicator-width;
+
+      // BACKDROP
+      background-image: $popover-scroll-indicator-icon;
+      background-size: cover;
+      opacity: $popover-scroll-indicator-opacity;
+      transition-properties: $popover-scroll-indicator-transition-properties;
+      transition-duration: $popover-transition-default-duration;
+      transition-timing-function: $popover-transition-default-timing-function;
+    }
+
+    .bigfoot-footnote__wrapper {
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        // Above the content
+        z-index: ($popover-z-index + 2);
+        left: 0;
+      }
+
+      &:before {
+        top: -1px;
+        height: $popover-padding-content-top;
+        border-radius: $popover-border-radius $popover-border-radius 0 0;
+        background-image: linear-gradient(to bottom, $popover-color-background $popover-scrolly-fade-gradient-start-location, transparentize($popover-color-background, 1) 100%);
+      }
+
+      &:after {
+        bottom: -1px;
+        height: $popover-padding-content-bottom;
+        border-radius: 0 0 $popover-border-radius $popover-border-radius;
+        background-image: linear-gradient(to top, $popover-color-background $popover-scrolly-fade-gradient-start-location, transparentize($popover-color-background, 1) 100%);
+      }
+    }
+
+    ::-webkit-scrollbar { display: none; }
+  }
+
+
+
+  &.is-fully-scrolled {
+    &:after,
+    &:before {
+      opacity: 0;
+      transition-delay: 0;
+    }
+  }
+}
+
+
+
+
+
+.bigfoot-footnote__wrapper {
+  // POSITIONING
+  position: relative;
+  // Above the outer tooltip, below the inner tooltip
+  z-index: ($popover-z-index + 4);
+
+  // DISPLAY AND SIZING
+  width: $popover-width;
+  display: inline-block;
+  box-sizing: inherit;
+  overflow: hidden;
+  margin: 0 0 0 50%;
+  transform: translateX(-50%);
+
+  // BACKDROP
+  background-color: $popover-color-background;
+  border-radius: $popover-border-radius;
+}
+
+
+
+
+
+.bigfoot-footnote__content {
+  // POSITIONING
+  position: relative;
+  z-index: ($popover-z-index - 2); // Below fading bars
+
+  // DISPLAY AND SIZING
+  display: inline-block;
+  max-height: $popover-max-height;
+  padding: $popover-padding-content-top $popover-padding-content-horizontal $popover-padding-content-bottom;
+  box-sizing: inherit;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  // BACKDROP
+  background: $popover-content-color-background;
+  border-radius: $popover-content-border-radius;
+
+  // TEXT
+  font-smoothing: subpixel-antialiased;
+
+  // INTERIOR ELEMENTS
+  img { max-width: 100%; }
+  *:last-child { margin-bottom: 0 !important; }
+  *:first-child { margin-top: 0 !important; }
+}
+
+
+
+
+
+.bigfoot-footnote__tooltip {
+  // POSITIONING
+  position: absolute;
+  // Above the footnote-main-wrapper and the outer tooltip
+  z-index: ($popover-z-index + 2);
+
+  // DISPLAY AND SIZING
+  box-sizing: border-box;
+  margin-left: (-0.5 * $popover-tooltip-size);
+  // Smaller by one border-width's worth
+  width: $popover-tooltip-size;
+  height: $popover-tooltip-size;
+  transform: rotate(45deg);
+
+  // BACKDROP
+  background: $popover-tooltip-background;
+  border: $popover-border;
+  box-shadow: $popover-box-shadow;
+  border-top-left-radius: $popover-tooltip-radius;
+
+
+
+  .is-positioned-bottom & {
+    top: (-0.5 * $popover-tooltip-size);
+  }
+
+  .is-positioned-top & {
+    bottom: (-0.5 * $popover-tooltip-size);
+  }
+}
+
+
+
+// -----
+
+
+//                     ___                             ___          ___
+//       _____        /  /\         ___       ___     /  /\        /__/\
+//      /  /::\      /  /::\       /  /\     /  /\   /  /::\      |  |::\
+//     /  /:/\:\    /  /:/\:\     /  /:/    /  /:/  /  /:/\:\     |  |:|:\
+//    /  /:/~/::\  /  /:/  \:\   /  /:/    /  /:/  /  /:/  \:\  __|__|:|\:\
+//   /__/:/ /:/\:|/__/:/ \__\:\ /  /::\   /  /::\ /__/:/ \__\:\/__/::::| \:\
+//   \  \:\/:/~/:/\  \:\ /  /://__/:/\:\ /__/:/\:\\  \:\ /  /:/\  \:\~~\__\/
+//    \  \::/ /:/  \  \:\  /:/ \__\/  \:\\__\/  \:\\  \:\  /:/  \  \:\
+//     \  \:\/:/    \  \:\/:/       \  \:\    \  \:\\  \:\/:/    \  \:\
+//      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
+//       \__\/        \__\/                           \__\/        \__\/
+
+.bigfoot-footnote {
+  position: fixed;
+  bottom: 0; top: auto;
+  left: 0; right: auto;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  opacity: 1;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  border-width: 1px 0 0;
+
+  &.is-active {
+    transform: translateY(0);
+  }
+}
