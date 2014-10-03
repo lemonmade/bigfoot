@@ -11,5 +11,31 @@
 //       \__\/        \__\/        \__\/        \__\/        \__\/        \__\/
 
 .bigfoot-footnote__button {
+  border-radius: $button-height/2;
+  height: $button-height;
+  width: 1.5em;
+  position: relative;
 
+  &:after {
+    content: attr(data-footnote-number);
+    font-size: $button-height*0.6;
+    display: block;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: rgba($button-color, 0.5);
+    transition: color $popover-transition-default-duration $popover-transition-default-timing-function;
+  }
+
+  &:hover,
+  &.is-active {
+    &:after {
+      color: white;
+    }
+  }
+}
+
+.bigfoot-footnote__button__circle {
+  display: none;
 }

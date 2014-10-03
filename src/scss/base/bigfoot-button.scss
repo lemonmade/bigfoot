@@ -27,8 +27,7 @@
   border: none;
   border-radius: $button-border-radius;
   cursor: pointer;
-  opacity: $button-standard-opacity;
-  background-color: $button-color;
+  background-color: rgba($button-color, $button-standard-opacity);
   backface-visibility: hidden;
 
   // TEXT
@@ -48,16 +47,14 @@
   &:hover,
   &:focus {
     outline: none;
-    opacity: $button-hovered-opacity;
-    background-color: $button-hovered-color;
+    background-color: rgba($button-hovered-color, $button-hovered-opacity);
   }
 
 
 
   // Put styles to apply when the button is being clicked
   &:active {
-    opacity: $button-activating-opacity;
-    background-color: $button-activating-color;
+    background-color: rgba($button-activating-color, $button-activating-opacity);
   }
 
 
@@ -65,8 +62,7 @@
   // Put styles to apply when the button is active (during after it has been
   // pressed to activate the footnote)
   &.is-active {
-    opacity: $button-active-opacity;
-    background-color: $button-active-color;
+    background-color: rgba($button-active-color, $button-active-opacity);
     transition-delay: $button-active-style-delay;
   }
 
