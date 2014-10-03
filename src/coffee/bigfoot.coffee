@@ -332,7 +332,6 @@
         # Handles replacements of SUP/FN attribute requests
         footnoteButton = replaceWithReferenceAttributes footnoteButton, "SUP", $relevantFNLink
         footnoteButton = replaceWithReferenceAttributes footnoteButton, "FN", $relevantFootnote
-        console.log footnoteContent
         $footnoteButton = $(footnoteButton).insertBefore $relevantFNLink
 
         $parent = $relevantFootnote.parent()
