@@ -193,10 +193,7 @@
   -moz-box-sizing: inherit;
   box-sizing: inherit;
   overflow: hidden;
-  margin: 0 0 0 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
+  margin: 0;
   background-color: #fafafa;
   border-radius: 0.5em;
 }
@@ -278,4 +275,11 @@
   -webkit-transform: translateY(0);
   -ms-transform: translateY(0);
   transform: translateY(0);
+}
+
+.bigfoot-footnote__wrapper {
+  margin: 0 0 0 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
 }

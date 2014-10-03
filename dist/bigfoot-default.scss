@@ -1,4 +1,4 @@
-// bigfoot - v2.0.4 - 2014.08.09
+// bigfoot - v2.0.4 - 2014.10.02
 
 
 //        ___       ___          ___       ___                      ___          ___
@@ -29,7 +29,6 @@ $popover-border:                        1px solid rgb(195, 195, 195) !default;  
 $popover-inactive-opacity:              0 !default;                              // Opacity of the popover when instantiated/ deactivating
 $popover-active-opacity:                0.97 !default;                           // Opacity of the popover when active
 $popover-box-shadow:                    0px 0px 8px rgba(0, 0, 0, 0.3) !default; // Sets the box shadow under the popover/ tooltip
-$popover-display-style:                 inline-block !default;                   // Determines the display style of the main popover
 $popover-bottom-position:               auto !default;                           // Sets the bottom position of the popover. Use only when setting positionPopover to false in the script
 $popover-left-position:                 auto !default;                           // Sets the left position of the popover. Use only when setting positionPopover to false in the script
 $popover-tooltip-size:                  1.3em !default;                          // Sets the side lengths of the tooltip
@@ -352,7 +351,6 @@ $button-transition-properties:      opacity;
   // 1.414213... is to get the diagonal height of the tooltip using pythagorus, yo.
   margin: ((1.4142135624 * $popover-tooltip-size / 2) + $button-height + $popover-margin-top) 0;
   // fits the popover to the contents
-  display: $popover-display-style;
 
   // BACKDROP
   background: $popover-color-background;
@@ -484,8 +482,7 @@ $button-transition-properties:      opacity;
   display: inline-block;
   max-height: $popover-max-height;
   padding: $popover-padding-content-top $popover-padding-content-horizontal $popover-padding-content-bottom;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;;
+  box-sizing: inherit;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 

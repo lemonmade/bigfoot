@@ -462,8 +462,7 @@ $button-transition-properties:      opacity;
   display: inline-block;
   box-sizing: inherit;
   overflow: hidden;
-  margin: 0 0 0 50%;
-  transform: translateX(-50%);
+  margin: 0;
 
   // BACKDROP
   background-color: $popover-color-background;
@@ -567,4 +566,9 @@ $button-transition-properties:      opacity;
   &.is-active {
     transform: translateY(0);
   }
+}
+
+.bigfoot-footnote__wrapper {
+  margin: 0 0 0 50%;
+  transform: translateX(-50%);
 }
