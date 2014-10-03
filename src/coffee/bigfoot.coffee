@@ -170,7 +170,7 @@
       # @since 0.0.1
       # @returns {String}
       # @default
-      # <aside class=\"bigfoot-footnote bottom\"
+      # <aside class=\"bigfoot-footnote is-positioned-bottom\"
       #   data-footnote-number=\"{{FOOTNOTENUM}}\"
       #   data-footnote-identifier=\"{{FOOTNOTEID}}\"
       #   alt=\"Footnote {{FOOTNOTENUM}}\">
@@ -180,7 +180,7 @@
       #    </div></div>
       #    <div class=\"bigfoot-footnote__tooltip\"></div>
       # </aside>
-      contentMarkup       : "<aside class=\"bigfoot-footnote bottom\"
+      contentMarkup       : "<aside class=\"bigfoot-footnote is-positioned-bottom\"
                               data-footnote-number=\"{{FOOTNOTENUM}}\"
                               data-footnote-identifier=\"{{FOOTNOTEID}}\"
                               alt=\"Footnote {{FOOTNOTENUM}}\">
