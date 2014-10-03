@@ -1,0 +1,16 @@
+.bigfoot-footnote {
+  position: fixed;
+  bottom: 0; top: auto;
+  left: 0; right: auto;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  opacity: 1;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  border-width: 1px 0 0;
+
+  &.is-active {
+    transform: translateY(0);
+  }
+}
