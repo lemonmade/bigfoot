@@ -1,13 +1,3 @@
-.bigfoot-footnote__container {
-  display: inline-block;
-  position: relative;
-  text-indent: 0;
-}
-
-
-
-
-
 //                     ___                             ___          ___
 //       _____        /__/\         ___       ___     /  /\        /__/\
 //      /  /::\       \  \:\       /  /\     /  /\   /  /::\       \  \:\
@@ -32,8 +22,6 @@
   display: inline-block;
   padding: $button-per-side-padding;
   margin: 0 $button-right-margin 0 $button-left-margin;
-  height: $button-height;
-  width: $button-width;
 
   // BACKDROP
   border: none;
@@ -44,6 +32,7 @@
   backface-visibility: hidden;
 
   // TEXT
+  font-size: 1rem;
   line-height: 0;
   vertical-align: middle;
   text-decoration: none;
@@ -53,12 +42,17 @@
   transition-property: $button-transition-properties;
   transition-duration: $popover-transition-default-duration;
 
+
+
   // Put styles to apply when the button is being hovered over
   &:hover,
   &:focus {
+    outline: none;
     opacity: $button-hovered-opacity;
     background-color: $button-hovered-color;
   }
+
+
 
   // Put styles to apply when the button is being clicked
   &:active {
@@ -66,11 +60,22 @@
     background-color: $button-activating-color;
   }
 
-  // Put styles to apply when the button is active (during after it has been pressed to activate the footnote)
+
+
+  // Put styles to apply when the button is active (during after it has been
+  // pressed to activate the footnote)
   &.is-active {
     opacity: $button-active-opacity;
     background-color: $button-active-color;
     transition-delay: $button-active-style-delay;
+  }
+
+
+
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
   }
 }
 
@@ -97,13 +102,32 @@
   width: $button-inner-circle-size;
   height: $button-inner-circle-size;
   margin-right: $button-inner-circle-left-margin;
+  float: left;
 
-  // BACKDROP
-  border-radius: 100%;
-  background-color: $button-inner-circle-color;
-  border: $button-inner-circle-border;
+  // Gets rid of margin on the last circle
+  &:last-child { margin-right: 0; }
+}
 
-  &:last-child { margin-right: 0; } // Gets rid of margin on the last circle
+
+
+
+
+//        ___          ___          ___                   ___                     ___
+//       /  /\        /  /\        /__/\         ___     /  /\       ___         /__/\
+//      /  /:/       /  /::\       \  \:\       /  /\   /  /::\     /  /\        \  \:\
+//     /  /:/       /  /:/\:\       \  \:\     /  /:/  /  /:/\:\   /  /:/         \  \:\
+//    /  /:/  ___  /  /:/  \:\  _____\__\:\   /  /:/  /  /:/~/::\ /__/::\     _____\__\:\
+//   /__/:/  /  /\/__/:/ \__\:\/__/::::::::\ /  /::\ /__/:/ /:/\:\\__\/\:\__ /__/::::::::\
+//   \  \:\ /  /:/\  \:\ /  /:/\  \:\~~\~~\//__/:/\:\\  \:\/:/__\/   \  \:\/\\  \:\~~\~~\/
+//    \  \:\  /:/  \  \:\  /:/  \  \:\  ~~~ \__\/  \:\\  \::/         \__\::/ \  \:\  ~~~
+//     \  \:\/:/    \  \:\/:/    \  \:\          \  \:\\  \:\         /__/:/   \  \:\
+//      \  \::/      \  \::/      \  \:\          \__\/ \  \:\        \__\/     \  \:\
+//       \__\/        \__\/        \__\/                 \__\/                   \__\/
+
+.bigfoot-footnote__container {
+  display: inline-block;
+  position: relative;
+  text-indent: 0;
 }
 
 

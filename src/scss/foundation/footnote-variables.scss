@@ -17,60 +17,62 @@
 // =============================================================================
 
 // STYLES
-$popover-width:                         22em;                           // Ideal width of the popover
-$popover-max-width:                     90%;                            // Best as a % to accommodate smaller viewports
-$popover-max-height:                    15em;                           // Maximum size of the content area
-$popover-color-background:              rgb(250, 250, 250);             // Color of the popover background
-$popover-border-radius:                 0.5em;                          // Radius of the corners of the popover
-$popover-border:                        1px solid rgb(195, 195, 195);   // Border of the popover/ tooltip
-$popover-inactive-opacity:              0;                              // Opacity of the popover when instantiated/ deactivating
-$popover-active-opacity:                0.97;                           // Opacity of the popover when active
-$popover-box-shadow:                    0px 0px 8px rgba(0, 0, 0, 0.3); // Sets the box shadow under the popover/ tooltip
-$popover-display-style:                 inline-block;                   // Determines the display style of the main popover
-$popover-bottom-position:               auto;                           // Sets the bottom position of the popover. Use only when setting positionPopover to false in the script
-$popover-left-position:                 auto;                           // Sets the left position of the popover. Use only when setting positionPopover to false in the script
-$popover-tooltip-size:                  1.3em;                          // Sets the side lengths of the tooltip
-$popover-scroll-indicator-color:        rgba(black, 0.08);              // The color of the scroll indicator
-$popover-scroll-indicator-size:         1.8em;                          // The font size of the scroll indicator ellipsis
-$popover-initial-transform-state:       scale(0.1) translateZ(0);       // The inital transform state for the popover
-$popover-active-transform-state:        scale(1) translateZ(0);         // The transform state for the popover once it is fully activated
+$popover-width:                         22em !default;                           // Ideal width of the popover
+$popover-max-width:                     90% !default;                            // Best as a % to accommodate smaller viewports
+$popover-max-height:                    15em !default;                           // Maximum size of the content area
+$popover-color-background:              rgb(250, 250, 250) !default;             // Color of the popover background
+$popover-border-radius:                 0.5em !default;                          // Radius of the corners of the popover
+$popover-border:                        1px solid rgb(195, 195, 195) !default;   // Border of the popover/ tooltip
+$popover-inactive-opacity:              0 !default;                              // Opacity of the popover when instantiated/ deactivating
+$popover-active-opacity:                0.97 !default;                           // Opacity of the popover when active
+$popover-box-shadow:                    0px 0px 8px rgba(0, 0, 0, 0.3) !default; // Sets the box shadow under the popover/ tooltip
+$popover-bottom-position:               auto !default;                           // Sets the bottom position of the popover. Use only when setting positionPopover to false in the script
+$popover-left-position:                 auto !default;                           // Sets the left position of the popover. Use only when setting positionPopover to false in the script
+$popover-tooltip-size:                  1.3em !default;                          // Sets the side lengths of the tooltip
+$popover-scroll-indicator-width:        0.625em !default;                        // The width of the scroll indicator
+$popover-scroll-indicator-aspect-ratio: (15/12) !default;                        // The ratio of the height over the width of the scroll indicator
+$popover-scroll-indicator-opacity:      0.1 !default;                            // The active opacity of scroll indicators
+$popover-initial-transform-state:       scale(0.1) translateZ(0) !default;       // The inital transform state for the popover
+$popover-active-transform-state:        scale(1) translateZ(0) !default;         // The transform state for the popover once it is fully activated
 
 // OPTIONAL ELEMENTS
-$popover-include-tooltip:               true;                           // Adds a tooltip pointing to the footnote button
-$popover-include-scroll-indicator:      true;                           // Adds an elipsis at the bottom of scrollable popovers
-$popover-include-scrolly-fades:         true;                           // Fades content in on scrollable popovers
+$popover-include-tooltip:               true !default;                           // Adds a tooltip pointing to the footnote button
+$popover-include-scroll-indicator:      true !default;                           // Adds an elipsis at the bottom of scrollable popovers
+$popover-include-scrolly-fades:         true !default;                           // Fades content in on scrollable popovers
+$popover-scroll-indicator-icon:         url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTJweCIgaGVpZ2h0PSIxNXB4IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pbllNaW4iPgogICAgPGcgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9IkFycm93IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxLjAwMDAwMCwgMS4wMDAwMDApIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiPgogICAgICAgICAgICA8cGF0aCBkPSJNNSwwIEw1LDExLjUiIGlkPSJMaW5lIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLjUsNy41IEw1LjAyNzY5Mjc5LDEyLjAyNzY5MjgiIGlkPSJMaW5lIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik00LjUsNy41IEw5LjAyNzY5Mjc5LDEyLjAyNzY5MjgiIGlkPSJMaW5lLTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcuMDAwMDAwLCAxMC4wMDAwMDApIHNjYWxlKC0xLCAxKSB0cmFuc2xhdGUoLTcuMDAwMDAwLCAtMTAuMDAwMDAwKSAiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPgo=") !default;
 
 
 // OTHER VARIABLES
 // =============================================================================
 
 // POPOVER
-$popover-margin-top:                            0.1em;
-$popover-padding-content-horizontal:            1.3em;
-$popover-padding-content-top:                   1.1em;
-$popover-padding-content-bottom:                1.2em;
-$popover-z-index:                               10;                         // Set the base so that it's above the other body children
-$popover-initial-transform-origin:              50% 0;
+$popover-margin-top:                             0.1em !default;
+$popover-padding-content-horizontal:             1.3em !default;
+$popover-padding-content-top:                    1.1em !default;
+$popover-padding-content-bottom:                 1.2em !default;
+$popover-z-index:                                10 !default;                         // Set the base so that it's above the other body children
+$popover-initial-transform-origin:               50% 0 !default;
 
 // POPOVER CONTENT WRAPPER
-$popover-content-color-background:              $popover-color-background;
-$popover-content-border-radius:                 $popover-border-radius;
+$popover-content-color-background:               $popover-color-background !default;
+$popover-content-border-radius:                  $popover-border-radius !default;
 
 // OTHER POPOVER ELEMENTS
-$popover-tooltip-background:                    $popover-color-background;
-$popover-tooltip-radius:                        0;
-$popover-scroll-indicator-bottom-position:      0.45em;
-$popover-scrolly-fade-gradient-start-location:  50%;
-$popover-scroll-indicator-width:                1.5em;
+$popover-tooltip-background:                     $popover-color-background !default;
+$popover-tooltip-radius:                         0 !default;
+$popover-scroll-indicator-bottom-position:       0.45em !default;
+$popover-scrolly-fade-gradient-start-location:   50% !default;
+$popover-scroll-indicator-padding:               (($popover-padding-content-horizontal/2) - ($popover-scroll-indicator-width/2)) !default;
 
 // TRANSITIONS
-$popover-transition-default-duration:           0.25s;
+$popover-transition-default-duration:            0.25s !default;
+$popover-scroll-indicator-transition-properties: opacity !default;
 
 // Use none for areas you don't want to transition
-$popover-transition-properties:                 opacity, transform;         // no mixin to do proper prefixing of the transform, so I have to do it manually; see mixin below
-$popover-scroll-indicator-transition-properties:opacity;
-$popover-scroll-up-transition-delay:            0.4s;                       // Sets the delay for the transition of the scroll indicator when scrolling upwards
-$popover-transition-default-timing-function:   ease;
+$popover-transition-properties:                  opacity, transform !default;         // no mixin to do proper prefixing of the transform, so I have to do it manually; see mixin below
+$popover-scroll-indicator-transition-properties: opacity !default;
+$popover-scroll-up-transition-delay:             0.4s !default;                       // Sets the delay for the transition of the scroll indicator when scrolling upwards
+$popover-transition-default-timing-function:     ease !default;
 
 
 
@@ -94,26 +96,26 @@ $popover-transition-default-timing-function:   ease;
 // KEY VARIABLES
 // =============================================================================
 
-$button-height:                         1em;                            // The total height of the button
+$button-height:                         0.95em;                         // The total height of the button
 $button-width:                          auto;                           // The total button width (applies only if $button-apply-dimensions is true)
-$button-inner-circle-size:              0.32em;                         // Total height/width of the ellipsis circles
+$button-inner-circle-size:              0.25em;                         // Total height/width of the ellipsis circles
 $button-border-radius:                  0.3em;                          // Border radius on the button itself
 $button-left-margin:                    0.2em;                          // Margin between the button and the text to its left
 $button-right-margin:                   0.1em;                          // Margin between the button and the text to its right
-$button-vertical-adjust:                -0.15em;                        // Pushes the buttons along the vertical axis to align it with text as desired
-$button-inner-circle-left-margin:       0.7*$button-inner-circle-size;  // Space between the ellipsis circles
+$button-vertical-adjust:                -0.1em;                         // Pushes the buttons along the vertical axis to align it with text as desired
+$button-inner-circle-left-margin:       1*$button-inner-circle-size;    // Space between the ellipsis circles
 
-$button-color:                          rgb(70, 70, 70);                // Background color of the button
+$button-color:                          rgb(110, 110, 110);             // Background color of the button
 $button-hovered-color:                  $button-color;                  // Background color of the button when being hovered
 $button-activating-color:               $button-color;                  // Background color of the button when being clicked
 $button-active-color:                   $button-color;                  // Background color of the button when active
-$button-standard-opacity:               0.3;                            // Opacity for when the button is just sittin' there
-$button-hovered-opacity:                0.6;                            // Opacity for when the button is being hovered over
+$button-standard-opacity:               0.2;                            // Opacity for when the button is just sittin' there
+$button-hovered-opacity:                0.5;                            // Opacity for when the button is being hovered over
 $button-activating-opacity:             $button-hovered-opacity;        // Opacity for when the button is being clicked
-$button-active-opacity:                 0.9;                            // Opacity for when the button is active
-$button-active-style-delay:             0.15s;                          // Delay before applying .active styles; this can be used to match to the popover activation transition
+$button-active-opacity:                 1;                              // Opacity for when the button is active
+$button-active-style-delay:             0.1s;                           // Delay before applying .active styles; this can be used to match to the popover activation transition
 
-$button-inner-circle-color:             rgb(230, 230, 230);             // Background color of the ellipsis circle
+$button-inner-circle-color:             white;                          // Background color of the ellipsis circle
 $button-inner-circle-border:            none;                           // Border of the ellipsis circle
 
 

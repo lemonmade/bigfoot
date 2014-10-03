@@ -19,7 +19,8 @@
     }
 
     @media print {
-        .footnote-button {
+        .bigfoot-footnote,
+        .bigfoot-footnote__button {
             display: none !important;
         }
     }
