@@ -19,7 +19,7 @@
         scope: false,
         useFootnoteOnlyOnce: true,
         contentMarkup: "<aside class=\"bigfoot-footnote bottom\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"Footnote {{FOOTNOTENUM}}\"> <div class=\"bigfoot-footnote__wrapper\"> <div class=\"bigfoot-footnote__content\"> {{FOOTNOTECONTENT}} </div></div> <div class=\"bigfoot-footnote__tooltip\"></div> </aside>",
-        buttonMarkup: "<div class='bigfoot-footnote__container'> <button class=\"bigfoot-footnote__button\" id=\"{{SUP:data-footnote-backlink-ref}}\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"See Footnote {{FOOTNOTENUM}}\" rel=\"footnote\" data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\"> <span class=\"bigfoot-footnote__button__circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span> <span class=\"bigfoot-footnote__button__circle\"></span> <span class=\"bigfoot-footnote__button__circle\"></span> </button></div>"
+        buttonMarkup: "<div class='bigfoot-footnote__container'> <button class=\"bigfoot-footnote__button\" id=\"{{SUP:data-footnote-backlink-ref}}\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"See Footnote {{FOOTNOTENUM}}\" rel=\"footnote\" data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\"> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> </button></div>"
       };
       settings = $.extend(defaults, options);
       popoverStates = {};
@@ -78,7 +78,6 @@
           footnoteButton = settings.buttonMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, footnoteNum).replace(/\{\{FOOTNOTEID\}\}/g, footnoteIDNum).replace(/\{\{FOOTNOTECONTENT\}\}/g, footnoteContent);
           footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $relevantFNLink);
           footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $relevantFootnote);
-          console.log(footnoteContent);
           $footnoteButton = $(footnoteButton).insertBefore($relevantFNLink);
           $parent = $relevantFootnote.parent();
           switch (settings.actionOriginalFN.toLowerCase()) {
@@ -196,7 +195,7 @@
           createPopover(".bigfoot-footnote__button" + dataIdentifier).addClass("is-hover-instantiated");
         }
       };
-      touchClick = function(e) {
+      touchClick = function(event) {
         var $nearButton, $nearFootnote, $target;
         $target = $(event.target);
         $nearButton = $target.closest(".bigfoot-footnote__button");
