@@ -26,7 +26,7 @@
       actionOriginalFN    : "hide"
 
       #*
-      # Specifies a function to call on a footnote popover that is being instantiated (before it is added to the DOM). The function will be passed two arguments: `$popover`, which is a jQuery object containing the new popover element, and `$button`, the button that was clicked to instantiate the popover. This option can be useful for adding additional classes or styling information before a popover appears.
+      # Specifies a function to call on a footnote popover that is being instantiated (before it is added to the DOM). The function will be passed two arguments: `$popover`, which is a jQuery object containing the new popover element, and `$button`, the button that was cblicked to instantiate the popover. This option can be useful for adding additional classes or styling information before a popover appears.
       #
       # @access public
       # @author Chris Sauve
@@ -210,9 +210,9 @@
       #     alt="See Footnote {{FOOTNOTENUM}}"
       #     rel="footnote"
       #     data-bigfoot-footnote="{{FOOTNOTECONTENT}}">
-      #       <span class="bigfoot-footnote__button__circle" data-footnote-number="{{FOOTNOTENUM}}"></span>
-      #       <span class="bigfoot-footnote__button__circle"></span>
-      #       <span class="bigfoot-footnote__button__circle"></span>
+      #       <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
+      #       <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
+      #       <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
       #   </button>
       # </div>
       buttonMarkup        : "<div class='bigfoot-footnote__container'>
@@ -223,11 +223,10 @@
                                 alt=\"See Footnote {{FOOTNOTENUM}}\"
                                 rel=\"footnote\"
                                 data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\">
-                                  <span class=\"bigfoot-footnote__button__circle\" data-footnote-number=\"{{FOOTNOTENUM}}\"></span>
-                                  <span class=\"bigfoot-footnote__button__circle\"></span>
-                                  <span class=\"bigfoot-footnote__button__circle\"></span>
+                                  <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
+                                  <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
+                                  <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
                               </button></div>"
-
     settings = $.extend defaults, options
 
     popoverStates = {}
