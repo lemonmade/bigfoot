@@ -544,7 +544,7 @@
     # @access private
     # @returns {undefined}
 
-    touchClick = (e) ->
+    touchClick = (event) ->
       $target = $(event.target)
       $nearButton = $target.closest(".bigfoot-footnote__button")
       $nearFootnote = $target.closest(".bigfoot-footnote")
