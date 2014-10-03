@@ -7,7 +7,8 @@ module.exports = function(grunt) {
 	];
 
 	var variants = [
-		"bottom"
+		"bottom",
+		"number"
 	];
 
 	var concatSet = {
