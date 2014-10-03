@@ -10,21 +10,40 @@
 //      \  \:\       \  \::/      \  \:\       \  \::/      \  \::/      \  \:\
 //       \__\/        \__\/        \__\/        \__\/        \__\/        \__\/
 
+
+
+//*
+// A button that has no ellipse, but instead shows the footnote's number on the
+// page. Note that the number will be reset to 1 depending on the selector passed
+// to bigfoot's `numberResetSelector` option.
+
+// @since 2.1.0
+// @author Chris Sauve
+
 .bigfoot-footnote__button {
-  border-radius: $button-height/2;
+  position: relative;
   height: $button-height;
   width: 1.5em;
-  position: relative;
+  border-radius: $button-height/2;
 
   &:after {
+    // CONTENT
     content: attr(data-footnote-number);
-    font-size: $button-height*0.6;
-    display: block;
+
+    // POSITION
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
+
+    // DISPLAY AND SIZING
+    display: block;
+
+    // TEXT
+    font-size: $button-height*0.6;
     font-weight: bold;
     color: rgba($button-color, 0.5);
+
+    // TRANSITIONS
     transition: color $popover-transition-default-duration $popover-transition-default-timing-function;
   }
 

@@ -250,22 +250,22 @@
 }
 
 .bigfoot-footnote__button {
-  border-radius: 0.475em;
+  position: relative;
   height: 0.95em;
   width: 1.5em;
-  position: relative;
+  border-radius: 0.475em;
 }
 
 .bigfoot-footnote__button:after {
   content: attr(data-footnote-number);
-  font-size: 0.57em;
-  display: block;
   position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  display: block;
+  font-size: 0.57em;
   font-weight: bold;
   color: rgba(110, 110, 110, 0.5);
   -webkit-transition: color 0.25s ease;

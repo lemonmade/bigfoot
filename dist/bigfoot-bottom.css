@@ -255,16 +255,16 @@
   top: auto;
   left: 0;
   right: auto;
+  -webkit-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
   width: 100%;
   margin: 0;
   border-radius: 0;
   opacity: 1;
-  -webkit-transform: translateY(100%);
-  -ms-transform: translateY(100%);
-  transform: translateY(100%);
+  border-width: 1px 0 0;
   -webkit-transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
-  border-width: 1px 0 0;
 }
 
 .bigfoot-footnote.is-active {

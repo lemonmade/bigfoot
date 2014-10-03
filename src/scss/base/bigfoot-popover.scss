@@ -10,8 +10,28 @@
 //      \  \:\    \  \::/      \  \:\    \  \::/     \__\::::/    \  \::/      \  \:\
 //       \__\/     \__\/        \__\/     \__\/          ~~~~      \__\/        \__\/
 //
-// Default style for the popover: light gray background, dark gray border, box-shadow,
-// and scales/ fades in when activated
+
+
+
+//*
+// The popover for the footnote. This popover will be, by default, be sized and positioned
+// by the script. However, many of the sizes can be established in this stylesheet and
+// will be respected by the script. `max-width` will limit the width of the popover
+// relative to the viewport. `width` (on `bigfoot-footnote__wrapper`) will set the
+// absolute max width. Max height can be set via a `max-height` property
+// on `bigfoot-footnote__content`.
+
+// By default, the popover has a light gray background, a shadow for some depth,
+// rounded corners, and a tooltip pointing to the footnote button.
+
+// @state .is-active            - The popover has been activated and is visible.
+// @state .is-positioned-top    - The popover is above the button.
+// @state .is-positioned-bottom - The popover is below the button.
+// @state .is-scrollable        - The popover content is greater than the popover height.
+// @state .is-fully-scrolled    - The popover content is scrolled to the bottom.
+
+// @since 2.1.0
+// @author Chris Sauve
 
 .bigfoot-footnote {
   // POSITIONING
@@ -44,14 +64,10 @@
   transform: $popover-initial-transform-state;
   transform-origin: $popover-initial-transform-origin;
 
-
-
   &.is-positioned-top {
     top: auto;
     bottom: 0;
   }
-
-
 
   &.is-active {
     transform: $popover-active-transform-state;
@@ -59,6 +75,7 @@
   }
 
   &.is-scrollable {
+    // A scrollable indicator in the left margin of the popover.
     &:after {
       // CONTENT
       content: '';
@@ -112,8 +129,6 @@
     ::-webkit-scrollbar { display: none; }
   }
 
-
-
   &.is-fully-scrolled {
     &:after,
     &:before {
@@ -125,7 +140,13 @@
 
 
 
+//*
+// Wraps around the footnote content. This is necessary in order to have an element
+// above the tooltip and that can provide top and bottom indicators that there is
+// additional content on scrollable popovers.
 
+// @since 2.1.0
+// @author Chris Sauve
 
 .bigfoot-footnote__wrapper {
   // POSITIONING
@@ -147,7 +168,13 @@
 
 
 
+//*
+// Contains the actual footnote content. There is very little prescription here
+// on the footnote content itself, except for removing and top margin on the first
+// element and bottom margin on the last child.
 
+// @since 2.1.0
+// @author Chris Sauve
 
 .bigfoot-footnote__content {
   // POSITIONING
@@ -177,7 +204,11 @@
 
 
 
+//*
+// A triangular shape pointing towards the footnote button.
 
+// @since 2.1.0
+// @author Chris Sauve
 
 .bigfoot-footnote__tooltip {
   // POSITIONING
@@ -198,8 +229,6 @@
   border: $popover-border;
   box-shadow: $popover-box-shadow;
   border-top-left-radius: $popover-tooltip-radius;
-
-
 
   .is-positioned-bottom & {
     top: (-0.5 * $popover-tooltip-size);

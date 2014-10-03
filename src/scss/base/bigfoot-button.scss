@@ -10,6 +10,17 @@
 //      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
 //       \__\/        \__\/                           \__\/        \__\/
 
+
+
+//*
+// The button that activates the footnote. By default, this will appear as a
+// flat button that has an ellipse contained inside of it.
+
+// @state .is-active            - The associated popover has been activated and is visible.
+
+// @since 2.1.0
+// @author Chris Sauve
+
 .bigfoot-footnote__button {
   // POSITIONING
   position: relative;
@@ -41,33 +52,22 @@
   transition-property: $button-transition-properties;
   transition-duration: $popover-transition-default-duration;
 
-
-
-  // Put styles to apply when the button is being hovered over
   &:hover,
   &:focus {
     outline: none;
     background-color: rgba($button-hovered-color, $button-hovered-opacity);
   }
 
-
-
-  // Put styles to apply when the button is being clicked
   &:active {
     background-color: rgba($button-activating-color, $button-activating-opacity);
   }
 
-
-
-  // Put styles to apply when the button is active (during after it has been
-  // pressed to activate the footnote)
   &.is-active {
     background-color: rgba($button-active-color, $button-active-opacity);
     transition-delay: $button-active-style-delay;
   }
 
-
-
+  // Clearfix
   &:after {
     content: '';
     display: table;
@@ -91,7 +91,12 @@
 //       \__\/       \  \::/         \__\/  /__/:/
 //                    \__\/                 \__\/
 
-// Styles to apply to the inner dots included in the button
+//*
+// Each of the three circles forming the ellipse within the button.
+
+// @since 2.1.0
+// @author Chris Sauve
+
 .bigfoot-footnote__button__circle {
   // DISPLAY AND SIZING
   display: inline-block;
@@ -119,6 +124,14 @@
 //     \  \:\/:/    \  \:\/:/    \  \:\          \  \:\\  \:\         /__/:/   \  \:\
 //      \  \::/      \  \::/      \  \:\          \__\/ \  \:\        \__\/     \  \:\
 //       \__\/        \__\/        \__\/                 \__\/                   \__\/
+
+//*
+// The container for the button and popover. This is required so that the popover
+// is guaranteed to have a relatively-positioned container, and to help with the
+// positioning calculation.
+
+// @since 2.1.0
+// @author Chris Sauve
 
 .bigfoot-footnote__container {
   display: inline-block;

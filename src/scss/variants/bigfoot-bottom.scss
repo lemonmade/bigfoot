@@ -10,17 +10,36 @@
 //      \  \::/      \  \::/         \__\/     \__\/ \  \::/      \  \:\
 //       \__\/        \__\/                           \__\/        \__\/
 
+
+
+//*
+// A footnote popover that, unlike the default, is not positioned relative to
+// the button, but instead is positioned at the bottom of the page. This popover
+// transitions with a simple slide in from the bottom.
+
+// This style requires that the `positionContent` option of bigfoot is set to false.
+
+// @since 2.1.0
+// @author Chris Sauve
+
 .bigfoot-footnote {
+  // POSITIONING
   position: fixed;
   bottom: 0; top: auto;
   left: 0; right: auto;
+  transform: translateY(100%);
+
+  // DISPLAY AND SIZING
   width: 100%;
   margin: 0;
+
+  // BACKDROP
   border-radius: 0;
   opacity: 1;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
   border-width: 1px 0 0;
+
+  // TRANSITIONS
+  transition: transform 0.3s ease;
 
   &.is-active {
     transform: translateY(0);
