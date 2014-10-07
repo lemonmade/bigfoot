@@ -1,4 +1,4 @@
-// bigfoot - v2.0.4 - 2014.10.02
+// bigfoot - v2.1.0 - 2014.10.06
 
 
 //        ___       ___          ___       ___                      ___          ___
@@ -388,6 +388,9 @@ $button-transition-properties:      background-color;
   border: $popover-border;
   box-shadow: $popover-box-shadow;
 
+  // TEXT
+  line-height: 0;
+
   // TRANSITIONS
   transition-property: $popover-transition-properties;
   transition-duration: $popover-transition-default-duration;
@@ -405,6 +408,45 @@ $button-transition-properties:      background-color;
   &.is-active {
     transform: $popover-active-transform-state;
     opacity: $popover-active-opacity;
+  }
+
+  &.is-bottom-fixed {
+    // POSITIONING
+    position: fixed;
+    bottom: 0; top: auto;
+    left: 0; right: auto;
+    transform: translateY(100%);
+
+    // DISPLAY AND SIZING
+    width: 100%;
+    margin: 0;
+
+    // BACKDROP
+    border-radius: 0;
+    opacity: 1;
+    border-width: 1px 0 0;
+
+    // TRANSITIONS
+    transition: transform 0.3s ease;
+
+    &.is-active {
+      transform: translateY(0);
+    }
+
+    .bigfoot-footnote__wrapper {
+      margin: 0 0 0 50%;
+      transform: translateX(-50%);
+      max-width: 100%;
+    }
+
+    .bigfoot-footnote__wrapper,
+    .bigfoot-footnote__content {
+      border-radius: 0;
+    }
+
+    .bigfoot-footnote__tooltip {
+      display: none;
+    }
   }
 
   &.is-scrollable {
@@ -497,6 +539,9 @@ $button-transition-properties:      background-color;
   // BACKDROP
   background-color: $popover-color-background;
   border-radius: $popover-border-radius;
+
+  // TEXT
+  line-height: 0;
 }
 
 
@@ -528,6 +573,7 @@ $button-transition-properties:      background-color;
 
   // TEXT
   font-smoothing: subpixel-antialiased;
+  line-height: normal;
 
   // INTERIOR ELEMENTS
   img { max-width: 100%; }
@@ -628,6 +674,12 @@ $button-transition-properties:      background-color;
 .bigfoot-footnote__wrapper {
   margin: 0 0 0 50%;
   transform: translateX(-50%);
+  max-width: 100%;
+}
+
+.bigfoot-footnote__wrapper,
+.bigfoot-footnote__content {
+  border-radius: 0;
 }
 
 .bigfoot-footnote__tooltip {

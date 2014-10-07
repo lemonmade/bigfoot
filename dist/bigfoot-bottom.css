@@ -96,6 +96,7 @@
   border: 1px solid #c3c3c3;
   -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+  line-height: 0;
   -webkit-transition-property: opacity, -webkit-transform;
   transition-property: opacity, transform;
   -webkit-transition-duration: 0.25s;
@@ -120,6 +121,47 @@
   -ms-transform: scale(1) translateZ(0);
   transform: scale(1) translateZ(0);
   opacity: 0.97;
+}
+
+.bigfoot-footnote.is-bottom-fixed {
+  position: fixed;
+  bottom: 0;
+  top: auto;
+  left: 0;
+  right: auto;
+  -webkit-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  opacity: 1;
+  border-width: 1px 0 0;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+}
+
+.bigfoot-footnote.is-bottom-fixed.is-active {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.bigfoot-footnote.is-bottom-fixed .bigfoot-footnote__wrapper {
+  margin: 0 0 0 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  max-width: 100%;
+}
+
+.bigfoot-footnote.is-bottom-fixed .bigfoot-footnote__wrapper,
+.bigfoot-footnote.is-bottom-fixed .bigfoot-footnote__content {
+  border-radius: 0;
+}
+
+.bigfoot-footnote.is-bottom-fixed .bigfoot-footnote__tooltip {
+  display: none;
 }
 
 .bigfoot-footnote.is-scrollable:after {
@@ -192,6 +234,7 @@
   margin: 0;
   background-color: #fafafa;
   border-radius: 0.5em;
+  line-height: 0;
 }
 
 .bigfoot-footnote__content {
@@ -208,6 +251,7 @@
   background: #fafafa;
   border-radius: 0.5em;
   font-smoothing: subpixel-antialiased;
+  line-height: normal;
 }
 
 .bigfoot-footnote__content img {
@@ -278,6 +322,12 @@
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
+  max-width: 100%;
+}
+
+.bigfoot-footnote__wrapper,
+.bigfoot-footnote__content {
+  border-radius: 0;
 }
 
 .bigfoot-footnote__tooltip {

@@ -517,7 +517,7 @@
         trueDefaultPositionSetting = minMax === "min";
         falseDefaultPositionSetting = minMax === "max";
         trueCallback = trueCallback || makeDefaultCallbacks(removeOpen, deleteDelay, trueDefaultPositionSetting, function($popover) {
-          return $popover.addClass("fixed-bottom");
+          return $popover.addClass("is-bottom-fixed");
         });
         falseCallback = falseCallback || makeDefaultCallbacks(removeOpen, deleteDelay, falseDefaultPositionSetting, function() {});
         mqListener = function(mq) {
