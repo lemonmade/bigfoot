@@ -26,7 +26,11 @@
     "bower_components",
     "test",
     "tests",
-    "links"
+    "links",
+    "utils",
+    "Gruntfile.js",
+    "readme-dev.md",
+    "package.json"
   ],
   "dependencies": {
     "jquery": ">= 1.8.0"
