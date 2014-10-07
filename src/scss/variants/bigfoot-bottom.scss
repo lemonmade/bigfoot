@@ -49,6 +49,12 @@
 .bigfoot-footnote__wrapper {
   margin: 0 0 0 50%;
   transform: translateX(-50%);
+  max-width: 100%;
+}
+
+.bigfoot-footnote__wrapper,
+.bigfoot-footnote__content {
+  border-radius: 0;
 }
 
 .bigfoot-footnote__tooltip {

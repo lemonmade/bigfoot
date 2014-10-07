@@ -1167,7 +1167,7 @@
 
       # Create default trueCallback
       trueCallback = trueCallback or makeDefaultCallbacks(removeOpen, deleteDelay, trueDefaultPositionSetting, ($popover) ->
-        $popover.addClass "fixed-bottom"
+        $popover.addClass "is-bottom-fixed"
       )
 
       # Create default falseCallback
