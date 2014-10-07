@@ -1,7 +1,7 @@
 {
   "name": "bigfoot",
-  "version": "2.0.4",
-  "main": "src/bigfoot.js",
+  "version": "2.1.0",
+  "main": "src/bigfoot.coffee",
   "description": "A jQuery plugin for empowering HTML footnotes.",
   "homepage": "http://www.bigfootjs.com",
   "devDependencies": {

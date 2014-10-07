@@ -14,3 +14,9 @@
 
 # 2.0.4
 - Fixed line height issues on the standard themes.
+
+# 2.1.0
+- Rewrote the script with Coffeescript and cleaned up a lot of cruft that had formed.
+- Rewrote the markup for footnotes and popovers with a BEM-style syntax.
+- Major re-work of the framework for creating styles, hopefully leading to more maintainable stylesheets in the future.
+- Got rid of the more theme-ey footnote/ markup files in exchage for the three basics: ellipse button/ tooltip popover, number button/ tooltip popover, and ellipse button/ bottom-fixed popover.

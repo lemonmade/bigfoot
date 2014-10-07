@@ -1,11 +1,7 @@
 {
   "name": "bigfoot",
-  "main": [
-    "src/bigfoot.js",
-    "src/bigfoot-default.css",
-    "src/bigfoot-number.css"
-  ],
-  "version": "2.0.4",
+  "main": "src/coffee/bigfoot.coffee",
+  "version": "2.1.0",
   "homepage": "http://www.bigfootjs.com",
   "authors": [
     "Chris Sauve <chris@pxldot.com>"
