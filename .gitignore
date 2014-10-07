@@ -4,6 +4,6 @@
 tests/
 node_modules/
 bower_components/
-Makefile
+utils/
 links/
-.sass-cache
+**/.*
