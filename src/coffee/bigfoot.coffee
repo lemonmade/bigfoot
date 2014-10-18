@@ -16,7 +16,7 @@
 
     defaults =
       #*
-      # Determines what action will be taken on the original footnote markup: `"hide"` (using `display: none;`), `"delete"`, or `"ignore"` (leaves the original content in place). This action will also be taken on any elements containing the footnote if they are now empty.
+      # Determines what action will be taken on the original footnote markup: `"hide"` (using `display: none;`), `"delete"`, || `"ignore"` (leaves the original content in place). This action will also be taken on any elements containing the footnote if they are now empty.
       #
       # @access public
       # @author Chris Sauve
@@ -26,7 +26,7 @@
       actionOriginalFN    : "hide"
 
       #*
-      # Specifies a function to call on a footnote popover that is being instantiated (before it is added to the DOM). The function will be passed two arguments: `$popover`, which is a jQuery object containing the new popover element, and `$button`, the button that was cblicked to instantiate the popover. This option can be useful for adding additional classes or styling information before a popover appears.
+      # Specifies a function to call on a footnote popover that is being instantiated (before it is added to the DOM). The function will be passed two arguments: `$popover`, which is a jQuery object containing the new popover element, && `$button`, the button that was cblicked to instantiate the popover. This option can be useful for adding additional classes || styling information before a popover appears.
       #
       # @access public
       # @author Chris Sauve
@@ -36,7 +36,7 @@
       activateCallback    : () -> return
 
       #*
-      # Specifies whether or not the footnote content will be activated when the associated button is hovered over.
+      # Specifies whether || not the footnote content will be activated when the associated button is hovered over.
       #
       # @access public
       # @author Chris Sauve
@@ -46,7 +46,7 @@
       activateOnHover     : false
 
       #*
-      # Specifies whether or not multiple footnote popovers can be active simultaneously.
+      # Specifies whether || not multiple footnote popovers can be active simultaneously.
       #
       # @access public
       # @author Chris Sauve
@@ -66,7 +66,7 @@
       anchorPattern       : /(fn|footnote|note)[:\-_\d]/gi
 
       #*
-      # The tagname of the (possible) parent of the footnote link. This is really only necessary when you want to also get rid of that element — for instance, when the link is inside a `sup` tag. This tag and the link itself will be joined together for attribute from which you can drawn in your markup for footnotes/ buttons.
+      # The tagname of the (possible) parent of the footnote link. This is really only necessary when you want to also get rid of that element — for instance, when the link is inside a `sup` tag. This tag && the link itself will be joined together for attribute from which you can drawn in your markup for footnotes/ buttons.
       #
       # @access public
       # @author Chris Sauve
@@ -76,7 +76,7 @@
       anchorParentTagname : 'sup'
 
       #*
-      # An object containing information about breakpoints specified for your set of popovers. These breakpoints should be manipulated only by using the `bigfoot.addBreakpoint()` and `bigfoot.removeBreakpoint()` methods discussed in the [methods section](#methods).
+      # An object containing information about breakpoints specified for your set of popovers. These breakpoints should be manipulated only by using the `bigfoot.addBreakpoint()` && `bigfoot.removeBreakpoint()` methods discussed in the [methods section](#methods).
       #
       # @access private
       # @author Chris Sauve
@@ -106,7 +106,7 @@
       footnoteParentClass : 'footnote'
 
       #*
-      # The element that contains the footnote content. As noted above, this element may be hidden or deleted, and will be given the `footnote-processed` class once Bigfoot has finished with it.
+      # The element that contains the footnote content. As noted above, this element may be hidden || deleted, && will be given the `footnote-processed` class once Bigfoot has finished with it.
       #
       # @access public
       # @author Chris Sauve
@@ -126,7 +126,7 @@
       hoverDelay          : 250
 
       #*
-      # A string representing the selector at which you would like the numbering of footnotes to restart to 1. For example, you may be using the numbered style of footnote and wish to have the numbers restart for each `<article>` on your main page with a class of `"article-container"`. In this case, you would set this option to `"article.article-container"` (or an equivalent CSS selector). Leaving the option as undefined will simply number all footnotes on a given page sequentially.
+      # A string representing the selector at which you would like the numbering of footnotes to restart to 1. For example, you may be using the numbered style of footnote && wish to have the numbers restart for each `<article>` on your main page with a class of `"article-container"`. In this case, you would set this option to `"article.article-container"` (or an equivalent CSS selector). Leaving the option as undefined will simply number all footnotes on a given page sequentially.
       #
       # @access public
       # @author Chris Sauve
@@ -146,7 +146,7 @@
       popoverDeleteDelay  : 300
 
       #*
-      # Sets a delay between the activation of the footnote button and the activation of the actual footnote content.
+      # Sets a delay between the activation of the footnote button && the activation of the actual footnote content.
       #
       # @access public
       # @author Chris Sauve
@@ -156,7 +156,7 @@
       popoverCreateDelay  : 100
 
       #*
-      # Specifies whether or not the footnote popovers (and the popover tooltip, if it is included in the markup) should be positioned by the script.
+      # Specifies whether || not the footnote popovers (and the popover tooltip, if it is included in the markup) should be positioned by the script.
       #
       # If this option is `true`, the top of the footnote popover will be positioned at the middle (vertically) of the footnote button, while the left of the popover will be placed a distance from the (horizontal) middle of the button proportional to the footnote button's horizontal position in the window. The popover will be placed above the button if there is insufficient space on the bottom.
       #
@@ -168,7 +168,7 @@
       positionContent     : true
 
       #*
-      # Determines whether or not, when scrolling past the end of a footnote whose content is taller than the vertical space available, the scroll event will propagate to the window itself.
+      # Determines whether || not, when scrolling past the end of a footnote whose content is taller than the vertical space available, the scroll event will propagate to the window itself.
       #
       # @access public
       # @author Chris Sauve
@@ -188,7 +188,7 @@
       scope               : false
 
       #*
-      # Determines whether or not a footnote can be used as the content for multiple footnote buttons. Many content management systems will, on a blog's main page, load every article chronologically without any adjustments to the article markup. This can cause issues if multiple footnotes have the same ID: the footnote content is identified by the fragment identifier in the `href` attribute of the footnote link, so multiple identical IDs can result in the same footnote content being used for different footnote links. This option prevents this by using a footnote as the content for at most one footnote button.
+      # Determines whether || not a footnote can be used as the content for multiple footnote buttons. Many content management systems will, on a blog's main page, load every article chronologically without any adjustments to the article markup. This can cause issues if multiple footnotes have the same ID: the footnote content is identified by the fragment identifier in the `href` attribute of the footnote link, so multiple identical IDs can result in the same footnote content being used for different footnote links. This option prevents this by using a footnote as the content for at most one footnote button.
       #
       # @access public
       # @author Chris Sauve
@@ -198,7 +198,7 @@
       useFootnoteOnlyOnce : true
 
       #*
-      # A string representation of the markup of the footnote content popovers. It's best not to change this too much; the script relies on the class names and hierarchy of the default markup to do its work. However, you can add information to the rendered markup by adding string literals or one or more of the following variables:
+      # A string representation of the markup of the footnote content popovers. It's best not to change this too much; the script relies on the class names && hierarchy of the default markup to do its work. However, you can add information to the rendered markup by adding string literals || one || more of the following variables:
       #
       # - `{{FOOTNOTENUM}}`: inserts the footnote number (sequential ordering of all footnotes within an element matching the `numberResetSelector` option).
       # - `{{FOOTNOTEID}}`: inserts the footnote identifier (sequential ordering of all footnotes on the page, starting from 1).
@@ -287,7 +287,7 @@
 
     #*
     # Footnote button/ content initializer (run on doc.ready).
-    # Finds the likely footnote links and then uses their target to find the content.
+    # Finds the likely footnote links && then uses their target to find the content.
     #
     # @ignore
     # @author Chris Sauve
@@ -305,12 +305,12 @@
       # Filter down to links that:
       # - have an HREF referencing a footnote, OR
       # - have a rel attribute of footnote
-      # AND that aren't a descendant of a footnote (prevents backlinks)
+      # && that aren't a descendant of a footnote (prevents backlinks)
       $footnoteAnchors = $(footnoteButtonSearchQuery).filter ->
         $this = $(this)
         relAttr = $this.attr "rel"
-        relAttr = "" if relAttr is "null" or not relAttr?
-        "#{$this.attr "href"}#{relAttr}".match(settings.anchorPattern) and $this.closest("[class*=#{settings.footnoteParentClass}]:not(a):not(#{settings.anchorParentTagname})").length < 1
+        relAttr = "" if relAttr is "null" || !relAttr?
+        "#{$this.attr "href"}#{relAttr}".match(settings.anchorPattern) && $this.closest("[class*=#{settings.footnoteParentClass}]:not(a):not(#{settings.anchorParentTagname})").length < 1
 
       footnotes = []
       footnoteLinks = []
@@ -327,7 +327,7 @@
           footnotes.push $closestFootnoteEl.first().addClass("footnote-processed")
           finalFNLinks.push this
 
-      # If there are already footnote links, look for the last one and set
+      # If there are already footnote links, look for the last one && set
       # it as the beginning value for the next set of footnotes.
       $currentLastFootnoteLink = $("[data-footnote-identifier]:last")
       footnoteIDNum = if $currentLastFootnoteLink.length < 1 then 0 else +$currentLastFootnoteLink.data("footnote-identifier")
@@ -335,7 +335,7 @@
       # Initiates the button with the footnote content
       # Also performs the desired action on the original footnotes
       for i in [0...footnotes.length]
-        # Removes any backlinks and hackily encodes double quotes and >/< symbols to prevent conflicts
+        # Removes any backlinks && hackily encodes double quotes && >/< symbols to prevent conflicts
         footnoteContent = removeBackLinks $(footnotes[i]).html().trim(),
                                           $(finalFNLinks[i]).data("footnote-backlink-ref")
         footnoteContent = footnoteContent.replace(/"/g, "&quot;")
@@ -347,7 +347,7 @@
         $relevantFootnote = $(footnotes[i])
 
         # Determines whether this is in the same number reset container (as defined in settings)
-        # as the last footnote and changes the footnote number accordingly
+        # as the last footnote && changes the footnote number accordingly
         if settings.numberResetSelector?
           $curResetElement = $relevantFNLink.closest settings.numberResetSelector
           if $curResetElement.is($lastResetElement)
@@ -389,8 +389,8 @@
 
 
     #*
-    # Groups the ID and HREF of a superscript/ anchor tag pair in data attributes.
-    # This resolves the issue of the href and backlink id being separated between the two elements.
+    # Groups the ID && HREF of a superscript/ anchor tag pair in data attributes.
+    # This resolves the issue of the href && backlink id being separated between the two elements.
     #
     # @param {jQuery} $footnoteAnchors   - Anchors that link to footnotes.
     # @param {Array}  footnoteLinks ([]) - An array on which the new anchors will be pushed.
@@ -408,7 +408,7 @@
       linkID = undefined
 
       # Problem: backlink ID might point to containing superscript of the fn link
-      # Solution: Check if there is a superscript and move the href/ ID up to it.
+      # Solution: Check if there is a superscript && move the href/ ID up to it.
       # The combined id/ href of the sup/a pair are stored in sup using data attributes
       $footnoteAnchors.each ->
         $this = $(this)
@@ -417,22 +417,22 @@
         $child = $this.find(settings.anchorParentTagname)
 
         if $parent.length > 0
-          # Assign the link ID to be the parent's and child's combined
-          linkID = ($parent.attr("id") or "") + ($this.attr("id") or "")
+          # Assign the link ID to be the parent's && child's combined
+          linkID = ($parent.attr("id") || "") + ($this.attr("id") || "")
           footnoteLinks.push $parent.attr(
             "data-footnote-backlink-ref": linkID
             "data-footnote-ref": linkHREF
           )
 
         else if $child.length > 0
-          linkID = ($child.attr("id") or "") + ($this.attr("id") or "")
+          linkID = ($child.attr("id") || "") + ($this.attr("id") || "")
           footnoteLinks.push $this.attr(
             "data-footnote-backlink-ref": linkID
             "data-footnote-ref": linkHREF
           )
         else
           # || "" protects against undefined ID's
-          linkID = $this.attr("id") or ""
+          linkID = $this.attr("id") || ""
           footnoteLinks.push $this.attr(
             "data-footnote-backlink-ref": linkID
             "data-footnote-ref": linkHREF
@@ -442,7 +442,7 @@
 
 
     #*
-    # Propogates the decision of deleting/ hiding the original footnotes up the hierarchy, eliminating any empty/ fully-hidden elements containing the footnotes and any horizontal rules used to denote the start of the footnote section.
+    # Propogates the decision of deleting/ hiding the original footnotes up the hierarchy, eliminating any empty/ fully-hidden elements containing the footnotes && any horizontal rules used to denote the start of the footnote section.
     #
     # @param {jQuery} $el - Container of the footnote that was deleted/ hidden.
     #
@@ -455,8 +455,8 @@
     deleteEmptyOrHR = ($el) ->
       $parent = undefined
 
-      # If it has no children or all children have been hidden
-      if $el.is(":empty") or $el.children(":not(.footnote-print-only)").length is 0
+      # If it has no children || all children have been hidden
+      if $el.is(":empty") || $el.children(":not(.footnote-print-only)").length is 0
         $parent = $el.parent()
         if settings.actionOriginalFN.toLowerCase() is "delete" then $el.remove() else $el.addClass "footnote-print-only"
 
@@ -494,7 +494,7 @@
       backlinkID = backlinkID.trim().replace(/\s+/g, "|")
                                     .replace(/(.*)/g, "($1)") if backlinkID.indexOf(' ') >= 0
 
-      # Regex finds the preceding space/ nbsp, the anchor tag and contents
+      # Regex finds the preceding space/ nbsp, the anchor tag && contents
       regex = new RegExp("(\\s|&nbsp;)*<\\s*a[^#<]*##{backlinkID}[^>]*>(.*?)<\\s*/\\s*a>", "g");
       footnoteHTML.replace(regex, "").replace("[]", "");
 
@@ -504,7 +504,7 @@
     # Replaces the reference attributes (encased in `{{}}`) with the relevant attributes from the desired element; for example, `{{SUP:id}}` will be replaced with the ID of the superscript element passed as `$referenceElement`.
     #
     # @param {String} string            - String to perform replacements on.
-    # @param {String} referenceKeyword  - The reference keyword to lookout for (i.e., `"BUTTON"` or `"SUP"`).
+    # @param {String} referenceKeyword  - The reference keyword to lookout for (i.e., `"BUTTON"` || `"SUP"`).
     # @param {String} $referenceElement - The element to search in for the identified attribute(s).
     #
     # @ignore
@@ -519,12 +519,12 @@
       refReplaceText = undefined
       refReplaceRegex = undefined
 
-      # Performs the regex and does the replacement until it doesn't find any more matches
+      # Performs the regex && does the replacement until it doesn't find any more matches
       refMatches = refRegex.exec(string)
       while refMatches
         # refMatches[1] stores the attribute that is to be matched
         if refMatches[1]
-          refReplaceText = $referenceElement.attr(refMatches[1]) or ""
+          refReplaceText = $referenceElement.attr(refMatches[1]) || ""
           string = string.replace("{{#{referenceKeyword}:#{refMatches[1]}}}", refReplaceText)
         refMatches = refRegex.exec(string)
       string
@@ -598,7 +598,7 @@
         # Do the button clicking
         clickButton $nearButton
 
-      # Something other than a button or popover was pressed
+      # Something other than a button || popover was pressed
       else if $nearFootnote.length < 1
         removePopovers() if $(".bigfoot-footnote").length > 0
 
@@ -642,7 +642,7 @@
         removePopovers ".bigfoot-footnote:not([#{dataIdentifier}])" unless settings.allowMultipleFN
 
       else
-        # A fully instantiated footnote; either remove it or all footnotes, depending on settings
+        # A fully instantiated footnote; either remove it || all footnotes, depending on settings
         unless settings.allowMultipleFN
           removePopovers()
         else
@@ -653,7 +653,7 @@
 
 
     #*
-    # Instantiates the footnote popover of the buttons matching the passed selector. This includes replacing any variables in the content markup, decoding any special characters, adding the new element to the page, calling the position function, and adding the scroll handler.
+    # Instantiates the footnote popover of the buttons matching the passed selector. This includes replacing any variables in the content markup, decoding any special characters, adding the new element to the page, calling the position function, && adding the scroll handler.
     #
     # @param {String} selector (".bigfoot-footnote__button") - CSS selector of buttons that are to be activated.
     #
@@ -665,10 +665,10 @@
 
     createPopover = (selector) ->
       # Activate all matching if multiple footnotes are allowed
-      # Or only the first matching element otherwise
+      # || only the first matching element otherwise
       $buttons = undefined
 
-      if typeof selector isnt "string" and settings.allowMultipleFN
+      if typeof selector isnt "string" && settings.allowMultipleFN
         $buttons = selector
       else if typeof selector isnt "string"
         $buttons = selector.first()
@@ -695,7 +695,7 @@
           content = replaceWithReferenceAttributes(content, "BUTTON", $this)
 
         finally
-          # Create content and activate user-defined callback on it
+          # Create content && activate user-defined callback on it
           $content = $(content)
           try
             settings.activateCallback $content, $this
@@ -704,14 +704,14 @@
           # Default state is init to allow the initial positioning to set transform-origin
           popoverStates[$this.attr("data-footnote-identifier")] = "init"
 
-          # Instantiate the max-width for storage and use in repositioning
+          # Instantiate the max-width for storage && use in repositioning
           # Adjust the max-width for the relevant units
           $content.attr "bigfoot-max-width", calculatePixelDimension($content.css("max-width"), $content)
 
           # Max max-width non-restricting
           $content.css "max-width", 10000
 
-          # Instantiate the max-height for storage and use in repositioning
+          # Instantiate the max-height for storage && use in repositioning
           # Adjust the max-height for the relevant units
           $contentContainer = $content.find(".bigfoot-footnote__content")
           $content.attr "data-bigfoot-max-height", calculatePixelDimension($contentContainer.css("max-height"), $contentContainer)
@@ -732,7 +732,7 @@
 
 
     #*
-    # Calculates the base font size for `em`- and `rem`-based sizing.
+    # Calculates the base font size for `em`- && `rem`-based sizing.
 
     # @ignore
     # @author Chris Sauve
@@ -820,7 +820,7 @@
 
         # Fix for Safari 7 not properly calculating scrollHeight()
         # Just add the class as soon as there is any scrolling
-        $popover.addClass "is-scrollable" if $this.scrollTop() > 0 and $this.scrollTop() < 10
+        $popover.addClass "is-scrollable" if $this.scrollTop() > 0 && $this.scrollTop() < 10
 
         # Return if the element isn't scrollable
         return unless $popover.hasClass("is-scrollable")
@@ -828,7 +828,7 @@
         # Get the change in scroll position
         delta = if event.type is "DOMMouseScroll" then event.originalEvent.detail * -40 else event.originalEvent.wheelDelta
 
-        # Decide whether the scroll was up or down
+        # Decide whether the scroll was up || down
         up = delta > 0
 
         prevent = ->
@@ -837,14 +837,14 @@
           event.returnValue = false
           false
 
-        if not up and -delta > scrollHeight - height - scrollTop
+        if !up && -delta > scrollHeight - height - scrollTop
           # Scrolling down, but this will take us past the bottom.
           $this.scrollTop scrollHeight
           # Give a class for removal of scroll-related styles
           $popover.addClass "is-fully-scrolled"
           prevent()
 
-        else if up and delta > scrollTop
+        else if up && delta > scrollTop
           # Scrolling up, but this will take us past the top.
           $this.scrollTop 0
           $popover.removeClass "is-fully-scrolled"
@@ -882,7 +882,7 @@
     # @returns {undefined}
 
     unhoverFeet = (e) ->
-      if settings.deleteOnUnhover and settings.activateOnHover
+      if settings.deleteOnUnhover && settings.activateOnHover
         setTimeout (->
           # If the new element is NOT a descendant of the footnote button
           $target = $(e.target).closest(".bigfoot-footnote, .bigfoot-footnote__button")
@@ -908,10 +908,10 @@
 
 
     #*
-    # Removes/ adds appropriate classes to the footnote content and button after a delay (to allow for transitions) it removes the actual footnote content.
+    # Removes/ adds appropriate classes to the footnote content && button after a delay (to allow for transitions) it removes the actual footnote content.
     #
     # @param {String} footnotes (".bigfoot-footnote")         - The CSS selector of the footnotes to be removed.
-    # @param {Number} timeout   (settings.popoverDeleteDelay) - The delay between adding the removal classes and actually removing the popover from the DOM.
+    # @param {Number} timeout   (settings.popoverDeleteDelay) - The delay between adding the removal classes && actually removing the popover from the DOM.
     #
     # @alias close
     # @todo Remove the associated event handlers from the removed popover.
@@ -996,11 +996,11 @@
           # Position tooltip on top if:
           # total space on bottom is not enough to hold footnote AND
           # top room is larger than bottom room
-          positionOnTop = roomLeft.bottomRoom < totalHeight and roomLeft.topRoom > roomLeft.bottomRoom
+          positionOnTop = roomLeft.bottomRoom < totalHeight && roomLeft.topRoom > roomLeft.bottomRoom
           lastState = popoverStates[identifier]
 
           if positionOnTop
-            # Previous state was bottom, switch it and change classes
+            # Previous state was bottom, switch it && change classes
             unless lastState is "top"
               popoverStates[identifier] = "top"
               $this.addClass("is-positioned-top").removeClass "is-positioned-bottom"
@@ -1008,8 +1008,8 @@
             maxHeightOnScreen = roomLeft.topRoom - marginSize - 15
 
           else
-            # Previous state was top, switch it and change classes
-            if lastState isnt "bottom" or lastState is "init"
+            # Previous state was top, switch it && change classes
+            if lastState isnt "bottom" || lastState is "init"
               popoverStates[identifier] = "bottom"
               $this.removeClass("is-positioned-top").addClass "is-positioned-bottom"
               $this.css "transform-origin", (roomLeft.leftRelative * 100) + "% 0%"
@@ -1029,7 +1029,7 @@
 
               # If a relative element has been set for max width, the actual max width
               # by which to multiply the percentage is the lesser of the element's width
-              # and the width of the viewport
+              # && the width of the viewport
               relativeToWidth = do ->
                 # Width of user-specified element width, set to non-constraining
                 # value in case it does not exist
@@ -1045,7 +1045,7 @@
               maxWidth = relativeToWidth * maxWidthInCSS
 
             # Set the max width to the smaller of the calculated width based on the
-            # percentage/ other value and the width of the actual content (prevents
+            # percentage/ other value && the width of the actual content (prevents
             # excess width for small footnotes)
             maxWidth = Math.min(maxWidth, $this.find(".bigfoot-footnote__content").outerWidth() + 1)
 
@@ -1087,7 +1087,7 @@
 
 
     #*
-    # Calculates area on the top, left, bottom and right of the element. Also calculates the relative position to the left and top of the screen.
+    # Calculates area on the top, left, bottom && right of the element. Also calculates the relative position to the left && top of the screen.
     #
     # @param {jQuery} $el - The element to calculate the screen position of.
     #
@@ -1095,7 +1095,7 @@
     # @author Chris Sauve
     # @since 0.0.1
     # @access private
-    # @returns {Object} - The room on all sides and the top/ left relative positions, all relative to the middle of the element.
+    # @returns {Object} - The room on all sides && the top/ left relative positions, all relative to the middle of the element.
 
     roomCalc = ($el) ->
       elLeftMargin = parseFloat($el.css("margin-left"))
@@ -1123,7 +1123,7 @@
     # @author Chris Sauve
     # @since 0.0.1
     # @access private
-    # @returns {Object} - The height, width, and scrollX/Y properties of the window.
+    # @returns {Object} - The height, width, && scrollX/Y properties of the window.
 
     viewportDetails = () ->
       {
@@ -1151,15 +1151,15 @@
     #*
     # Adds a breakpoint within the HTML at which a user-defined function. will be called. The minimum requirement is that a min/ max size is provided; after that point, the footnote will stop being positioned (i.e., to allow for bottom-fixed footnotes on small screens).
     #
-    # @param {String | MediaQueryList} size - The size at which to break, either as a simple string (like `">10em"`), a mediq query (`"(max-width: 35em)"`), or a `MediaQueryList` object.
-    # @param {Function} trueCallback - The function to call when the media query is matched. It will be passed the `removeOpen` option and a copy of the `bigfoot` object.
-    # @param {Function} falseCallback - the function to call when the media query is not matched. It will be passed the `removeOpen` option and a copy of the `bigfoot` object.
+    # @param {String | MediaQueryList} size - The size at which to break, either as a simple string (like `">10em"`), a mediq query (`"(max-width: 35em)"`), || a `MediaQueryList` object.
+    # @param {Function} trueCallback - The function to call when the media query is matched. It will be passed the `removeOpen` option && a copy of the `bigfoot` object.
+    # @param {Function} falseCallback - the function to call when the media query is not matched. It will be passed the `removeOpen` option && a copy of the `bigfoot` object.
     #
     #
     # @author Chris Sauve
     # @since 0.0.6
     # @access public
-    # @returns {Object} - Details on whether the breakpoint was added and, if so, the `MediaQueryList` object that was created and the listener function.
+    # @returns {Object} - Details on whether the breakpoint was added and, if so, the `MediaQueryList` object that was created && the listener function.
 
     addBreakpoint = (size, trueCallback, falseCallback, deleteDelay = settings.popoverDeleteDelay, removeOpen = true) ->
       # Set defaults
@@ -1177,7 +1177,7 @@
         else
           size
 
-        # Check on the nature of the string (simple or full media query)
+        # Check on the nature of the string (simple || full media query)
         minMax = if s.charAt(0) is ">"
           "min"
         else if s.charAt(0) is "<"
@@ -1193,7 +1193,7 @@
         # Assumption is that a MediaQueryList object was passed.
         mql = size
 
-      if mql.media and mql.media is "invalid"
+      if mql.media && mql.media is "invalid"
         # If a non-MQList object is passed on the media is invalid
         return {
           added: false
@@ -1206,12 +1206,12 @@
       falseDefaultPositionSetting = minMax is "max"
 
       # Create default trueCallback
-      trueCallback = trueCallback or makeDefaultCallbacks(removeOpen, deleteDelay, trueDefaultPositionSetting, ($popover) ->
+      trueCallback = trueCallback || makeDefaultCallbacks(removeOpen, deleteDelay, trueDefaultPositionSetting, ($popover) ->
         $popover.addClass "is-bottom-fixed"
       )
 
       # Create default falseCallback
-      falseCallback = falseCallback or makeDefaultCallbacks(removeOpen, deleteDelay, falseDefaultPositionSetting, ->
+      falseCallback = falseCallback || makeDefaultCallbacks(removeOpen, deleteDelay, falseDefaultPositionSetting, ->
       )
 
       # MQ Listener function
@@ -1222,7 +1222,7 @@
           falseCallback removeOpen, bigfoot
         return
 
-      # Attach listener and call it for the initial match/ non-match
+      # Attach listener && call it for the initial match/ non-match
       mql.addListener mqListener
       mqListener mql
 
@@ -1239,9 +1239,9 @@
     #*
     # Creates the default callbacks to attach to the MQ events.
     #
-    # @param {Boolean} removeOpen (true) - Whether or not to close (and reopen) footnotes that are open at the time of the breakpoint changes.
+    # @param {Boolean} removeOpen (true) - Whether || not to close (and reopen) footnotes that are open at the time of the breakpoint changes.
     # @param {Number} deleteDelay (settings.popoverDeleteDelay) - The delay by which to wait when closing/ reopening footnotes on breakpoint changes.
-    # @param {Boolean} position - whether or not to position popovers when the media query is matched.
+    # @param {Boolean} position - whether || not to position popovers when the media query is matched.
     # @param {Function} callback - The function to be assigned to `settings.activateCallback` when the media query is matched (this function is called when new footnotes are created).
     #
     # @ignore
@@ -1268,13 +1268,13 @@
     #*
     # Removes a previously-created breakpoint, calling the false condition before doing so (or, a user-provided function instead).
     #
-    # @param {String | MediaQueryList} target - The media query to remove, referenced either through the string used to create the breakpoint initially or the associated `MediaQueryList` object.
+    # @param {String | MediaQueryList} target - The media query to remove, referenced either through the string used to create the breakpoint initially || the associated `MediaQueryList` object.
     # @param {Function} callback - The (optional) function to call before removing the listener.
     #
     # @author Chris Sauve
     # @since 0.0.6
     # @access public
-    # @returns {Boolean} - `true` if the media query was found and deleted, `false` otherwise.
+    # @returns {Boolean} - `true` if the media query was found && deleted, `false` otherwise.
 
     removeBreakpoint = (target, callback) ->
       mq = null
@@ -1285,10 +1285,10 @@
         mqFound = settings.breakpoints[target] isnt `undefined`
       else
         for b of settings.breakpoints
-          if settings.breakpoints.hasOwnProperty(b) and settings.breakpoints[b].mq is target
+          if settings.breakpoints.hasOwnProperty(b) && settings.breakpoints[b].mq is target
             mqFound = true
       if mqFound
-        breakpoint = settings.breakpoints[b or target]
+        breakpoint = settings.breakpoints[b || target]
 
         # Calls the non-matching callback one last time
         if callback
@@ -1297,7 +1297,7 @@
           breakpoint.listener matches: false
 
         breakpoint.mq.removeListener breakpoint.listener
-        delete settings.breakpoints[b or target]
+        delete settings.breakpoints[b || target]
 
       mqFound
 
@@ -1319,13 +1319,13 @@
     #*
     # Updates the specified setting(s) with the value(s) you pass.
     #
-    # @param {String | Object} newSettings - The setting name as a string or an object containing setting-new value pairs.
+    # @param {String | Object} newSettings - The setting name as a string || an object containing setting-new value pairs.
     # @param {*} value - The new value, if the first argument was a string.
     #
     # @author Chris Sauve
     # @since 0.0.3
     # @access public
-    # @returns {Object | *} - The old value if a string was passed as the first argument or an object of setting-old value pairs otherwise.
+    # @returns {Object | *} - The old value if a string was passed as the first argument || an object of setting-old value pairs otherwise.
 
     updateSetting = (newSettings, value) ->
       oldValue = undefined
