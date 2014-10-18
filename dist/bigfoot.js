@@ -8,8 +8,12 @@
         activateCallback: function() {},
         activateOnHover: false,
         allowMultipleFN: false,
+        anchorPattern: /(fn|footnote|note)[:\-_\d]/gi,
+        anchorParentTagname: 'sup',
         breakpoints: {},
         deleteOnUnhover: false,
+        footnoteParentClass: 'footnote',
+        footnoteTagname: 'li',
         hoverDelay: 250,
         numberResetSelector: void 0,
         popoverDeleteDelay: 300,
@@ -33,21 +37,21 @@
           if (relAttr === "null" || (relAttr == null)) {
             relAttr = "";
           }
-          return ("" + ($this.attr("href")) + relAttr).match(/(fn|footnote|note)[:\-_\d]/gi) && $this.closest("[class*=footnote]:not(a):not(sup)").length < 1;
+          return ("" + ($this.attr("href")) + relAttr).match(settings.anchorPattern) && $this.closest("[class*=" + settings.footnoteParentClass + "]:not(a):not(" + settings.anchorParentTagname + ")").length < 1;
         });
         footnotes = [];
         footnoteLinks = [];
         finalFNLinks = [];
         cleanFootnoteLinks($footnoteAnchors, footnoteLinks);
         $(footnoteLinks).each(function() {
-          var $closestFootnoteLi, relatedFN;
+          var $closestFootnoteEl, relatedFN;
           relatedFN = $(this).data("footnote-ref").replace(/[:.+~*\]\[]/g, "\\$&");
           if (settings.useFootnoteOnlyOnce) {
             relatedFN = "" + relatedFN + ":not(.footnote-processed)";
           }
-          $closestFootnoteLi = $(relatedFN).closest("li");
-          if ($closestFootnoteLi.length > 0) {
-            footnotes.push($closestFootnoteLi.first().addClass("footnote-processed"));
+          $closestFootnoteEl = $(relatedFN).closest(settings.footnoteTagname);
+          if ($closestFootnoteEl.length > 0) {
+            footnotes.push($closestFootnoteEl.first().addClass("footnote-processed"));
             return finalFNLinks.push(this);
           }
         });
@@ -98,28 +102,28 @@
         return _results;
       };
       cleanFootnoteLinks = function($footnoteAnchors, footnoteLinks) {
-        var $supChild, $supParent, linkHREF, linkID;
+        var $parent, $supChild, linkHREF, linkID;
         if (footnoteLinks == null) {
           footnoteLinks = [];
         }
-        $supParent = void 0;
+        $parent = void 0;
         $supChild = void 0;
         linkHREF = void 0;
         linkID = void 0;
         $footnoteAnchors.each(function() {
-          var $this;
+          var $child, $this;
           $this = $(this);
           linkHREF = "#" + ($this.attr("href")).split("#")[1];
-          $supParent = $this.closest("sup");
-          $supChild = $this.find("sup");
-          if ($supParent.length > 0) {
-            linkID = ($supParent.attr("id") || "") + ($this.attr("id") || "");
-            return footnoteLinks.push($supParent.attr({
+          $parent = $this.closest(settings.anchorParentTagname);
+          $child = $this.find(settings.anchorParentTagname);
+          if ($parent.length > 0) {
+            linkID = ($parent.attr("id") || "") + ($this.attr("id") || "");
+            return footnoteLinks.push($parent.attr({
               "data-footnote-backlink-ref": linkID,
               "data-footnote-ref": linkHREF
             }));
-          } else if ($supChild.length > 0) {
-            linkID = ($supChild.attr("id") || "") + ($this.attr("id") || "");
+          } else if ($child.length > 0) {
+            linkID = ($child.attr("id") || "") + ($this.attr("id") || "");
             return footnoteLinks.push($this.attr({
               "data-footnote-backlink-ref": linkID,
               "data-footnote-ref": linkHREF

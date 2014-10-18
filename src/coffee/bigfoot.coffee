@@ -56,6 +56,26 @@
       allowMultipleFN     : false
 
       #*
+      # Specifies the pattern that must be matched by the anchor element's `href` attribute for it to be considered a footnote link. This is used in filtering all links down to just those with a footnote.
+      #
+      # @access public
+      # @author Chris Sauve
+      # @since 2.1.1
+      # @returns {RegExp}
+      # @default /(fn|footnote|note)[:\-_\d]/gi
+      anchorPattern       : /(fn|footnote|note)[:\-_\d]/gi
+
+      #*
+      # The tagname of the (possible) parent of the footnote link. This is really only necessary when you want to also get rid of that element — for instance, when the link is inside a `sup` tag. This tag and the link itself will be joined together for attribute from which you can drawn in your markup for footnotes/ buttons.
+      #
+      # @access public
+      # @author Chris Sauve
+      # @since 2.1.1
+      # @returns {String}
+      # @default 'sup'
+      anchorParentTagname : 'sup'
+
+      #*
       # An object containing information about breakpoints specified for your set of popovers. These breakpoints should be manipulated only by using the `bigfoot.addBreakpoint()` and `bigfoot.removeBreakpoint()` methods discussed in the [methods section](#methods).
       #
       # @access private
@@ -74,6 +94,26 @@
       # @returns {Boolean}
       # @default false
       deleteOnUnhover     : false
+
+      #*
+      # The class name for the containing element of the original footnote content. Typically, this will be a class on an `li` that contained the footnote. This element may be removed/ hidden, depending on the option specified for `actionOriginalFN`. This string does not have to be an exact match — the class names will simply be tested for whether they include this string.
+      #
+      # @access public
+      # @author Chris Sauve
+      # @since 2.1.1
+      # @returns {String}
+      # @default 'footnote'
+      footnoteParentClass : 'footnote'
+
+      #*
+      # The element that contains the footnote content. As noted above, this element may be hidden or deleted, and will be given the `footnote-processed` class once Bigfoot has finished with it.
+      #
+      # @access public
+      # @author Chris Sauve
+      # @since 2.1.1
+      # @returns {RegExp}
+      # @default /(fn|footnote|note)[:\-_\d]/gi
+      footnoteTagname     : 'li'
 
       #*
       # If `deleteOnUnhover` is `true`, this specifies the amount of time (in milliseconds) that must pass after the footnote button/ content is un-hovered before the footnote is removed.
@@ -270,7 +310,7 @@
         $this = $(this)
         relAttr = $this.attr "rel"
         relAttr = "" if relAttr is "null" or not relAttr?
-        "#{$this.attr "href"}#{relAttr}".match(/(fn|footnote|note)[:\-_\d]/gi) and $this.closest("[class*=footnote]:not(a):not(sup)").length < 1
+        "#{$this.attr "href"}#{relAttr}".match(settings.anchorPattern) and $this.closest("[class*=#{settings.footnoteParentClass}]:not(a):not(#{settings.anchorParentTagname})").length < 1
 
       footnotes = []
       footnoteLinks = []
@@ -282,9 +322,9 @@
         relatedFN = $(this).data "footnote-ref"
                    .replace /[:.+~*\]\[]/g, "\\$&"
         relatedFN = "#{relatedFN}:not(.footnote-processed)" if settings.useFootnoteOnlyOnce
-        $closestFootnoteLi = $(relatedFN).closest "li"
-        if $closestFootnoteLi.length > 0
-          footnotes.push $closestFootnoteLi.first().addClass("footnote-processed")
+        $closestFootnoteEl = $(relatedFN).closest(settings.footnoteTagname)
+        if $closestFootnoteEl.length > 0
+          footnotes.push $closestFootnoteEl.first().addClass("footnote-processed")
           finalFNLinks.push this
 
       # If there are already footnote links, look for the last one and set
@@ -362,7 +402,7 @@
     # @returns {undefined}
 
     cleanFootnoteLinks = ($footnoteAnchors, footnoteLinks = []) ->
-      $supParent = undefined
+      $parent = undefined
       $supChild = undefined
       linkHREF = undefined
       linkID = undefined
@@ -373,19 +413,19 @@
       $footnoteAnchors.each ->
         $this = $(this)
         linkHREF = "#" + ($this.attr("href")).split("#")[1] # just the fragment ID
-        $supParent = $this.closest("sup")
-        $supChild = $this.find("sup")
+        $parent = $this.closest(settings.anchorParentTagname)
+        $child = $this.find(settings.anchorParentTagname)
 
-        if $supParent.length > 0
+        if $parent.length > 0
           # Assign the link ID to be the parent's and child's combined
-          linkID = ($supParent.attr("id") or "") + ($this.attr("id") or "")
-          footnoteLinks.push $supParent.attr(
+          linkID = ($parent.attr("id") or "") + ($this.attr("id") or "")
+          footnoteLinks.push $parent.attr(
             "data-footnote-backlink-ref": linkID
             "data-footnote-ref": linkHREF
           )
 
-        else if $supChild.length > 0
-          linkID = ($supChild.attr("id") or "") + ($this.attr("id") or "")
+        else if $child.length > 0
+          linkID = ($child.attr("id") or "") + ($this.attr("id") or "")
           footnoteLinks.push $this.attr(
             "data-footnote-backlink-ref": linkID
             "data-footnote-ref": linkHREF
