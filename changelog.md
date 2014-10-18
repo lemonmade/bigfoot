@@ -20,3 +20,7 @@
 - Rewrote the markup for footnotes and popovers with a BEM-style syntax.
 - Major re-work of the framework for creating styles, hopefully leading to more maintainable stylesheets in the future.
 - Got rid of the more theme-ey footnote/ markup files in exchage for the three basics: ellipse button/ tooltip popover, number button/ tooltip popover, and ellipse button/ bottom-fixed popover.
+
+# 2.1.1
+- Added new options. `anchorPattern`, `anchorParentTagname`, `footnoteTagname` and `footnoteParentClass` allow Bigfoot to work with a wider range of potential HTML structures (thanks to [brunob](https://github.com/brunob) for the original implementation).
+- Did some minor style changes to help me to maintain the code better.
