@@ -57,7 +57,6 @@ module.exports = (grunt) ->
       dist:
         options:
           style: 'expanded'
-          sourcemap: 'none'
 
         files: sassSet
 
