@@ -46,7 +46,7 @@
   line-height: 0;
   vertical-align: middle;
   text-decoration: none;
-  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 
   // TRANSITIONS
   transition-property: $button-transition-properties;

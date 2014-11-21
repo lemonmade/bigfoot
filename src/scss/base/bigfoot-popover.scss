@@ -239,7 +239,7 @@
   border-radius: $popover-content-border-radius;
 
   // TEXT
-  font-smoothing: subpixel-antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
   line-height: normal;
 
   // INTERIOR ELEMENTS
