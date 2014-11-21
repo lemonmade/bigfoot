@@ -1,6 +1,7 @@
 .DS_Store
 *.rar
 *.zip
+dist/
 tests/
 node_modules/
 bower_components/
