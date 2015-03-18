@@ -16,4 +16,4 @@ The script has many configurable options from having popovers instantiated on ho
 
 Requires jQuery 1.7+ at a minimum (for `.on()`) and jQuery 1.8+ for full functionality (1.8 automatically prefixes the `transform`/ `transition` properties).
 
-Questions? Issues? Feature requests? Check out the [Github page](https://github.com/pxldot/bigfoot) for this project.
+Questions? Issues? Feature requests? Check out the [Github page](https://github.com/lemonmade/bigfoot) for this project.
