@@ -485,11 +485,13 @@
         };
       };
       viewportDetails = function() {
+        var $window;
+        $window = $(window);
         return {
           width: window.innerWidth,
           height: window.innerHeight,
-          scrollX: window.scrollX,
-          scrollY: window.scrollY
+          scrollX: $window.scrollLeft(),
+          scrollY: $window.scrollTop()
         };
       };
       addBreakpoint = function(size, trueCallback, falseCallback, deleteDelay, removeOpen) {
