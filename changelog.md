@@ -24,3 +24,8 @@
 # 2.1.1
 - Added new options. `anchorPattern`, `anchorParentTagname`, `footnoteTagname` and `footnoteParentClass` allow Bigfoot to work with a wider range of potential HTML structures (thanks to [brunob](https://github.com/brunob) for the original implementation).
 - Did some minor style changes to help me to maintain the code better.
+
+# 2.1.2
+- Fixed a bug with scroll calculation in IE 11 (thanks [Dave](https://github.com/lemonmade/bigfoot/issues/36)!)
+- Made the button variables `!default` so that they are more easy to customize (thanks again, [Dave](https://github.com/lemonmade/bigfoot/issues/35)!)
+- Added the `dist` folder back — I want people to be able to grab them if needed, and they need to be in for Bower.
