@@ -1126,11 +1126,13 @@
     # @returns {Object} - The height, width, and scrollX/Y properties of the window.
 
     viewportDetails = () ->
+      $window = $(window)
+
       {
         width: window.innerWidth
         height: window.innerHeight
-        scrollX: window.scrollX
-        scrollY: window.scrollY
+        scrollX: $window.scrollLeft()
+        scrollY: $window.scrollTop()
       }
 
 
