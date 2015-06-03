@@ -210,25 +210,25 @@
       # @since 0.0.1
       # @returns {String}
       # @default
-      # <aside class=\"bigfoot-footnote is-positioned-bottom\"
-      #   data-footnote-number=\"{{FOOTNOTENUM}}\"
-      #   data-footnote-identifier=\"{{FOOTNOTEID}}\"
-      #   alt=\"Footnote {{FOOTNOTENUM}}\">
-      #    <div class=\"bigfoot-footnote__wrapper\">
-      #    <div class=\"bigfoot-footnote__content\">
+      # <aside class='bigfoot-footnote is-positioned-bottom'
+      #   data-footnote-number='{{FOOTNOTENUM}}'
+      #   data-footnote-identifier='{{FOOTNOTEID}}'
+      #   alt='Footnote {{FOOTNOTENUM}}'>
+      #    <div class='bigfoot-footnote__wrapper'>
+      #    <div class='bigfoot-footnote__content'>
       #      {{FOOTNOTECONTENT}}
       #    </div></div>
-      #    <div class=\"bigfoot-footnote__tooltip\"></div>
+      #    <div class='bigfoot-footnote__tooltip'></div>
       # </aside>
-      contentMarkup       : "<aside class=\"bigfoot-footnote is-positioned-bottom\"
-                              data-footnote-number=\"{{FOOTNOTENUM}}\"
-                              data-footnote-identifier=\"{{FOOTNOTEID}}\"
-                              alt=\"Footnote {{FOOTNOTENUM}}\">
-                                <div class=\"bigfoot-footnote__wrapper\">
-                                <div class=\"bigfoot-footnote__content\">
+      contentMarkup       : "<aside class='bigfoot-footnote is-positioned-bottom'
+                              data-footnote-number='{{FOOTNOTENUM}}'
+                              data-footnote-identifier='{{FOOTNOTEID}}'
+                              alt='Footnote {{FOOTNOTENUM}}'>
+                                <div class='bigfoot-footnote__wrapper'>
+                                <div class='bigfoot-footnote__content'>
                                   {{FOOTNOTECONTENT}}
                                 </div></div>
-                                <div class=\"bigfoot-footnote__tooltip\"></div>
+                                <div class='bigfoot-footnote__tooltip'></div>
                               </aside>"
 
       #*
@@ -250,22 +250,22 @@
       #     alt="See Footnote {{FOOTNOTENUM}}"
       #     rel="footnote"
       #     data-bigfoot-footnote="{{FOOTNOTECONTENT}}">
-      #       <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
-      #       <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
-      #       <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
+      #       <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg>
+      #       <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg>
+      #       <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg>
       #   </button>
       # </div>
       buttonMarkup        : "<div class='bigfoot-footnote__container'>
-                              <button class=\"bigfoot-footnote__button\"
-                                id=\"{{SUP:data-footnote-backlink-ref}}\"
-                                data-footnote-number=\"{{FOOTNOTENUM}}\"
-                                data-footnote-identifier=\"{{FOOTNOTEID}}\"
-                                alt=\"See Footnote {{FOOTNOTENUM}}\"
-                                rel=\"footnote\"
-                                data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\">
-                                  <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
-                                  <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
-                                  <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg>
+                              <button class='bigfoot-footnote__button'
+                                id='{{SUP:data-footnote-backlink-ref}}'
+                                data-footnote-number='{{FOOTNOTENUM}}'
+                                data-footnote-identifier='{{FOOTNOTEID}}'
+                                alt='See Footnote {{FOOTNOTENUM}}'
+                                rel='footnote'
+                                data-bigfoot-footnote='{{FOOTNOTECONTENT}}'>
+                                  <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg>
+                                  <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg>
+                                  <svg class='bigfoot-footnote__button__circle' viewbox='0 0 6 6' preserveAspectRatio='xMinYMin'><circle r='3' cx='3' cy='3' fill='white'></circle></svg>
                               </button></div>"
     settings = $.extend defaults, options
 
@@ -297,10 +297,7 @@
 
     footnoteInit = ->
       # Get all of the possible footnote links
-      footnoteButtonSearchQuery = if settings.scope
-                      "#{settings.scope} a[href*=\"#\"]"
-                    else
-                      "a[href*=\"#\"]"
+      footnoteButtonSearchQuery = if settings.scope then "#{settings.scope} a[href*='#']" else "a[href*='#']"
 
       # Filter down to links that:
       # - have an HREF referencing a footnote, OR
@@ -559,7 +556,7 @@
     buttonHover = (event) ->
       if settings.activateOnHover
         $buttonHovered = $(event.target).closest(".bigfoot-footnote__button")
-        dataIdentifier = "[data-footnote-identifier=\"#{$buttonHovered.attr("data-footnote-identifier")}\"]"
+        dataIdentifier = "[data-footnote-identifier='#{$buttonHovered.attr("data-footnote-identifier")}']"
         return if $buttonHovered.hasClass("is-active")
         $buttonHovered.addClass "is-hover-instantiated"
 
@@ -622,7 +619,7 @@
       $button.blur()
 
       # Get the identifier of the footnote
-      dataIdentifier = "data-footnote-identifier=\"#{$button.attr("data-footnote-identifier")}\""
+      dataIdentifier = "data-footnote-identifier='#{$button.attr("data-footnote-identifier")}'"
 
       # Only create footnote if it's not already active
       # If it's activating, ignore the new activation until the popover is fully formed.
@@ -929,7 +926,7 @@
       $(footnotes).each ->
         $this = $(this)
         footnoteID = $this.attr("data-footnote-identifier")
-        $linkedButton = $(".bigfoot-footnote__button[data-footnote-identifier=\"#{footnoteID}\"]")
+        $linkedButton = $(".bigfoot-footnote__button[data-footnote-identifier='#{footnoteID}']")
 
         unless $linkedButton.hasClass("changing")
           $buttonsClosed = $buttonsClosed.add($linkedButton)
@@ -982,7 +979,7 @@
           # Element Definitions
           $this = $(this)
           identifier = $this.attr("data-footnote-identifier")
-          dataIdentifier = "data-footnote-identifier=\"" + identifier + "\""
+          dataIdentifier = "data-footnote-identifier='" + identifier + "'"
           $contentWrapper = $this.find(".bigfoot-footnote__content")
           $button = $this.siblings(".bigfoot-footnote__button")
 

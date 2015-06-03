@@ -29,3 +29,6 @@
 - Fixed a bug with scroll calculation in IE 11 (thanks [Dave](https://github.com/lemonmade/bigfoot/issues/36)!)
 - Made the button variables `!default` so that they are more easy to customize (thanks again, [Dave](https://github.com/lemonmade/bigfoot/issues/35)!)
 - Added the `dist` folder back — I want people to be able to grab them if needed, and they need to be in for Bower.
+
+# 2.1.3
+- Removed escaped double quotes from double quoted strings to help minifiers not freak out.
