@@ -338,6 +338,7 @@
         footnoteContent = footnoteContent.replace(/"/g, "&quot;")
                                          .replace(/&lt;/g, "&ltsym;")
                                          .replace(/&gt;/g, "&gtsym;")
+                                         .replace(/'/g, "&apos;")
         footnoteIDNum += 1
         footnoteButton = ""
         $relevantFNLink = $(finalFNLinks[i])
