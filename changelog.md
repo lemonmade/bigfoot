@@ -32,3 +32,6 @@
 
 # 2.1.3
 - Removed escaped double quotes from double quoted strings to help minifiers not freak out.
+
+# 2.1.4
+- Adds a substitution for single quotes in original footnote contents.
